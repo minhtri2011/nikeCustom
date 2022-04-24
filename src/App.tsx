@@ -1,57 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { ThemeProvider } from "@mui/material/styles";
+import { NotFound } from "component/common";
+import { AnimatePresence } from "framer-motion";
+import Admin from "layout/admin/Admin";
+import User from "pages/Dasboard/User/User";
+import LoginPage from "pages/Login/Login";
+import SignUpPage from "pages/SignUp/SignUp";
+import React from "react";
+import { useLocation } from "react-router";
+import { Route, Routes } from "react-router-dom";
+import AuthRoute from "Routes/AuthRoute";
+import { lightTheme } from "theme";
+import "./App.css";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <ThemeProvider theme={lightTheme}>
+      <AnimatePresence exitBeforeEnter>
+        <Routes location={location} key={location.pathname}>
+          {/* Auth route for login and redirect form */}
+          <Route element={<AuthRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signUp" element={<SignUpPage />} />
+          </Route>
+          <Route element={<Admin />}>
+            <Route path="/dashboard" element={<User />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
+    </ThemeProvider>
   );
 }
 

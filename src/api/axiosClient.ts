@@ -3,11 +3,14 @@ import { API_NIKE } from "./Api";
 
 const accessToken = JSON.parse(localStorage.getItem("access_token") || "{}");
 const accessToken2 = JSON.parse(sessionStorage.getItem("access_token") || "{}");
+
 const axiosClient = axios.create({
   baseURL: API_NIKE,
-  headers: {
-    Authorization: `Bearer ${accessToken2 === "{}" && accessToken}`,
-  },
+  // headers: {
+  //   Authorization: `Bearer ${
+  //     accessToken.length === undefined ? accessToken2 : accessToken
+  //   }`,
+  // },
 });
 
 // Add a request interceptor

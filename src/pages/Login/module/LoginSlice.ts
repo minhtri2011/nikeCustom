@@ -11,7 +11,7 @@ export interface LoginPayload {
 export interface LoginState {
   isLoggedIn: boolean;
   logging?: boolean;
-  auth:boolean;
+  auth: boolean;
   errorMessage: boolean;
   currentUser?: User;
 }
@@ -24,7 +24,7 @@ export interface LoginErrorPayload {
 const initialState: LoginState = {
   isLoggedIn: false,
   logging: false,
-  auth:false,
+  auth: false,
   errorMessage: false,
   currentUser: undefined,
 };
@@ -37,30 +37,30 @@ const LoginSlice = createSlice({
     login(state, action: PayloadAction<LoginPayload>) {
       state.logging = true;
       state.errorMessage = false;
-      state.auth=false;
+      state.auth = false;
     },
     loginSuccess(state, action: PayloadAction<User>) {
       state.isLoggedIn = true;
       state.errorMessage = false;
       state.logging = false;
       state.currentUser = action.payload;
-      state.auth=false;
+      state.auth = false;
     },
     loginFailed(state) {
       state.logging = false;
       state.errorMessage = true;
-      state.auth=false;
+      state.auth = false;
     },
     //logout action
     logout(state) {
       state.errorMessage = false;
       state.isLoggedIn = false;
       state.currentUser = undefined;
-      state.auth=false;
+      state.auth = false;
     },
-    setAuth(state){
-      state.auth=true;
-    }
+    setAuth(state) {
+      state.auth = true;
+    },
   },
 });
 
@@ -68,8 +68,15 @@ const LoginSlice = createSlice({
 export const LoginActions = LoginSlice.actions;
 
 // selector
+export const selectIsLogging = (state: any) => state.LoginReducer.logging;
 export const selectIsLoggedIn = (state: any) => state.LoginReducer.isLoggedIn;
-export const selectIsLogging = (state: any) => state.LoginReducer.isLogging;
+export const selectEmailLogging = (state: any) =>
+  state.LoginReducer.currentUser?.email;
+export const selectNameLogging = (state: any) =>
+  state.LoginReducer.currentUser?.name;
+export const selectTypeUserLogging = (state: any) =>
+  state.LoginReducer.currentUser?.userType;
+export const selectIDUser = (state: any) => state.LoginReducer.currentUser?._id;
 
 //reducer
 const LoginReducer = LoginSlice.reducer;

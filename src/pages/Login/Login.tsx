@@ -11,7 +11,7 @@ import {
   InputAdornment,
   InputBase,
   InputLabel,
-  Typography,
+  Typography
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { blueGrey, grey, red } from "@mui/material/colors";
@@ -24,7 +24,12 @@ import Swal from "sweetalert2";
 import { makeStyles } from "tss-react/mui";
 import * as yup from "yup";
 import nikeshoes from "../../assest/nikeshoes1.png";
-import { LoginActions } from "./module/LoginSlice";
+import {
+  LoginActions,
+  selectIsLoggedIn,
+  selectIsLogging,
+  selectTypeUserLogging
+} from "./module/LoginSlice";
 
 //interface
 interface Props {}
@@ -87,6 +92,7 @@ const useStyles = makeStyles()((theme) => {
       border: "none",
       backgroundColor: blueGrey[50],
       borderRadius: "5px",
+      color: "black !important",
       "& input": {
         padding: "10px 10px",
       },
@@ -109,6 +115,7 @@ const useStyles = makeStyles()((theme) => {
       top: "20px",
       left: "20px",
       cursor: "pointer",
+      fill: "black !important",
     },
     errorMessage: {
       fontSize: "10px",
@@ -142,8 +149,10 @@ const LoginPage = (props: Props) => {
       });
   }, [checkError]);
 
-  const loading = useAppSelector((state) => state.LoginReducer.logging);
-  const loginSuccess = useAppSelector((state) => state.LoginReducer.isLoggedIn);
+  // get selector from slice
+  const loading = useAppSelector(selectIsLogging);
+  const loginSuccess = useAppSelector(selectIsLoggedIn);
+  const userType = useAppSelector(selectTypeUserLogging);
 
   //react hook form
   const {
@@ -202,10 +211,6 @@ const LoginPage = (props: Props) => {
     weightRange: "",
     showPassword: false,
   });
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -218,10 +223,13 @@ const LoginPage = (props: Props) => {
     });
   };
 
+  //todo naviga
   const navigate = useNavigate();
   useEffect(() => {
-    loginSuccess && navigate("/");
-  }, [loginSuccess]);
+    if (loginSuccess) {
+      userType === "user" ? navigate("/") : navigate("/dashboard/users");
+    }
+  }, [loginSuccess, navigate, userType]);
 
   //render func Login
   return (
@@ -268,6 +276,13 @@ const LoginPage = (props: Props) => {
                 className={classes.input}
                 autoFocus
                 fullWidth
+                inputProps={{
+                  // autoComplete: "new-password",
+                  autofill:'off',
+                  form: {
+                    autoComplete: "off",
+                  },
+                }}
                 {...register("email")}
               />
               {errors.email && (
@@ -277,12 +292,9 @@ const LoginPage = (props: Props) => {
             <InputLabel shrink>Password</InputLabel>
             <FormControl fullWidth className={classes.formInput}>
               <InputBase
-                {...register("password")}
                 className={classes.input}
                 id="outlined-adornment-password"
                 type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={handleChange("password")}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -296,6 +308,7 @@ const LoginPage = (props: Props) => {
                     </IconButton>
                   </InputAdornment>
                 }
+                {...register("password")}
               />
               {errors.password && (
                 <p className={classes.errorMessage}>

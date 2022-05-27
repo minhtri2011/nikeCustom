@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import { blueGrey, grey, red } from "@mui/material/colors";
 import userApi from "api/userApi";
-import { useAppDispatch } from "app/hooks";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -125,6 +124,7 @@ const useStyles = makeStyles()((theme) => {
       top: "20px",
       left: "20px",
       cursor: "pointer",
+      fill: "black !important",
     },
     errorMessage: {
       fontSize: "10px",
@@ -148,7 +148,6 @@ const useStyles = makeStyles()((theme) => {
 
 const SignUpPage = (props: Props) => {
   const { classes } = useStyles();
-  const dispatch = useAppDispatch();
 
   //todo: show password input
   const [values, setValues] = React.useState<State>({
@@ -201,7 +200,7 @@ const SignUpPage = (props: Props) => {
       userType: "user",
     };
     try {
-      const response = await userApi.create(dataDispatch);
+      const response = await userApi.signUp(dataDispatch);
       console.log(response);
       setLoading(false);
       setValues({
@@ -227,7 +226,7 @@ const SignUpPage = (props: Props) => {
         showConfirmButton: false,
         timer: 2000,
       });
-      console.error(typeof error.response.data.error);
+      console.error(error.response.data.error);
       setLoading(false);
     }
   };
@@ -342,6 +341,12 @@ const SignUpPage = (props: Props) => {
                 className={classes.input}
                 fullWidth
                 {...register("email")}
+                inputProps={{
+                  autoComplete: "new-password",
+                  form: {
+                    autoComplete: "off",
+                  },
+                }}
               />
               {errors.email && (
                 <p className={classes.errorMessage}>{errors.email?.message}</p>
@@ -350,12 +355,10 @@ const SignUpPage = (props: Props) => {
             <InputLabel shrink>Password</InputLabel>
             <FormControl fullWidth className={classes.formInput}>
               <InputBase
-                {...register("password")}
                 className={classes.input}
                 id="outlined-adornment-password"
                 type={values.showPassword ? "text" : "password"}
                 value={values.password}
-                onChange={handleChange("password")}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -369,6 +372,9 @@ const SignUpPage = (props: Props) => {
                     </IconButton>
                   </InputAdornment>
                 }
+                {...register("password")}
+                onChange={handleChange("password")}
+                autoComplete="new-password"
               />
               {errors.password && (
                 <p className={classes.errorMessage}>

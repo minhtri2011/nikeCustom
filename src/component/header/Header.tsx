@@ -1,5 +1,5 @@
 import { makeStyles } from "@mui/styles";
-import React from "react";
+import React, { useState } from "react";
 import BrandHeader from "./BrandHeader";
 import Navbar from "./Navbar";
 
@@ -10,15 +10,31 @@ export interface itemNav {
 export interface navbarData {
   title: string;
   item: itemNav[];
-  title2?:string;
-  item2?:itemNav[];
+  title2?: string;
+  item2?: itemNav[];
 }
 export interface navbar {
   title: string;
   data?: navbarData[];
 }
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  backdropMenu: {
+    position: "fixed",
+    inset: 0,
+    backgroundColor: "hsla(0,0%,7%,.36)",
+    zIndex: "-1",
+    backdropFilter: "blur(0px)",
+    opacity: 0,
+    visibility: "hidden",
+    transition:'all .5s',
+    "&.active": {
+      opacity: 1,
+      visibility: "visible",
+    backdropFilter: "blur(4px)",
+    },
+  },
+}));
 
 const Header = (props: Props) => {
   const classes = useStyles();
@@ -616,11 +632,15 @@ const Header = (props: Props) => {
       title: "SNKRS",
     },
   ];
+  const [animate, setAnimate] = useState(0);
   return (
-    <div>
+    <>
       <BrandHeader />
-      <Navbar data={navbar} />
-    </div>
+      <Navbar data={navbar} animate={animate} setAnimate={setAnimate} />
+      <div
+        className={`${classes.backdropMenu}${animate > 0 ? " active" :''}`}
+      ></div>
+    </>
   );
 };
 

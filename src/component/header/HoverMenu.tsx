@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { makeStyles } from "@mui/styles";
-import { navbar } from "./Header";
 import { Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import React, { useState } from "react";
+import { navbar } from "./Header";
 
 interface Props {
   item: navbar;
@@ -9,9 +9,9 @@ interface Props {
 }
 
 const useStyles = makeStyles((theme) => ({
-  navTitle: {},
   navTitleItem: {
     padding: "16px 12px 18px",
+    color: "black",
     cursor: "pointer",
     borderBottom: "2px solid transparent",
     transition: "border-color .1s,color .1s",
@@ -20,11 +20,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   navHover: {
+    backgroundColor: "white",
     position: "absolute",
+    padding: "16px 40px 40px 40px",
     top: "60px",
     left: 0,
     right: 0,
-    backgroundColor: "red",
     display: "flex",
     visibility: "hidden",
     opacity: 0,
@@ -39,15 +40,28 @@ const useStyles = makeStyles((theme) => ({
       transition: "transform .25s ease,opacity 0ms,visibility 0ms",
     },
     ".isFocused &": {
-      transform: "scaleY(1)",
       transition: "none",
     },
   },
+  navContent: {
+    maxWidth: "1344px",
+    paddingBottom: "15px",
+    width: "100%",
+    margin: "0 auto",
+    textAlign: "center",
+    whiteSpace: "nowrap",
+  },
   itemNav: {
+    display: "inline-block",
+    textAlign: "left",
+    padding: "16px 6px 0 6px",
+    verticalAlign: "top",
     opacity: 0,
+    width: "calc(100% / 6 )",
     transform: "translateY(-10px)",
     transition: "transform .1s,opacity .1s",
     transitionDelay: "0s",
+    fontSize: "14px",
     ".active &": {
       opacity: 1,
       transform: "translateY(0)",
@@ -55,40 +69,97 @@ const useStyles = makeStyles((theme) => ({
       transitionDelay: ".2s",
     },
   },
+  itemNavContent: {
+    wordWrap: "break-word",
+    whiteSpace: "normal",
+    cursor: "pointer",
+    color: "#757575",
+    margin: 0,
+    marginBottom: "6px",
+    "&:hover": {
+      color: "black",
+    },
+  },
+  itemNavTitle: {
+    color: "black !important",
+    fontWeight: "500",
+    marginBottom: "16px",
+  },
+  itemNavTitle2: {
+    color: "black !important",
+    fontWeight: "500",
+    margin: "40px 0 16px !important",
+  },
 }));
 const HoverMenu = (props: Props) => {
   const { item, setAnimate } = props;
   const classes = useStyles();
   const [active, setActive] = useState(false);
-  return (
+  return item.data ? (
     <li
-      className={classes.navTitle}
       onMouseLeave={() => {
-        setActive(false);        
+        setActive(false);
       }}
     >
       <Typography
         className={classes.navTitleItem}
         onMouseEnter={() => {
           setActive(true);
-          setAnimate(v=>++v);
+          setAnimate((v) => ++v);
         }}
       >
         {item.title}
       </Typography>
       <div className={`${classes.navHover}${active ? " active" : ""}`}>
-        {item.data?.map((data, indexData) => {
-          return (
-            <div className={classes.itemNav} key={indexData}>
-              <Typography>{data.title}</Typography>
-              {data.item?.map((contentItem, indexContent) => {
-                // console.log(contentItem.name);
-                return <p key={indexContent}>{contentItem.name}</p>;
-              })}
-            </div>
-          );
-        })}
+        <div className={classes.navContent}>
+          {item.data?.map((data, indexData) => {
+            console.log(data);
+            return (
+              <div className={classes.itemNav} key={indexData}>
+                <Typography className={classes.itemNavTitle}>
+                  {data.title}
+                </Typography>
+                {data.item?.map((contentItem, indexContent) => {
+                  return (
+                    <p key={indexContent} className={classes.itemNavContent}>
+                      {contentItem.name}
+                    </p>
+                  );
+                })}
+                {data.title2 && (
+                  <>
+                    <Typography className={classes.itemNavTitle2}>
+                      {data.title2}
+                    </Typography>
+                    {data.item2?.map((contentItem, indexContent) => {
+                      return (
+                        <p
+                          key={indexContent}
+                          className={classes.itemNavContent}
+                        >
+                          {contentItem.name}
+                        </p>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
+    </li>
+  ) : (
+    <li>
+      <Typography
+        className={classes.navTitleItem}
+        onMouseEnter={() => {
+          setActive(false);
+          setAnimate(0);
+        }}
+      >
+        {item.title}
+      </Typography>
     </li>
   );
 };

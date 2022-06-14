@@ -5,6 +5,8 @@ import HoverMenu from "./HoverMenu";
 
 interface Props {
   data: navbar[];
+  animate: number;
+  setAnimate: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -23,8 +25,8 @@ const useStyles = makeStyles((theme) => ({
   navHover: {
     position: "absolute",
     inset: 0,
-    display:'flex',
-    justifyContent:'center',
+    display: "flex",
+    justifyContent: "center",
   },
   navTitleList: {
     listStyle: "none",
@@ -32,21 +34,19 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     padding: 0,
     margin: 0,
-    width:'fit-content',
+    width: "fit-content",
     "& ul": {
       listStyle: "none",
       display: "flex",
     },
     "& ul , & ul li": {
-      height: "100%",
       margin: 0,
     },
   },
 }));
 const Navbar = (props: Props) => {
-  const { data } = props;
+  const { data,animate,setAnimate } = props;
   const classes = useStyles();
-  const [animate, setAnimate] = useState(0);
   return (
     <div className={classes.navbar}>
       <div className={classes.icon}>

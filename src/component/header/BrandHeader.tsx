@@ -115,7 +115,7 @@ const dataList = [
     title: "Join Us",
   },
   {
-    title: "Sign us",
+    title: "Sign in",
   },
 ];
 

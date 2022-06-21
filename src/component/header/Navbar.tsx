@@ -1,8 +1,11 @@
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import React, { useEffect, useState } from "react";
 import { navbar } from "./Header";
 import HoverMenu from "./HoverMenu";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import { Button } from "@mui/material";
 interface Props {
   data: navbar[];
   animate: number;
@@ -17,10 +20,20 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     transition: "transform .15s ease",
     padding: "0 38px 0 36px",
+    display: "flex",
+    "&.active": {
+      position: "fixed",
+      top: "36px\npx",
+      transition: "transform .25s ease .25s",
+      transform: "translateY(-36px)",
+    },
   },
   icon: {
     padding: "0 12px",
     height: "100%",
+    width: "fit-content",
+    cursor: "pointer",
+    zIndex: 2,
   },
   navHover: {
     position: "absolute",
@@ -34,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     padding: 0,
     margin: 0,
+    zIndex: 2,
     width: "fit-content",
     "& ul": {
       listStyle: "none",
@@ -43,32 +57,137 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
     },
   },
+  tools: {
+    display: "flex",
+    alignItems: "center",
+    "& button": {
+      minWidth: 0,
+      marginLeft: "12px",
+    },
+    "&.active button": {
+      display: "none",
+      "&:nth-child(3)": {
+        display: "flex",
+        animation: "$buttonEffect 300ms forwards .6s",
+      },
+    },
+  },
+  "@keyframes buttonEffect": {
+    "0%": {
+      transform: "scale(.5)",
+    },
+    "50%": {
+      transform: "scale(1.1)",
+    },
+    "100%": {
+      transform: "scale(1)",
+    },
+  },
+  btnTool: {
+    height: "fit-content",
+    minWidth: 0,
+    padding: "6px !important",
+    borderRadius: "50% !important",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "&:hover": {
+      backgroundColor: "#e5e5e5 !important",
+    },
+    "&:nth-child(3)": {
+      opacity: "1",
+      display: "none",
+      flex: "0 0 auto",
+      alignItems: "center",
+      borderRadius: "100px",
+      background: "#f5f5f5",
+      transform: "scale(0)",
+    },
+  },
+  searchBar: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    position: "relative",
+    alignItems: "center",
+    transition:'z-index .5s .5s',
+    "&.active": {
+      zIndex: 3,
+    },
+  },
+  inputPosition: {
+    position: "absolute",
+    right: "0",
+    width: "180px",
+    transform: "translateX(0)",
+    transition: "width .25s ease,transform .25s ease,right .25s ease",
+    ".active &": {
+      right: "50%",
+      width: "656px",
+      transform: "translateX(50%)",
+    },
+  },
+  inputBox: {
+    position: "relative",
+    width: "100%",
+    "& button": {
+      position: "absolute",
+      minWidth: 0,
+      top: "2px",
+      left: "2px",
+      borderRadius: "100px",
+      padding: "6px 8px",
+      "&:hover": {
+        backgroundColor: "#e5e5e5 !important",
+      },
+    },
+    "& input": {
+      width: "100%",
+      borderRadius: "100px",
+      outline: "none",
+      border: "none",
+      padding: "8px 48px",
+      height: "40px",
+      backgroundColor: "#f5f5f5",
+      transition: "background-color .15s,color .35s .5s",
+      "&::placeholder": {
+        fontSize: "16px",
+        color: "#CCC",
+      },
+      "&:hover": {
+        "&::placeholder": {
+          color: "#757575",
+        },
+      },
+    },
+  },
 }));
 const Navbar = (props: Props) => {
-  const { data,animate,setAnimate } = props;
   const classes = useStyles();
+  const { data, animate, setAnimate } = props;
+  const [activeSearchBar, setActiveSearchBar] = useState(false);
+
+  const handleClickSearch = () => {
+    setActiveSearchBar(true);
+  };
+  const handleCancleSearchBar = () => {
+    setActiveSearchBar(false);
+  };
+  useEffect(() => {
+    console.log(activeSearchBar);
+  }, [activeSearchBar]);
+
   return (
-    <div className={classes.navbar}>
+    <div className={`${classes.navbar}${activeSearchBar ? " active" : ""}`}>
       <div className={classes.icon}>
         <svg
           className="pre-logo-svg"
-          width="60px"
           height="60px"
-          viewBox="0 0 64 34"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          width="60px"
+          fill="#111"
+          viewBox="0 0 69 32"
         >
-          <g clipPath="url(#clip0_2234_3616)">
-            <path
-              d="M37.1712 18.6259C37.8461 17.9897 38.4343 17.2673 38.9203 16.4773C39.4601 15.6057 39.9084 14.6807 40.2582 13.717C40.6096 12.7452 40.871 11.7433 41.039 10.7237C41.2072 9.7347 41.2943 8.73361 41.2993 7.73043C41.3098 6.68496 41.1691 5.64346 40.8816 4.63825C40.6244 3.74361 40.1893 2.91009 39.6023 2.18768C39.0141 1.48757 38.2703 0.934898 37.4302 0.573914C36.4769 0.174602 35.4507 -0.0208935 34.4174 -1.32568e-05C33.3902 -0.0101508 32.3717 0.189116 31.4241 0.585627C30.5325 0.968575 29.7153 1.50559 29.01 2.17206C28.2933 2.85524 27.674 3.63386 27.1698 4.48599C26.6464 5.35965 26.2159 6.28566 25.8853 7.24891C25.6494 7.93523 25.4543 8.63487 25.3009 9.34419C24.6833 8.43885 23.8142 7.73402 22.8009 7.31658C22.103 7.02891 21.3551 6.88207 20.6002 6.88451C20.141 6.88083 19.6821 6.91041 19.2272 6.973C18.8547 7.02381 18.4887 7.11412 18.1353 7.2424C17.8892 7.33351 17.6511 7.44495 17.4234 7.57556L18.311 4.70072H26.5984L27.46 0.676726H15.2136L11.5826 12.2672H15.8773L15.9945 12.0954C16.2907 11.6293 16.6987 11.2445 17.1814 10.9762C17.6773 10.7348 18.2242 10.6165 18.7756 10.6313C19.7191 10.6313 20.4492 10.8708 20.9451 11.3419C21.4409 11.813 21.683 12.547 21.683 13.54C21.6885 14.049 21.5948 14.5543 21.4071 15.0275C21.2346 15.46 20.98 15.8551 20.6575 16.191C20.3415 16.5149 19.9647 16.7731 19.5486 16.951C19.1205 17.1336 18.6593 17.2262 18.1939 17.223C17.3388 17.223 16.6322 17.02 16.0817 16.6191C15.5611 16.2404 15.3008 15.647 15.2852 14.8076V14.4171H10.7302L10.7445 14.8219C10.8226 17.02 11.515 18.6559 12.8034 19.6866C14.0697 20.6991 15.7966 21.2132 17.9258 21.2132C19.0707 21.2232 20.2085 21.032 21.2873 20.6483C22.2846 20.2942 23.201 19.7442 23.9826 19.0307C24.616 18.4413 25.1391 17.7437 25.5274 16.9705C25.7347 17.5265 26.011 18.0543 26.3499 18.5413C27.0927 19.5833 28.1726 20.3368 29.4069 20.6744L17.7306 23.76C13.8497 24.7686 10.7315 24.6346 8.95768 23.3553C4.4027 20.0133 7.8814 13.3265 9.11515 11.3302C6.89493 13.7768 4.6734 16.2209 2.94641 18.8914C0.218634 23.0703 -0.948741 27.6474 0.891469 30.5834C4.18927 35.8776 12.1084 33.4322 17.1592 31.3018L64 11.5384L37.1712 18.6259ZM33.4218 16.4448C33.0354 16.7136 32.5865 16.8788 32.1179 16.9243C31.6494 16.9699 31.177 16.8944 30.7461 16.705C30.4684 16.5659 30.2313 16.3574 30.0576 16.0999C29.8739 15.8134 29.7479 15.4937 29.6867 15.1589C29.6069 14.7504 29.5677 14.335 29.5696 13.9187C29.5696 13.4684 29.6008 12.9023 29.6646 12.2373C29.7284 11.5722 29.8325 10.8538 29.9769 10.1133C30.1267 9.35529 30.3218 8.60693 30.5613 7.87229C30.7819 7.17935 31.081 6.5139 31.4527 5.88892C31.7645 5.35914 32.1733 4.89289 32.6579 4.51462C33.0827 4.18916 33.6051 4.01714 34.1402 4.02659C34.5236 4.01532 34.9041 4.09563 35.2503 4.26084C35.5472 4.40865 35.8046 4.62501 36.0012 4.89203C36.2104 5.18091 36.3596 5.50884 36.4398 5.85638C36.536 6.27199 36.5836 6.69737 36.5817 7.12397C36.5817 7.55084 36.5504 8.10264 36.4866 8.76376C36.4155 9.471 36.3065 10.1739 36.16 10.8695C36.0033 11.6237 35.7995 12.3675 35.5496 13.0962C35.3179 13.7851 35.0125 14.4471 34.6386 15.0704C34.3257 15.6029 33.9124 16.0696 33.4218 16.4448V16.4448Z"
-              fill="#111111"
-            ></path>
-          </g>
-          <defs>
-            <clipPath id="clip0_2234_3616">
-              <rect width="64" height="33.7654" fill="white"></rect>
-            </clipPath>
-          </defs>
+          <path d="M68.56 4L18.4 25.36Q12.16 28 7.92 28q-4.8 0-6.96-3.36-1.36-2.16-.8-5.48t2.96-7.08q2-3.04 6.56-8-1.6 2.56-2.24 5.28-1.2 5.12 2.16 7.52Q11.2 18 14 18q2.24 0 5.04-.72z"></path>
         </svg>
       </div>
       <div className={classes.navHover}>
@@ -84,6 +203,46 @@ const Navbar = (props: Props) => {
             );
           })}
         </ul>
+      </div>
+      <div
+        className={`${classes.searchBar}${activeSearchBar ? " active" : ""}`}
+      >
+        <div className={classes.inputPosition}>
+          <div className={classes.inputBox}>
+            <Button>
+              <svg
+                className="pre-search-input-icon"
+                fill="#111"
+                height="24px"
+                width="24px"
+                viewBox="0 0 24 24"
+              >
+                <path d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.39zM11 18a7 7 0 1 1 7-7 7 7 0 0 1-7 7z"></path>
+              </svg>
+            </Button>
+            <input
+              onClick={handleClickSearch}
+              type="text"
+              placeholder="Search"
+            />
+          </div>
+        </div>
+      </div>
+      <div className={`${classes.tools}${activeSearchBar ? " active" : ""}`}>
+        <Button className={classes.btnTool}>
+          <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
+            <path d="M21.11 4a6.6 6.6 0 0 0-4.79-1.92A6.27 6.27 0 0 0 12 3.84 6.57 6.57 0 0 0 2.89 4c-2.8 2.68-2.45 7.3.88 10.76l6.84 6.63A2 2 0 0 0 12 22a2 2 0 0 0 1.37-.54l.2-.19.61-.57c.6-.57 1.42-1.37 2.49-2.41l2.44-2.39 1.09-1.07c3.38-3.55 3.8-8.1.91-10.83zm-2.35 9.4l-.25.24-.8.79-2.44 2.39c-1 1-1.84 1.79-2.44 2.36L12 20l-6.83-6.68c-2.56-2.66-2.86-6-.88-7.92a4.52 4.52 0 0 1 6.4 0l.09.08a2.12 2.12 0 0 1 .32.3l.9.94.9-.94.28-.27.11-.09a4.52 4.52 0 0 1 6.43 0c1.97 1.9 1.67 5.25-.96 7.98z"></path>
+          </svg>
+        </Button>
+        <Button className={classes.btnTool}>
+          <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
+            <path d="M16 7a1 1 0 0 1-1-1V3H9v3a1 1 0 0 1-2 0V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1z"></path>
+            <path d="M20 5H4a2 2 0 0 0-2 2v13a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a2 2 0 0 0-2-2zm0 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7h16z"></path>
+          </svg>
+        </Button>
+        <Button className={classes.btnTool} onClick={handleCancleSearchBar}>
+          <CloseIcon />
+        </Button>
       </div>
     </div>
   );

@@ -113,7 +113,6 @@ const HoverMenu = (props: Props) => {
       <div className={`${classes.navHover}${active ? " active" : ""}`}>
         <div className={classes.navContent}>
           {item.data?.map((data, indexData) => {
-            console.log(data);
             return (
               <div className={classes.itemNav} key={indexData}>
                 <Typography className={classes.itemNavTitle}>

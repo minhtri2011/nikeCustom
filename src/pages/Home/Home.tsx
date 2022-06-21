@@ -7,6 +7,7 @@ const Home = (props: Props) => {
   return (
     <>
         <Header/>
+        <div style={{height:'200vh'}}></div>
     </>
   )
 }

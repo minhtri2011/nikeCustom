@@ -1,11 +1,11 @@
-import { Typography } from "@mui/material";
+import { Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import React, { useState } from "react";
 
 type Props = {};
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme:Theme) => ({
   brandHeader: {
     position: "relative",
     background: "#f5f5f5",
@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: "0 36px 0 38px",
+    [theme.breakpoints.down('md')]:{
+      display:'none'
+    }
   },
   listMenu: {
     height: "100%",

@@ -1,18 +1,21 @@
 import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { navbar } from "./Header";
 import HoverMenu from "./HoverMenu";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import { Button } from "@mui/material";
+import { Button, Theme } from "@mui/material";
+import SearchBoxResult from "./SearchBoxResult";
+import MenuIcon from "@mui/icons-material/Menu";
+import MobileMenu from "./MobileMenu";
 interface Props {
   data: navbar[];
   animate: number;
   setAnimate: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   navbar: {
     background: "#fff",
     position: "relative",
@@ -23,9 +26,18 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     "&.active": {
       position: "fixed",
-      top: "36px\npx",
+      top: "36px",
       transition: "transform .25s ease .25s",
       transform: "translateY(-36px)",
+      zIndex: 3,
+      [theme.breakpoints.down("md")]: {
+        top: 0,
+        transform: "none",
+      },
+    },
+
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "space-between",
     },
   },
   icon: {
@@ -34,6 +46,11 @@ const useStyles = makeStyles((theme) => ({
     width: "fit-content",
     cursor: "pointer",
     zIndex: 2,
+    [theme.breakpoints.down("md")]: {
+      ".active &": {
+        display: "none",
+      },
+    },
   },
   navHover: {
     position: "absolute",
@@ -49,11 +66,33 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     zIndex: 2,
     width: "fit-content",
-    "& ul": {
+    "& ": {
       listStyle: "none",
       display: "flex",
     },
-    "& ul , & ul li": {
+    "& li": {
+      listStyle: "none",
+      display: "flex",
+      [theme.breakpoints.down(1100)]: {
+        "&:nth-child(6)": {
+          display: "none",
+        },
+      },
+      [theme.breakpoints.down(1000)]: {
+        "&:nth-child(5)": {
+          display: "none",
+        },
+      },
+      [theme.breakpoints.down(980)]: {
+        "&:nth-child(4)": {
+          display: "none",
+        },
+      },
+      [theme.breakpoints.down("md")]: {
+        display: "none",
+      },
+    },
+    "& , & li": {
       margin: 0,
     },
   },
@@ -69,6 +108,11 @@ const useStyles = makeStyles((theme) => ({
       "&:nth-child(3)": {
         display: "flex",
         animation: "$buttonEffect 300ms forwards .6s",
+      },
+      [theme.breakpoints.down("md")]: {
+        "&:nth-child(4)": {
+          display: "none !important",
+        },
       },
     },
   },
@@ -94,14 +138,33 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       backgroundColor: "#e5e5e5 !important",
     },
+    [theme.breakpoints.down("md")]: {
+      "&:nth-child(1)": {
+        display: "none",
+      },
+      "&:nth-child(2)": {
+        marginRight: "56px",
+      },
+      "&:nth-child(3)": {
+        position: "absolute",
+        right: "24px",
+      },
+      "&:nth-child(4)": {
+        display: "flex !important",
+      },
+    },
     "&:nth-child(3)": {
       opacity: "1",
       display: "none",
       flex: "0 0 auto",
+      zIndex: 3,
       alignItems: "center",
       borderRadius: "100px",
       background: "#f5f5f5",
       transform: "scale(0)",
+    },
+    "&:nth-child(4)": {
+      display: "none",
     },
   },
   searchBar: {
@@ -110,9 +173,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     position: "relative",
     alignItems: "center",
-    transition:'z-index .5s .5s',
+    transition: "z-index .5s .5s",
     "&.active": {
       zIndex: 3,
+    },
+    [theme.breakpoints.down("md")]: {
+      position: "absolute",
+      top: 0,
+      left: 0,
     },
   },
   inputPosition: {
@@ -125,6 +193,16 @@ const useStyles = makeStyles((theme) => ({
       right: "50%",
       width: "656px",
       transform: "translateX(50%)",
+
+      [theme.breakpoints.down("md")]: {
+        padding: "0 74px 0 24px",
+        width: "100%",
+      },
+    },
+    [theme.breakpoints.down("md")]: {
+      width: "50px",
+      right: "80px",
+      transition: "width .3s ease,transform .3s ease,right .25s ease",
     },
   },
   inputBox: {
@@ -160,12 +238,24 @@ const useStyles = makeStyles((theme) => ({
         },
       },
     },
+    [theme.breakpoints.down("md")]: {
+      "& input": {
+        width: "0%",
+        padding: 0,
+      },
+      ".active & input": {
+        width: "100%",
+        padding: "8px 48px",
+      },
+    },
   },
 }));
 const Navbar = (props: Props) => {
   const classes = useStyles();
   const { data, animate, setAnimate } = props;
   const [activeSearchBar, setActiveSearchBar] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [search, setSearch] = useState("");
 
   const handleClickSearch = () => {
     setActiveSearchBar(true);
@@ -173,9 +263,6 @@ const Navbar = (props: Props) => {
   const handleCancleSearchBar = () => {
     setActiveSearchBar(false);
   };
-  useEffect(() => {
-    console.log(activeSearchBar);
-  }, [activeSearchBar]);
 
   return (
     <div className={`${classes.navbar}${activeSearchBar ? " active" : ""}`}>
@@ -208,7 +295,7 @@ const Navbar = (props: Props) => {
         className={`${classes.searchBar}${activeSearchBar ? " active" : ""}`}
       >
         <div className={classes.inputPosition}>
-          <div className={classes.inputBox}>
+          <div className={classes.inputBox} onClick={handleClickSearch}>
             <Button>
               <svg
                 className="pre-search-input-icon"
@@ -220,11 +307,7 @@ const Navbar = (props: Props) => {
                 <path d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.39zM11 18a7 7 0 1 1 7-7 7 7 0 0 1-7 7z"></path>
               </svg>
             </Button>
-            <input
-              onClick={handleClickSearch}
-              type="text"
-              placeholder="Search"
-            />
+            <input type="text" placeholder="Search" />
           </div>
         </div>
       </div>
@@ -243,7 +326,14 @@ const Navbar = (props: Props) => {
         <Button className={classes.btnTool} onClick={handleCancleSearchBar}>
           <CloseIcon />
         </Button>
+        <Button className={classes.btnTool} onClick={()=>setMobileMenu(true)}>
+          <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
+            <path d="M21 13H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0-8H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0 16H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1z" />
+          </svg>
+        </Button>
       </div>
+      <MobileMenu active={mobileMenu} toggle={setMobileMenu}/>
+      <SearchBoxResult active={activeSearchBar} search={search}  />
     </div>
   );
 };

@@ -13,14 +13,16 @@ import User from "pages/Dashboard/User/User";
 import Home from "pages/Home/Home";
 import LoginPage from "pages/Login/Login";
 import SignUpPage from "pages/SignUp/SignUp";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { Route, Routes } from "react-router-dom";
 import AuthRoute from "Routes/AuthRoute";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import { darkTheme, lightTheme } from "theme";
 import {
   selectDarkModeThemeReducer,
-  ThemeActions,
+  ThemeActions
 } from "theme/module/themeSlice";
 import "./App.css";
 
@@ -31,13 +33,12 @@ function App() {
   const darkmode = JSON.parse(localStorage.getItem("darkmode") || "false");
   useEffect(() => {
     dispatch(ThemeActions.setTheme(darkmode));
-  }, []);
+  }, [darkmode, dispatch]);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
-
           <Route path="/" element={<Home />} />
 
           <Route element={<AuthRoute />}>
@@ -58,7 +59,6 @@ function App() {
             <Route path="/dashboard/oder" element={<Oder />} />
           </Route>
           <Route path="*" element={<NotFound />} />
-          
         </Routes>
       </AnimatePresence>
     </ThemeProvider>

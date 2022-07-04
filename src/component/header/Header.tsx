@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
     backdropFilter: "blur(0px)",
     opacity: 0,
     visibility: "hidden",
-    transition:'all .5s',
+    transition: "all .5s",
     "&.active": {
       opacity: 1,
       visibility: "visible",
-    backdropFilter: "blur(4px)",
+      backdropFilter: "blur(4px)",
     },
   },
 }));
@@ -638,7 +638,7 @@ const Header = (props: Props) => {
       <BrandHeader />
       <Navbar data={navbar} animate={animate} setAnimate={setAnimate} />
       <div
-        className={`${classes.backdropMenu}${animate > 0 ? " active" :''}`}
+        className={`${classes.backdropMenu}${animate > 0 ? " active" : ""}`}
       ></div>
     </>
   );

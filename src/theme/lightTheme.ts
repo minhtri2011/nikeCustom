@@ -19,4 +19,13 @@ export const lightTheme = createTheme({
       textTransform: "none",
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 950,
+      lg: 1200,
+      xl: 1535,
+    },
+  },
 });

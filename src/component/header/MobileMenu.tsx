@@ -11,7 +11,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -520,9 +520,6 @@ const MobileMenu = (props: Props) => {
     },
     { title: "SNKTS" },
   ];
-  useEffect(() => {
-    console.log(secondMenu);
-  }, [secondMenu]);
 
   const handleClickItem = (v: menuMobile) => {
     setTitle(v.title);

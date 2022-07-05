@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { NotFound } from "component/common";
+// import { NotFound } from "component/common/";
 import { AnimatePresence } from "framer-motion";
 import Admin from "layout/admin/Admin";
 import Oder from "pages/Dashboard/Oder/Oder";
@@ -20,9 +20,10 @@ import AuthRoute from "Routes/AuthRoute";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { darkTheme, lightTheme } from "theme";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import {
   selectDarkModeThemeReducer,
-  ThemeActions
+  ThemeActions,
 } from "theme/module/themeSlice";
 import "./App.css";
 
@@ -58,7 +59,7 @@ function App() {
             />
             <Route path="/dashboard/oder" element={<Oder />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </AnimatePresence>
     </ThemeProvider>

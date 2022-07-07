@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     inset: 0,
     backgroundColor: "hsla(0,0%,7%,.36)",
-    zIndex: "-1",
+    zIndex: "1",
     backdropFilter: "blur(0px)",
     opacity: 0,
     visibility: "hidden",

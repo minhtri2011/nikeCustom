@@ -8,7 +8,7 @@ interface Props {
 }
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    backgroundColor: "blue",
+    backgroundColor: "#fff",
     height: "300px",
     position: "absolute",
     top: "60px",

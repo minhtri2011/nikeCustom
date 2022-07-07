@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   navbar: {
     background: "#fff",
     position: "relative",
+    zIndex:5,
     height: "60px",
     width: "100%",
     transition: "transform .15s ease",

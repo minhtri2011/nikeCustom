@@ -1,4 +1,5 @@
 import Slide from "component/common/Slide";
+import Footer from "component/Footer/Footer";
 import Header from "component/header/Header";
 import Banner from "component/home/Banner";
 import DropdownFooter from "component/home/DropdownFooter";
@@ -19,7 +20,8 @@ const Home = (props: Props) => {
       <TheLatested/>
       <Trending />
       <MoreNike/>
-      {/* <DropdownFooter/> */}
+      <DropdownFooter/>
+      <Footer/>
     </>
   );
 };

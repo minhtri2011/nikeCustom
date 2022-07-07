@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       overflowX: "auto",
       scrollSnapType: "x mandatory",
       paddingBottom: "30px",
+      "&:hover": {
+        color: "rgb(0, 0, 0, 0)",
+      },
     },
     color: "rgba(0,0, 0, 0)",
     "&::-webkit-scrollbar": {

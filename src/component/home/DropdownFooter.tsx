@@ -1,6 +1,12 @@
-import { Theme } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Theme,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ContainerCustom from "component/common/ContainerCustom";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {}
@@ -21,11 +27,55 @@ interface secondData {
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: "flex",
+    maxWidth: "920px",
+    margin: "0 auto",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+    "&:hover": {
+      "& div div": {
+        maxHeight: "200px",
+        opacity: 1,
+        transition: "max-height .2s ease-in-out .3s, opacity .2s linear .3s",
+      },
+    },
+  },
+  link: {
+    textDecoration: "none",
+    display: "block",
+    color: "#757575",
+    marginBottom: "12px",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    textTransform: "capitalize",
+  },
+  listLink: {
+    width: "calc(100% / 4)",
+    textTransform: "capitalize",
+    "& h4": {
+      fontWeight: "normal",
+      color: "#000",
+    },
+    "& div": {
+      maxHeight: "0px",
+      opacity: 0,
+      overflowY: "hidden",
+      transition: "max-height .4s ease-in-out .5s, opacity .5s linear .3s",
+    },
+  },
+  expandedMenu: {
+    display: "none",
+    [theme.breakpoints.down("sm")]: {
+      display: "block",
+    },
   },
 }));
 
 const DropdownFooter = (props: Props) => {
   const classes = useStyles();
+  const [expanded, setExpanded] = useState<string | false>();
   const data = [
     {
       title: "icons",
@@ -191,7 +241,7 @@ const DropdownFooter = (props: Props) => {
   const renderFirstData = (value: firstData[]) => {
     return value.map((item: firstData, index: number) => {
       return (
-        <Link key={index} to={item.link}>
+        <Link key={index} to={item.link} className={classes.link}>
           {item.title}
         </Link>
       );
@@ -200,22 +250,57 @@ const DropdownFooter = (props: Props) => {
   const renderSecondData = (value: secondData[]) => {
     return value.map((item: firstData, index: number) => {
       return (
-        <Link key={index} to={item.link}>
+        <Link key={index} to={item.link} className={classes.link}>
           {item.title}
         </Link>
       );
     });
   };
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false);
+    };
   return (
     <ContainerCustom mgt={true}>
       <div className={classes.root}>
         {data.map((item: listDropdown, index: number) => {
           return (
-            <div key={index}>
+            <div key={index} className={classes.listLink}>
               <h4>{item.title}</h4>
               {renderFirstData(item.firstData)}
-              {renderSecondData(item.secondData)}
+              <div>{renderSecondData(item.secondData)}</div>
             </div>
+          );
+        })}
+      </div>
+      <div className={classes.expandedMenu}>
+        {data.map((item: listDropdown, index: number) => {
+          return (
+            <Accordion
+              key={index}
+              expanded={expanded === item.title}
+              onChange={handleChange(item.title)}
+              disableGutters={true}
+              sx={{
+                border: "none",
+                boxShadow: "none",
+                "&::before": { backgroundColor: "transparent" },
+              }}
+            >
+              <AccordionSummary
+                sx={{
+                  textTransform: "capitalize",
+                  padding: "0",
+                  color: "#000",
+                }}
+              >
+                {item.title}
+              </AccordionSummary>
+              <AccordionDetails>
+                {renderFirstData(item.firstData)}
+                {renderSecondData(item.secondData)}
+              </AccordionDetails>
+            </Accordion>
           );
         })}
       </div>

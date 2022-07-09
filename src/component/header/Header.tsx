@@ -19,6 +19,7 @@ export interface navbar {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {},
   backdropMenu: {
     position: "fixed",
     inset: 0,
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props: Props) => {
   const classes = useStyles();
+  const [active, setActive] = useState<boolean>(false);
   const navbar = [
     {
       title: "Men",
@@ -634,13 +636,14 @@ const Header = (props: Props) => {
   ];
   const [animate, setAnimate] = useState(0);
   return (
-    <>
+    <div className={classes.root}>
       <BrandHeader />
-      <Navbar data={navbar} animate={animate} setAnimate={setAnimate} />
+      <Navbar setBackdrop={setActive} data={navbar} animate={animate} setAnimate={setAnimate} />
       <div
-        className={`${classes.backdropMenu}${animate > 0 ? " active" : ""}`}
+        id="backdrop"
+        className={`${classes.backdropMenu}${active ? " active" : ""}`}
       ></div>
-    </>
+    </div>
   );
 };
 

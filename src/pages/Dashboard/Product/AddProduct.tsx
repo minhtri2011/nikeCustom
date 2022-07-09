@@ -383,7 +383,7 @@ const AddProduct = (props: Props) => {
               fullWidth
               className={classes.btn}
             >
-              Create user
+              Create product 
             </Button>
           ) : (
             <Button

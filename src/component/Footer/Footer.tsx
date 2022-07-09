@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: "#111",
   },
   footer: {
-    padding: "20px 40px 0",
+    padding: "40px 40px 0",
     margin: "0 auto",
     maxWidth: "1440px",
     [theme.breakpoints.down("sm")]: {
@@ -47,11 +47,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "14px",
     marginBottom: "4px",
     fontWeight: 600,
+    paddingBottom: "5px",
   },
   listLink: {
     padding: 0,
   },
   link: {
+    paddingBottom: "5px",
+    paddingTop: "5px",
     color: "#7e7e7e",
     fontSize: "12px",
     textTransform: "capitalize",
@@ -68,7 +71,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   listIcons: {
     display: "flex",
-    marginTop: "16px !important",
     justifyContent: "flex-end",
     flexWrap: "wrap",
     alignItems: "flex-start",
@@ -97,13 +99,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "10px",
     marginLeft: "16px",
   },
-  brandFooter: {
-    // "& > div > div": {},
-    // [theme.breakpoints.down("sm")]: {},
-  },
+  brandFooter: {},
   location: {
     position: "relative",
-    padding: "0 6px 0 8px",
+    padding: "20px 6px 20px 8px",
     display: "flex",
     alignItems: "center",
     [theme.breakpoints.down("sm")]: {
@@ -135,11 +134,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     listStyle: "none",
     justifyContent: "flex-end",
-    padding: 0,
+    padding: "20px 0 20px 0",
     flexWrap: "wrap",
     margin: "0",
     [theme.breakpoints.down("sm")]: {
       display: "block",
+      padding: "0px 0 20px 0",
       "& > li": {
         paddingLeft: "0 !important",
       },
@@ -174,7 +174,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   hidePanel: {
     position: "absolute",
     zIndex: "3",
-    bottom: "32px",
+    bottom: "42px",
     right: "0",
     top: "inherit",
     paddingBottom: "10px",
@@ -331,48 +331,46 @@ const Footer = (props: Props) => {
             <Instagram />
           </Grid>
         </Grid>
-        <div className={classes.brandFooter}>
-          <Grid container>
-            <Grid item xs={12} sm={6} className={classes.location}>
-              <div className={classes.linkPosition}>
-                <Poisition />
-                <span>Vietnam</span>
-              </div>
-              <span className={classes.inc}>
-                © 2022 Nike, Inc. All Rights Reserved
-              </span>
-            </Grid>
-            <Grid item sm={6} xs={12}>
-              <ul className={classes.listTools}>
-                <li className={classes.hoverBtn}>
-                  <p>Guides</p>
-                  <div className={classes.hidePanel}>
-                    <div className={classes.panelContainer}>
-                      <ul>
-                        {hidePanel.map((item, index) => {
-                          return (
-                            <li key={index}>
-                              <Link to={item.link}>{item.title}</Link>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <p>Terms of Sale</p>
-                </li>
-                <li>
-                  <p>Terms of Use</p>
-                </li>
-                <li>
-                  <p>Nike Privacy Policy</p>
-                </li>
-              </ul>
-            </Grid>
+        <Grid container>
+          <Grid item xs={12} sm={6} className={classes.location}>
+            <div className={classes.linkPosition}>
+              <Poisition />
+              <span>Vietnam</span>
+            </div>
+            <span className={classes.inc}>
+              © 2022 Nike, Inc. All Rights Reserved
+            </span>
           </Grid>
-        </div>
+          <Grid item sm={6} xs={12}>
+            <ul className={classes.listTools}>
+              <li className={classes.hoverBtn}>
+                <p>Guides</p>
+                <div className={classes.hidePanel}>
+                  <div className={classes.panelContainer}>
+                    <ul>
+                      {hidePanel.map((item, index) => {
+                        return (
+                          <li key={index}>
+                            <Link to={item.link}>{item.title}</Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <p>Terms of Sale</p>
+              </li>
+              <li>
+                <p>Terms of Use</p>
+              </li>
+              <li>
+                <p>Nike Privacy Policy</p>
+              </li>
+            </ul>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

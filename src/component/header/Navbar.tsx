@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import { navbar } from "./Header";
 import HoverMenu from "./HoverMenu";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -9,9 +9,11 @@ import { Button, Theme } from "@mui/material";
 import SearchBoxResult from "./SearchBoxResult";
 import MenuIcon from "@mui/icons-material/Menu";
 import MobileMenu from "./MobileMenu";
+import { useOnClickOutside } from "hooks/useOnClickOutSide";
 interface Props {
   data: navbar[];
   animate: number;
+  setBackdrop: React.Dispatch<React.SetStateAction<boolean>>;
   setAnimate: React.Dispatch<React.SetStateAction<number>>;
 }
 
@@ -19,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   navbar: {
     background: "#fff",
     position: "relative",
-    zIndex:5,
+    zIndex: 5,
     height: "60px",
     width: "100%",
     transition: "transform .15s ease",
@@ -30,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       top: "36px",
       transition: "transform .25s ease .25s",
       transform: "translateY(-36px)",
-      zIndex: 3,
+      zIndex: 6,
       [theme.breakpoints.down("md")]: {
         top: 0,
         transform: "none",
@@ -253,20 +255,31 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 const Navbar = (props: Props) => {
   const classes = useStyles();
-  const { data, animate, setAnimate } = props;
+  const { data, animate, setAnimate, setBackdrop } = props;
   const [activeSearchBar, setActiveSearchBar] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [search, setSearch] = useState("");
 
   const handleClickSearch = () => {
+    setBackdrop(true);
     setActiveSearchBar(true);
   };
   const handleCancleSearchBar = () => {
+    setBackdrop(false);
     setActiveSearchBar(false);
+    setSearch("");
+  };
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
   };
 
+  // check click outside searchbar panel
+  const searchBar = useRef(null);
+  useOnClickOutside(searchBar, handleCancleSearchBar);
+
   return (
-    <div className={`${classes.navbar}${activeSearchBar ? " active" : ""}`}>
+    <div className={`${classes.navbar}${activeSearchBar ? " active" : ""}`} 
+    ref={searchBar}>
       <div className={classes.icon}>
         <svg
           className="pre-logo-svg"
@@ -287,7 +300,12 @@ const Navbar = (props: Props) => {
         >
           {data.map((item, indexnav) => {
             return (
-              <HoverMenu setAnimate={setAnimate} item={item} key={indexnav} />
+              <HoverMenu
+                setBackdrop={setBackdrop}
+                setAnimate={setAnimate}
+                item={item}
+                key={indexnav}
+              />
             );
           })}
         </ul>
@@ -308,7 +326,12 @@ const Navbar = (props: Props) => {
                 <path d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.39zM11 18a7 7 0 1 1 7-7 7 7 0 0 1-7 7z"></path>
               </svg>
             </Button>
-            <input type="text" placeholder="Search" />
+            <input
+              type="text"
+              placeholder="Search"
+              onChange={handleChangeInput}
+              value={search}
+            />
           </div>
         </div>
       </div>
@@ -327,14 +350,17 @@ const Navbar = (props: Props) => {
         <Button className={classes.btnTool} onClick={handleCancleSearchBar}>
           <CloseIcon />
         </Button>
-        <Button className={classes.btnTool} onClick={()=>setMobileMenu(true)}>
+        <Button className={classes.btnTool} onClick={() => setMobileMenu(true)}>
           <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
             <path d="M21 13H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0-8H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0 16H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1z" />
           </svg>
         </Button>
       </div>
-      <MobileMenu active={mobileMenu} toggle={setMobileMenu}/>
-      <SearchBoxResult active={activeSearchBar} search={search}  />
+      <MobileMenu active={mobileMenu} toggle={setMobileMenu} />
+      <SearchBoxResult
+        active={activeSearchBar}
+        search={search}
+      />
     </div>
   );
 };

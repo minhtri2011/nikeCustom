@@ -5,19 +5,18 @@ import {
   InputLabel,
   MenuItem,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import productApi from "api/productApi";
 import { useAppSelector } from "app/hooks";
-import { AxiosResponse } from "axios";
 import TabsColor from "component/admin/Product/TabsColor";
 import MultipleSelectCheckmarks from "component/FormField/MultipleSelectCheckmarks";
 import { SelectOption } from "component/FormField/validateField/SelectField";
 import { ProductData } from "models/products";
 import { selectIDUser } from "pages/Login/module/LoginSlice";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Swal from "sweetalert2";
 import { makeStyles } from "tss-react/mui";
@@ -91,20 +90,6 @@ const EditProduct = (props: Props) => {
     img: "",
     sizes: [],
     imgDetails: [
-      // {
-      //   color: "blue",
-      //   imgs: [
-      //     {
-      //       img: "https://images.viblo.asia/ec82aa6c-db5a-45fa-8d29-85d3c59195e6.png",
-      //     },
-      //     {
-      //       img: "https://images.viblo.asia/ec82aa6c-db5a-45fa-8d29-85d3c59195e6.png",
-      //     },
-      //     {
-      //       img: "https://images.viblo.asia/ec82aa6c-db5a-45fa-8d29-85d3c59195e6.png",
-      //     },
-      //   ],
-      // },
     ],
     userCreated: ID,
     status: 1,
@@ -183,7 +168,7 @@ const EditProduct = (props: Props) => {
   const onSubmitForm = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const token = getToken();
       const response = await productApi.update(data, token);

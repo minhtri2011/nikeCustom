@@ -6,6 +6,7 @@ import { navbar } from "./Header";
 interface Props {
   item: navbar;
   setAnimate: React.Dispatch<React.SetStateAction<number>>;
+  setBackdrop: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -92,21 +93,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const HoverMenu = (props: Props) => {
-  const { item, setAnimate } = props;
+  const { item, setAnimate,setBackdrop } = props;
   const classes = useStyles();
   const [active, setActive] = useState(false);
+  const handleOver=()=>{
+    setActive(true);
+    setAnimate((v) => ++v);
+    setBackdrop(true)
+  }
+  
   return item.data ? (
     <li
-      onMouseLeave={() => {
-        setActive(false);
+    onMouseLeave={() => {
+      setActive(false);
+      setBackdrop(false)
       }}
     >
       <Typography
         className={classes.navTitleItem}
-        onMouseEnter={() => {
-          setActive(true);
-          setAnimate((v) => ++v);
-        }}
+        onMouseEnter={handleOver}
       >
         {item.title}
       </Typography>

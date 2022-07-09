@@ -38,7 +38,7 @@ const useStyle = makeStyles()((theme) => ({
       position: "fixed",
       top: 0,
       left: "-100%",
-      transition:'left .2s ease-in-out !important',
+      transition: "left .2s ease-in-out !important",
       "&.active": {
         left: "0",
       },
@@ -72,22 +72,7 @@ const useStyle = makeStyles()((theme) => ({
       fontSize: "20px",
     },
   },
-  backdrop: {
-    position: "fixed",
-    backgroundColor: "rgba(0,0,30,0.4)",
-    backdropFilter: "blur(3px)",
-    inset: 0,
-    zIndex: 3,
-    visibility: "hidden",
-    [theme.breakpoints.down("md")]: {
-      "&.active": {
-        visibility: "visible",
-        opacity: 1,
-      },
-    },
-  },
 }));
-
 
 const Menu = (props: Props) => {
   const { active, setActive } = props;
@@ -95,27 +80,37 @@ const Menu = (props: Props) => {
   const emailText = useAppSelector(selectEmailLogging);
   const nameText = useAppSelector(selectNameLogging);
 
-
   return (
     <div>
-      <div
-        className={`${classes.backdrop} ${active && "active"}`}
-        onClick={()=>setActive(false)}
-      ></div>
       <Paper
         elevation={0}
         square
         className={`${classes.root} ${active && "active"}`}
-        >
+      >
         <div>
           <div className={classes.logo}>
             <Icon type="white" />
           </div>
           <div>
             {/* <NavLinkButton setActive={setActive} link="/users" icon="dashboard" name="Dashboard" /> */}
-            <NavLinkButton setActive={setActive} link="/dashboard/users" icon="user" name="User" />
-            <NavLinkButton setActive={setActive} link="/dashboard/products" icon="product" name="Product" />
-            <NavLinkButton setActive={setActive} link="/dashboard/oder" icon="cart" name="Oder" />
+            <NavLinkButton
+              setActive={setActive}
+              link="/dashboard/users"
+              icon="user"
+              name="User"
+            />
+            <NavLinkButton
+              setActive={setActive}
+              link="/dashboard/products"
+              icon="product"
+              name="Product"
+            />
+            <NavLinkButton
+              setActive={setActive}
+              link="/dashboard/oder"
+              icon="cart"
+              name="Oder"
+            />
           </div>
         </div>
         <div>

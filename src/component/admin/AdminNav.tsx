@@ -1,25 +1,16 @@
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  Button,
-  IconButton,
-  InputBase,
-  Paper,
-  ToggleButton,
-  Typography,
-} from "@mui/material";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import MessageIcon from "@mui/icons-material/Message";
 import MenuIcon from "@mui/icons-material/Menu";
-import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
-import Fade from "@mui/material/Fade";
-import Modal from "@mui/material/Modal";
+import MessageIcon from "@mui/icons-material/Message";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
+import {
+  Paper,
+  ToggleButton
+} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import React from "react";
 import {
   selectDarkModeThemeReducer,
-  ThemeActions,
+  ThemeActions
 } from "theme/module/themeSlice";
 import { makeStyles } from "tss-react/mui";
 

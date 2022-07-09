@@ -26,6 +26,7 @@ import {
   ThemeActions,
 } from "theme/module/themeSlice";
 import "./App.css";
+import { ProductActions } from "pages/Dashboard/Product/module/ProductSlice";
 
 function App() {
   const location = useLocation();
@@ -34,6 +35,7 @@ function App() {
   const darkmode = JSON.parse(localStorage.getItem("darkmode") || "false");
   useEffect(() => {
     dispatch(ThemeActions.setTheme(darkmode));
+    dispatch(ProductActions.fetchProducts())
   }, [darkmode, dispatch]);
 
   return (
@@ -41,12 +43,10 @@ function App() {
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
-
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signUp" element={<SignUpPage />} />
           </Route>
-
           <Route element={<Admin />}>
             <Route path="/dashboard/users" element={<User />} />
             <Route path="/dashboard/users/add" element={<AddUser />} />

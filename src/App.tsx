@@ -27,6 +27,7 @@ import {
 } from "theme/module/themeSlice";
 import "./App.css";
 import { ProductActions } from "pages/Dashboard/Product/module/ProductSlice";
+import Products from "pages/Products/Products";
 
 function App() {
   const location = useLocation();
@@ -43,6 +44,7 @@ function App() {
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products/>} />
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signUp" element={<SignUpPage />} />

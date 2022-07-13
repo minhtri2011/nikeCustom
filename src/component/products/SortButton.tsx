@@ -1,6 +1,7 @@
 import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import { useOnClickOutside } from "hooks/useOnClickOutSide";
+import React, { useRef, useState } from "react";
 
 interface Props {}
 
@@ -88,12 +89,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SortButton = (props: Props) => {
   const classes = useStyles();
   const [search, setSearch] = useState<string>("");
+  const [activeSearch, setActiveSearch] = useState<boolean>(false);
+  
+  const sortPanel=useRef(null)
   const handleOpen = () => {
     setActiveSearch(!activeSearch);
   };
-  const [activeSearch, setActiveSearch] = useState<boolean>(false);
+  const handleClose = () => {
+    setActiveSearch(false); 
+  }
+  useOnClickOutside(sortPanel,handleClose)
   return (
-    <div className={classes.root}>
+    <div ref={sortPanel} className={classes.root}>
       <button onClick={handleOpen}>
         <span>Sort by</span>
         <span>{search}</span>

@@ -1,15 +1,15 @@
-import { Product } from "models/products";
-import React, { useEffect, useState } from "react";
 import { Skeleton, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ContainerCustom from "component/common/ContainerCustom";
 import Filter from "component/svg/filter";
+import { Product } from "models/products";
 import SortButton from "./SortButton";
 
 interface Props {
   products: Product[];
   setOpen: () => void;
   open: boolean;
+  productsLength: number;
 }
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const FilterBar = (props: Props) => {
   const classes = useStyles();
-  const { products, setOpen, open } = props;
+  const { products, setOpen, open, productsLength } = props;
 
   // const handleChangeFilterPanel = () => {
   //   console.log(activeSearch);
@@ -58,14 +58,14 @@ const FilterBar = (props: Props) => {
   return (
     <ContainerCustom mgt={true}>
       <div className={classes.root}>
-        {products.length ? (
+        {productsLength ? (
           <h1>
-            All Products <span>({products.length})</span>
+            All Products <span>({productsLength})</span>
           </h1>
         ) : (
           <Skeleton>
             <h1>
-            All Products <span>(000)</span>
+              All Products <span>(000)</span>
             </h1>
           </Skeleton>
         )}

@@ -16,6 +16,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
+import { filter } from "pages/Products/Products";
 import CollapseCheckBox from "./CollapseCheckBox";
 
 interface Props {
@@ -28,6 +29,14 @@ interface Props {
   athletes: string[];
   bestfor: string[];
   collaborator: string[];
+  setFiltter: React.Dispatch<
+    React.SetStateAction<{
+      typeProduct: string[];
+      gender: string[];
+      listColor: string[];
+    }>
+  >;
+  filter: filter;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -63,15 +72,51 @@ const LeftPanel = (props: Props) => {
     athletes,
     bestfor,
     collaborator,
+    setFiltter,
+    filter,
   } = props;
   const classes = useStyles();
   const customToggleButton = (value: string) => {
-    return (
-      <Button disableRipple key={value} className={classes.toggleBtn}>
+    return value !== "Multi" ? (
+      <Button
+        disableRipple
+        key={value}
+        className={classes.toggleBtn}
+        onClick={() => handleFilterColor(value)}
+      >
         <div style={{ backgroundColor: value }}></div>
         <p>{value}</p>
       </Button>
+    ) : (
+      <Button
+        disableRipple
+        key={value}
+        className={classes.toggleBtn}
+        onClick={() => handleFilterColor(value)}
+      >
+        <div
+          style={{
+            background:
+              "radial-gradient(rgb(255, 255, 255) 20%, transparent 20%) 0px 0px / 15px 15px, radial-gradient(rgb(255, 255, 255) 20%, transparent 20%) 8px 8px, rgb(0, 0, 0)",
+          }}
+        ></div>
+        <p>{value}</p>
+      </Button>
     );
+  };
+  const handleFilterTypeProduct = (key: string, value: string) => {
+    setFiltter({ ...filter, [key]: [value] });
+  };
+  const handleFilterColor = (value: string) => {
+    if (value === "Multi") return setFiltter({ ...filter, listColor: [] });
+    const arr = filter.listColor;
+    const index = arr.indexOf(value);
+    if (index !== -1) {
+      arr.splice(index, 1);
+    } else {
+      arr.push(value);
+    }
+    setFiltter({ ...filter, listColor: arr });
   };
   return (
     <Drawer
@@ -89,11 +134,11 @@ const LeftPanel = (props: Props) => {
           overflowY: "auto",
           "&::-webkit-scrollbar": {
             appearance: "none",
-            width:'5px',
-            maxHeight:'20%',
+            width: "5px",
+            maxHeight: "20%",
           },
           "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0)",
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0)",
           },
           "&::-webkit-scrollbar-thumb": {
             height: "100px",
@@ -109,19 +154,27 @@ const LeftPanel = (props: Props) => {
     >
       <List sx={{ marginBottom: "30px" }}>
         {menu.map((text, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton sx={{ padding: 0 }}>
+          <ListItem
+            key={index}
+            disablePadding
+            onClick={() => handleFilterTypeProduct("typeProduct", text)}
+          >
+            <ListItemButton
+              sx={{ padding: 0, "&:hover": { backgroundColor: "transparent" } }}
+            >
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
       <Divider />
-      <Accordion disableGutters defaultExpanded sx={{boxShadow:'none'}}>
+      <Accordion disableGutters defaultExpanded sx={{ boxShadow: "none" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ padding: 0 }}>
           <p>Gender</p>
         </AccordionSummary>
-        <AccordionDetails sx={{padding: 0,display: 'flex',flexDirection: 'column'}}>
+        <AccordionDetails
+          sx={{ padding: 0, display: "flex", flexDirection: "column" }}
+        >
           <FormGroup>
             <FormControlLabel control={<Checkbox />} label="Men" />
             <FormControlLabel control={<Checkbox />} label="Women" />
@@ -131,11 +184,13 @@ const LeftPanel = (props: Props) => {
       </Accordion>
 
       <Divider />
-      <Accordion disableGutters defaultExpanded sx={{boxShadow:'none'}}>
+      <Accordion disableGutters defaultExpanded sx={{ boxShadow: "none" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ padding: 0 }}>
           <p>Kids</p>
         </AccordionSummary>
-        <AccordionDetails sx={{padding: 0,display: 'flex',flexDirection: 'column'}}>
+        <AccordionDetails
+          sx={{ padding: 0, display: "flex", flexDirection: "column" }}
+        >
           <FormGroup>
             <FormControlLabel control={<Checkbox />} label="Boys" />
             <FormControlLabel control={<Checkbox />} label="Girls" />
@@ -144,44 +199,52 @@ const LeftPanel = (props: Props) => {
       </Accordion>
 
       <Divider />
-      <Accordion disableGutters defaultExpanded sx={{boxShadow:'none'}}>
+      <Accordion disableGutters defaultExpanded sx={{ boxShadow: "none" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ padding: 0 }}>
           <p>Colour</p>
         </AccordionSummary>
-        <AccordionDetails sx={{padding: 0,display: 'flex',flexDirection: 'column'}}>
+        <AccordionDetails
+          sx={{ padding: 0, display: "flex", flexDirection: "column" }}
+        >
           <div className={classes.colorList}>
             {colors.map((color) => customToggleButton(color))}
+            {customToggleButton("Multi")}
           </div>
         </AccordionDetails>
       </Accordion>
 
       <Divider />
-     <CollapseCheckBox title="Brand" arr={brands} />
+      <CollapseCheckBox title="Brand" arr={brands} />
 
       <Divider />
-     <CollapseCheckBox title="Sports" arr={sports} />
+      <CollapseCheckBox title="Sports" arr={sports} />
 
       <Divider />
-     <CollapseCheckBox title="Athletes" arr={athletes} />
+      <CollapseCheckBox title="Athletes" arr={athletes} />
 
       <Divider />
-     <CollapseCheckBox title="Best for" arr={bestfor} />
+      <CollapseCheckBox title="Best for" arr={bestfor} />
 
-     <Divider />
-      <Accordion disableGutters defaultExpanded sx={{boxShadow:'none'}}>
+      <Divider />
+      <Accordion disableGutters defaultExpanded sx={{ boxShadow: "none" }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ padding: 0 }}>
           <p>Collaborator</p>
         </AccordionSummary>
-        <AccordionDetails sx={{padding: 0,display: 'flex',flexDirection: 'column'}}>
+        <AccordionDetails
+          sx={{ padding: 0, display: "flex", flexDirection: "column" }}
+        >
           <FormGroup>
-            {collaborator.map((cola,index) => <FormControlLabel key={index} control={<Checkbox />} label="Boys" />)}
-            
-           
+            {collaborator.map((cola, index) => (
+              <FormControlLabel
+                key={index}
+                control={<Checkbox />}
+                label={cola}
+              />
+            ))}
           </FormGroup>
         </AccordionDetails>
       </Accordion>
     </Drawer>
-    
   );
 };
 

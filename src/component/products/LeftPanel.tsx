@@ -118,6 +118,13 @@ const LeftPanel = (props: Props) => {
     }
     setFiltter({ ...filter, listColor: arr });
   };
+  const handleChangeGender = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const arr = filter.gender;
+    const index = arr.indexOf(value);
+    event.target.checked ? arr.push(value) : arr.splice(index, 1);
+    setFiltter({ ...filter, gender: arr });
+  };
   return (
     <Drawer
       sx={{
@@ -132,6 +139,7 @@ const LeftPanel = (props: Props) => {
           border: "none",
           marginTop: "20px",
           overflowY: "auto",
+          zIndex: 0,
           "&::-webkit-scrollbar": {
             appearance: "none",
             width: "5px",
@@ -176,8 +184,11 @@ const LeftPanel = (props: Props) => {
           sx={{ padding: 0, display: "flex", flexDirection: "column" }}
         >
           <FormGroup>
-            <FormControlLabel control={<Checkbox />} label="Men" />
-            <FormControlLabel control={<Checkbox />} label="Women" />
+            <FormControlLabel
+              control={<Checkbox value="male" onChange={handleChangeGender} />}
+              label="Men"
+            />
+            <FormControlLabel control={<Checkbox value="female" onChange={handleChangeGender}/>} label="Women" />
             <FormControlLabel control={<Checkbox />} label="Unisex" />
           </FormGroup>
         </AccordionDetails>
@@ -192,8 +203,8 @@ const LeftPanel = (props: Props) => {
           sx={{ padding: 0, display: "flex", flexDirection: "column" }}
         >
           <FormGroup>
-            <FormControlLabel control={<Checkbox />} label="Boys" />
-            <FormControlLabel control={<Checkbox />} label="Girls" />
+            <FormControlLabel control={<Checkbox value="kid" onChange={handleChangeGender}/>} label="Boys" />
+            <FormControlLabel control={<Checkbox value="kid" onChange={handleChangeGender}/>} label="Girls" />
           </FormGroup>
         </AccordionDetails>
       </Accordion>

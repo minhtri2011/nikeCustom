@@ -3,6 +3,7 @@ import Result from "component/products/Result";
 import FilterBar from "component/products/FilterBar";
 import { selectDataProductReducer } from "pages/Dashboard/Product/module/ProductSlice";
 import React, { useEffect, useState } from "react";
+import FilterBarMobile from "component/products/FilterBarMobile";
 
 interface Props {}
 
@@ -54,8 +55,12 @@ const Products = (props: Props) => {
       <FilterBar
         productsLength={productsLength}
         open={open}
-        products={products}
         setOpen={handleToggleOpen}
+      />
+      <FilterBarMobile
+        filter={filter}
+        setFiltter={setFiltter}
+        productsLength={productsLength}
       />
       <Result
         filter={filter}

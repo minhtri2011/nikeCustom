@@ -37,7 +37,7 @@ const ProductSlice = createSlice({
 export const ProductActions = ProductSlice.actions;
 //selector
 export const selectDataProductReducer = (state: any) => state.ProductReducer.data;
-export const selectLoadingDataProductReducer = (state: any) => state.loading
+export const selectLoadingDataProductReducer = (state: any) => state.ProductReducer.loading
 
 //reducer
 const ProductReducer = ProductSlice.reducer;

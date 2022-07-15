@@ -1,12 +1,11 @@
-import { Skeleton, Theme } from "@mui/material";
+import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ContainerCustom from "component/common/ContainerCustom";
 import Filter from "component/svg/filter";
-import { Product } from "models/products";
+import useCheckMaxBreakpoints from "hooks/useCheckMaxBreakpoints";
 import SortButton from "./SortButton";
 
 interface Props {
-  products: Product[];
   setOpen: () => void;
   open: boolean;
   productsLength: number;
@@ -17,10 +16,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-between",
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "left",
+    },
     "& h1": {
       color: "#111",
       fontSize: "24px",
       fontWeight: "normal",
+      [theme.breakpoints.down("md")]: {
+        fontSize: "20px",
+      },
     },
   },
   toolBox: {
@@ -46,36 +51,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const FilterBar = (props: Props) => {
   const classes = useStyles();
-  const { products, setOpen, open, productsLength } = props;
-
-  // const handleChangeFilterPanel = () => {
-  //   console.log(activeSearch);
-  // }
-  // useEffect(() => {
-  //   console.log(activeSearch);
-  // }, [activeSearch]);
-
+  const { setOpen, open, productsLength } = props;
+  const breakpoints = useCheckMaxBreakpoints(950);
   return (
     <ContainerCustom mgt={true}>
       <div className={classes.root}>
-        {productsLength ? (
-          <h1>
-            All Products <span>({productsLength})</span>
-          </h1>
-        ) : (
-          <Skeleton>
-            <h1>
-              All Products <span>(000)</span>
-            </h1>
-          </Skeleton>
+        <h1>
+          All Products
+          {breakpoints && <span>({productsLength})</span>}
+        </h1>
+
+        {breakpoints && (
+          <div className={classes.toolBox}>
+            <button className={classes.hideButton} onClick={setOpen}>
+              <span>{open ? "Hide" : "Show"} filters</span>
+              <Filter />
+            </button>
+            <SortButton />
+          </div>
         )}
-        <div className={classes.toolBox}>
-          <button className={classes.hideButton} onClick={setOpen}>
-            <span>{open ? "Hide" : "Show"} filters</span>
-            <Filter />
-          </button>
-          <SortButton />
-        </div>
       </div>
     </ContainerCustom>
   );

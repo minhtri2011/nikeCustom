@@ -1,23 +1,27 @@
-import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import { Button, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import useCheckScrollOverBottom from "hooks/useCheckScrollOverBottom";
+import { useOnClickOutside } from "hooks/useOnClickOutSide";
+// import { useScrollDirection } from "hooks/useScrollDirection";
+import React, { useEffect, useRef, useState } from "react";
+import { useScrollDirection } from "react-use-scroll-direction";
 import { navbar } from "./Header";
 import HoverMenu from "./HoverMenu";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
-import { Button, Theme } from "@mui/material";
-import SearchBoxResult from "./SearchBoxResult";
-import MenuIcon from "@mui/icons-material/Menu";
 import MobileMenu from "./MobileMenu";
-import { useOnClickOutside } from "hooks/useOnClickOutSide";
+import SearchBoxResult from "./SearchBoxResult";
 interface Props {
   data: navbar[];
   animate: number;
   setBackdrop: React.Dispatch<React.SetStateAction<boolean>>;
   setAnimate: React.Dispatch<React.SetStateAction<number>>;
+  // window?: () => Window;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
+  navContainer: {
+    height: "60px",
+  },
   navbar: {
     background: "#fff",
     position: "relative",
@@ -27,6 +31,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     transition: "transform .15s ease",
     padding: "0 38px 0 36px",
     display: "flex",
+    [theme.breakpoints.down("md")]: {
+      justifyContent: "space-between",
+    },
     "&.active": {
       position: "fixed",
       top: "36px",
@@ -37,10 +44,17 @@ const useStyles = makeStyles((theme: Theme) => ({
         top: 0,
         transform: "none",
       },
+      "&.fixed": {
+        transform: "translateY(0px)",
+      },
     },
-
-    [theme.breakpoints.down("md")]: {
-      justifyContent: "space-between",
+    "&.fixed": {
+      position: "fixed",
+      left: 0,
+      top: 0,
+    },
+    "&.isHidden": {
+      transform: "translateY(-60px)",
     },
   },
   icon: {
@@ -260,6 +274,23 @@ const Navbar = (props: Props) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [search, setSearch] = useState("");
 
+  const searchBar = useRef(null);
+  const nav = useRef(null);
+
+  const [direction, setDirection] = useState<string>("");
+  const { scrollDirection } = useScrollDirection();
+  useEffect(() => {
+    if (
+      (scrollDirection !== null && scrollDirection === "UP") ||
+      scrollDirection === "DOWN"
+    ) {
+      setDirection(scrollDirection);
+    }
+  }, [scrollDirection]);
+  useEffect(() => {
+    console.log(direction);
+  }, [direction]);
+
   const handleClickSearch = () => {
     setBackdrop(true);
     setActiveSearchBar(true);
@@ -274,93 +305,99 @@ const Navbar = (props: Props) => {
   };
 
   // check click outside searchbar panel
-  const searchBar = useRef(null);
   useOnClickOutside(searchBar, handleCancleSearchBar);
 
+  const checkScroll = useCheckScrollOverBottom(nav);
   return (
-    <div className={`${classes.navbar}${activeSearchBar ? " active" : ""}`} 
-    ref={searchBar}>
-      <div className={classes.icon}>
-        <svg
-          className="pre-logo-svg"
-          height="60px"
-          width="60px"
-          fill="#111"
-          viewBox="0 0 69 32"
-        >
-          <path d="M68.56 4L18.4 25.36Q12.16 28 7.92 28q-4.8 0-6.96-3.36-1.36-2.16-.8-5.48t2.96-7.08q2-3.04 6.56-8-1.6 2.56-2.24 5.28-1.2 5.12 2.16 7.52Q11.2 18 14 18q2.24 0 5.04-.72z"></path>
-        </svg>
-      </div>
-      <div className={classes.navHover}>
-        <ul
-          onMouseLeave={() => setAnimate(0)}
-          className={`${classes.navTitleList} ${
-            animate > 1 ? "isFocused" : ""
-          }`}
-        >
-          {data.map((item, indexnav) => {
-            return (
-              <HoverMenu
-                setBackdrop={setBackdrop}
-                setAnimate={setAnimate}
-                item={item}
-                key={indexnav}
-              />
-            );
-          })}
-        </ul>
-      </div>
+    <div ref={nav} className={classes.navContainer}>
       <div
-        className={`${classes.searchBar}${activeSearchBar ? " active" : ""}`}
+        className={`${classes.navbar}${activeSearchBar ? " active" : ""}${
+          checkScroll ? " fixed" : ""
+        }${checkScroll ? (direction === "DOWN" ? " isHidden" : "") : ""}`}
+        ref={searchBar}
       >
-        <div className={classes.inputPosition}>
-          <div className={classes.inputBox} onClick={handleClickSearch}>
-            <Button>
-              <svg
-                className="pre-search-input-icon"
-                fill="#111"
-                height="24px"
-                width="24px"
-                viewBox="0 0 24 24"
-              >
-                <path d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.39zM11 18a7 7 0 1 1 7-7 7 7 0 0 1-7 7z"></path>
-              </svg>
-            </Button>
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={handleChangeInput}
-              value={search}
-            />
+        <div className={classes.icon}>
+          <svg
+            className="pre-logo-svg"
+            height="60px"
+            width="60px"
+            fill="#111"
+            viewBox="0 0 69 32"
+          >
+            <path d="M68.56 4L18.4 25.36Q12.16 28 7.92 28q-4.8 0-6.96-3.36-1.36-2.16-.8-5.48t2.96-7.08q2-3.04 6.56-8-1.6 2.56-2.24 5.28-1.2 5.12 2.16 7.52Q11.2 18 14 18q2.24 0 5.04-.72z"></path>
+          </svg>
+        </div>
+        <div className={classes.navHover}>
+          <ul
+            onMouseLeave={() => setAnimate(0)}
+            className={`${classes.navTitleList} ${
+              animate > 1 ? "isFocused" : ""
+            }`}
+          >
+            {data.map((item, indexnav) => {
+              return (
+                <HoverMenu
+                  setBackdrop={setBackdrop}
+                  setAnimate={setAnimate}
+                  item={item}
+                  key={indexnav}
+                />
+              );
+            })}
+          </ul>
+        </div>
+        <div
+          className={`${classes.searchBar}${activeSearchBar ? " active" : ""}`}
+        >
+          <div className={classes.inputPosition}>
+            <div className={classes.inputBox} onClick={handleClickSearch}>
+              <Button>
+                <svg
+                  className="pre-search-input-icon"
+                  fill="#111"
+                  height="24px"
+                  width="24px"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.39zM11 18a7 7 0 1 1 7-7 7 7 0 0 1-7 7z"></path>
+                </svg>
+              </Button>
+              <input
+                type="text"
+                placeholder="Search"
+                onChange={handleChangeInput}
+                value={search}
+              />
+            </div>
           </div>
         </div>
+        <div className={`${classes.tools}${activeSearchBar ? " active" : ""}`}>
+          <Button className={classes.btnTool}>
+            <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
+              <path d="M21.11 4a6.6 6.6 0 0 0-4.79-1.92A6.27 6.27 0 0 0 12 3.84 6.57 6.57 0 0 0 2.89 4c-2.8 2.68-2.45 7.3.88 10.76l6.84 6.63A2 2 0 0 0 12 22a2 2 0 0 0 1.37-.54l.2-.19.61-.57c.6-.57 1.42-1.37 2.49-2.41l2.44-2.39 1.09-1.07c3.38-3.55 3.8-8.1.91-10.83zm-2.35 9.4l-.25.24-.8.79-2.44 2.39c-1 1-1.84 1.79-2.44 2.36L12 20l-6.83-6.68c-2.56-2.66-2.86-6-.88-7.92a4.52 4.52 0 0 1 6.4 0l.09.08a2.12 2.12 0 0 1 .32.3l.9.94.9-.94.28-.27.11-.09a4.52 4.52 0 0 1 6.43 0c1.97 1.9 1.67 5.25-.96 7.98z"></path>
+            </svg>
+          </Button>
+          <Button className={classes.btnTool}>
+            <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
+              <path d="M16 7a1 1 0 0 1-1-1V3H9v3a1 1 0 0 1-2 0V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1z"></path>
+              <path d="M20 5H4a2 2 0 0 0-2 2v13a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a2 2 0 0 0-2-2zm0 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7h16z"></path>
+            </svg>
+          </Button>
+          <Button className={classes.btnTool} onClick={handleCancleSearchBar}>
+            <CloseIcon />
+          </Button>
+          <Button
+            className={classes.btnTool}
+            onClick={() => setMobileMenu(true)}
+          >
+            <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
+              <path d="M21 13H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0-8H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0 16H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1z" />
+            </svg>
+          </Button>
+        </div>
+        <MobileMenu active={mobileMenu} toggle={setMobileMenu} />
+        <SearchBoxResult active={activeSearchBar} search={search} />
       </div>
-      <div className={`${classes.tools}${activeSearchBar ? " active" : ""}`}>
-        <Button className={classes.btnTool}>
-          <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
-            <path d="M21.11 4a6.6 6.6 0 0 0-4.79-1.92A6.27 6.27 0 0 0 12 3.84 6.57 6.57 0 0 0 2.89 4c-2.8 2.68-2.45 7.3.88 10.76l6.84 6.63A2 2 0 0 0 12 22a2 2 0 0 0 1.37-.54l.2-.19.61-.57c.6-.57 1.42-1.37 2.49-2.41l2.44-2.39 1.09-1.07c3.38-3.55 3.8-8.1.91-10.83zm-2.35 9.4l-.25.24-.8.79-2.44 2.39c-1 1-1.84 1.79-2.44 2.36L12 20l-6.83-6.68c-2.56-2.66-2.86-6-.88-7.92a4.52 4.52 0 0 1 6.4 0l.09.08a2.12 2.12 0 0 1 .32.3l.9.94.9-.94.28-.27.11-.09a4.52 4.52 0 0 1 6.43 0c1.97 1.9 1.67 5.25-.96 7.98z"></path>
-          </svg>
-        </Button>
-        <Button className={classes.btnTool}>
-          <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
-            <path d="M16 7a1 1 0 0 1-1-1V3H9v3a1 1 0 0 1-2 0V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1z"></path>
-            <path d="M20 5H4a2 2 0 0 0-2 2v13a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a2 2 0 0 0-2-2zm0 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7h16z"></path>
-          </svg>
-        </Button>
-        <Button className={classes.btnTool} onClick={handleCancleSearchBar}>
-          <CloseIcon />
-        </Button>
-        <Button className={classes.btnTool} onClick={() => setMobileMenu(true)}>
-          <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
-            <path d="M21 13H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0-8H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1zm0 16H3c-.6 0-1-.4-1-1s.4-1 1-1h18c.6 0 1 .4 1 1s-.4 1-1 1z" />
-          </svg>
-        </Button>
-      </div>
-      <MobileMenu active={mobileMenu} toggle={setMobileMenu} />
-      <SearchBoxResult
-        active={activeSearchBar}
-        search={search}
-      />
     </div>
   );
 };

@@ -28,6 +28,7 @@ import {
 import "./App.css";
 import { ProductActions } from "pages/Dashboard/Product/module/ProductSlice";
 import Products from "pages/Products/Products";
+import PublicRoute from "Routes/PublicRoute";
 
 function App() {
   const location = useLocation();
@@ -43,8 +44,12 @@ function App() {
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
+
+          <Route element={<PublicRoute />}>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products/>} />
+          </Route>
+
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signUp" element={<SignUpPage />} />

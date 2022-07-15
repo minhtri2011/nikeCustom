@@ -1,5 +1,6 @@
+import { AppBar, Slide, Toolbar, useScrollTrigger } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import BrandHeader from "./BrandHeader";
 import Navbar from "./Navbar";
 
@@ -638,7 +639,12 @@ const Header = (props: Props) => {
   return (
     <div className={classes.root}>
       <BrandHeader />
-      <Navbar setBackdrop={setActive} data={navbar} animate={animate} setAnimate={setAnimate} />
+        <Navbar
+          setBackdrop={setActive}
+          data={navbar}
+          animate={animate}
+          setAnimate={setAnimate}
+        />
       <div
         id="backdrop"
         className={`${classes.backdropMenu}${active ? " active" : ""}`}

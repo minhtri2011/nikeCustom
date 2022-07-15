@@ -22,6 +22,9 @@ const useCheckBreakpoints = () => {
     }
   };
   useEffect(() => {
+  setBreakpoints()
+  }, []);
+  useEffect(() => {
     window.addEventListener("resize", setBreakpoints);
   }, []);
   return value;

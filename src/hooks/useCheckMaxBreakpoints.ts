@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-const useCheckMinBreakpoints = (breakpoint: number) => {
+const useCheckMaxBreakpoints = (breakpoint: number) => {
   const [value, setValue] = useState<boolean>();
 
   const setBreakpoints = () => {
     const screenWidth = window.innerWidth;
-    screenWidth < breakpoint ? setValue(true) : setValue(false);
+    screenWidth > breakpoint ? setValue(true) : setValue(false);
   };
   useEffect(() => {
   setBreakpoints()
@@ -16,4 +16,4 @@ const useCheckMinBreakpoints = (breakpoint: number) => {
   return value;
 };
 
-export default useCheckMinBreakpoints;
+export default useCheckMaxBreakpoints;

@@ -1,6 +1,4 @@
 import Slide from "component/common/Slide";
-import Footer from "component/Footer/Footer";
-import Header from "component/header/Header";
 import Banner from "component/home/Banner";
 import DropdownFooter from "component/home/DropdownFooter";
 import Featured from "component/home/Featured";
@@ -14,16 +12,14 @@ type Props = {};
 const Home = (props: Props) => {
   return (
     <>
-      <Header />
       <Slide />
       <Banner />
-      <Featured/>
-      <TheLatested/>
+      <Featured />
+      <TheLatested />
       <Trending />
-      <NewArrivals/>
-      <MoreNike/>
-      <DropdownFooter/>
-      <Footer/>
+      <NewArrivals />
+      <MoreNike />
+      <DropdownFooter />
     </>
   );
 };

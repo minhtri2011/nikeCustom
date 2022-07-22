@@ -6,29 +6,30 @@ import Admin from "layout/admin/Admin";
 import Oder from "pages/Dashboard/Oder/Oder";
 import AddProduct from "pages/Dashboard/Product/AddProduct";
 import EditProduct from "pages/Dashboard/Product/EditProduct";
+import { ProductActions } from "pages/Dashboard/Product/module/ProductSlice";
 import Product from "pages/Dashboard/Product/Product";
 import AddUser from "pages/Dashboard/User/AddUser";
 import EditUser from "pages/Dashboard/User/EditUser";
 import User from "pages/Dashboard/User/User";
 import Home from "pages/Home/Home";
 import LoginPage from "pages/Login/Login";
+import ProductDetail from "pages/ProductDetail/ProductDetail";
+import Products from "pages/Products/Products";
 import SignUpPage from "pages/SignUp/SignUp";
 import { useEffect } from "react";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { useLocation } from "react-router";
 import { Route, Routes } from "react-router-dom";
 import AuthRoute from "Routes/AuthRoute";
+import PublicRoute from "Routes/PublicRoute";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import { darkTheme, lightTheme } from "theme";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import {
   selectDarkModeThemeReducer,
   ThemeActions,
 } from "theme/module/themeSlice";
 import "./App.css";
-import { ProductActions } from "pages/Dashboard/Product/module/ProductSlice";
-import Products from "pages/Products/Products";
-import PublicRoute from "Routes/PublicRoute";
 
 function App() {
   const location = useLocation();
@@ -37,17 +38,17 @@ function App() {
   const darkmode = JSON.parse(localStorage.getItem("darkmode") || "false");
   useEffect(() => {
     dispatch(ThemeActions.setTheme(darkmode));
-    dispatch(ProductActions.fetchProducts())
+    dispatch(ProductActions.fetchProducts());
   }, [darkmode, dispatch]);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
-
           <Route element={<PublicRoute />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products/>} />
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/detail/:id" element={<ProductDetail />} />
           </Route>
 
           <Route element={<AuthRoute />}>

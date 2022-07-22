@@ -3,7 +3,10 @@ import { makeStyles } from "@mui/styles";
 import { useOnClickOutside } from "hooks/useOnClickOutSide";
 import React, { useRef, useState } from "react";
 
-interface Props {}
+interface Props {
+sort:string,
+  setSort: React.Dispatch<React.SetStateAction<string>>
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -79,17 +82,24 @@ const useStyles = makeStyles((theme: Theme) => ({
       whiteSpace: "nowrap",
       textAlign: "right",
       width: "100%",
+      '&.active':{
+        color:'#7e7e7e'
+      }
     },
     ".active &": {
       transform: "translateY(0%)",
       visibility: "visible",
     },
   },
+  sortName:{
+    color:'#7e7e7e'
+  }
 }));
 const SortButton = (props: Props) => {
+  const {sort,setSort} = props;
   const classes = useStyles();
-  const [search, setSearch] = useState<string>("");
   const [activeSearch, setActiveSearch] = useState<boolean>(false);
+  const data=['Featured', 'Newest', 'Price: High-Low', 'Price: Low-High']
   
   const sortPanel=useRef(null)
   const handleOpen = () => {
@@ -103,17 +113,17 @@ const SortButton = (props: Props) => {
     <div ref={sortPanel} className={classes.root}>
       <button onClick={handleOpen}>
         <span>Sort by</span>
-        <span>{search}</span>
+        {sort && <span>
+          :
+          <span className={classes.sortName}> {sort}</span>
+        </span>}
         <div
           className={`${classes.arrow}${activeSearch ? " active" : ""}`}
         ></div>
       </button>
       <div className={`${classes.dropdown}${activeSearch ? " active" : ""}`}>
         <div className={classes.dropdownContainer}>
-          <button>Featured</button>
-          <button>Newest</button>
-          <button>Price: High-Low</button>
-          <button>Price: Low-High</button>
+          {data.map((item:string) => <button className={sort===item?'active':''} key={item} onClick={()=>setSort(item)}>{item}</button>)}
         </div>
       </div>
     </div>

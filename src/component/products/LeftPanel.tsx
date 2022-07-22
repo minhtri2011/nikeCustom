@@ -1,4 +1,5 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CheckIcon from "@mui/icons-material/Check";
 import {
   Accordion,
   AccordionDetails,
@@ -18,6 +19,9 @@ import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
 import { filter } from "pages/Products/Products";
 import CollapseCheckBox from "./CollapseCheckBox";
+import useCheckScrollToTopElement from "hooks/useCheckScrollToTopElement";
+import { useEffect, useRef, useState } from "react";
+import { useScrollDirection } from "react-use-scroll-direction";
 
 interface Props {
   drawerWidth: number;
@@ -40,6 +44,39 @@ interface Props {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    '&.down .MuiDrawer-paper':{
+      top:'36px',
+    },
+    '&.up .MuiDrawer-paper':{
+      top:'100px',
+    },
+    "& .MuiDrawer-paper": {
+      maxHeight: "100vh",
+      top: "0px",
+      position: "sticky",
+      flexShrink: 0,
+      boxSizing: "border-box",
+      border: "none",
+      marginTop: "20px",
+      overflowY: "auto",
+      zIndex: 0,
+      "&::-webkit-scrollbar": {
+        appearance: "none",
+        width: "5px",
+        maxHeight: "20%",
+      },
+      "&::-webkit-scrollbar-track": {
+        WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0)",
+      },
+      "&::-webkit-scrollbar-thumb": {
+        height: "100px",
+        borderRadius: "50px",
+        color: "#7e7e7e",
+        boxShadow: "inset 0 0 0 20px",
+      },
+    },
+  },
   colorList: {
     display: "flex",
     flexWrap: "wrap",
@@ -49,6 +86,21 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
+    "& > div": {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      "& svg": {
+        transform: "scale(.7)",
+        display: "none",
+      },
+    },
+    "& .active": {
+      backgroundColor: "red",
+      "& svg": {
+        display: "block",
+      },
+    },
     "& div": {
       width: "25px",
       height: "25px",
@@ -84,7 +136,12 @@ const LeftPanel = (props: Props) => {
         className={classes.toggleBtn}
         onClick={() => handleFilterColor(value)}
       >
-        <div style={{ backgroundColor: value }}></div>
+        <div
+          style={{ backgroundColor: value }}
+          className={filter.listColor.includes(value) ? "active" : ""}
+        >
+          <CheckIcon sx={{ fill: value !== "white" ? "white" : "black" }} />
+        </div>
         <p>{value}</p>
       </Button>
     ) : (
@@ -125,36 +182,26 @@ const LeftPanel = (props: Props) => {
     event.target.checked ? arr.push(value) : arr.splice(index, 1);
     setFiltter({ ...filter, gender: arr });
   };
+  //check sroll
+  const leftPanel = useRef(null);
+  const checkScroll = useCheckScrollToTopElement(leftPanel);
+  const [direction, setDirection] = useState<string>("");
+  const { scrollDirection } = useScrollDirection();
+  useEffect(() => {
+    if (
+      (scrollDirection !== null && scrollDirection === "UP") ||
+      scrollDirection === "DOWN"
+    ) {
+      setDirection(scrollDirection);
+    }
+  }, [scrollDirection]);
+
   return (
     <Drawer
+      ref={leftPanel}
+      className={`${classes.root} ${checkScroll?(direction==='UP'?'up':'down'):''}`}
       sx={{
         width: drawerWidth,
-        "& .MuiDrawer-paper": {
-          height: "100vh",
-          top: "0px",
-          position: "sticky",
-          flexShrink: 0,
-          width: drawerWidth,
-          boxSizing: "border-box",
-          border: "none",
-          marginTop: "20px",
-          overflowY: "auto",
-          zIndex: 0,
-          "&::-webkit-scrollbar": {
-            appearance: "none",
-            width: "5px",
-            maxHeight: "20%",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0)",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            height: "100px",
-            borderRadius: "50px",
-            color: "#7e7e7e",
-            boxShadow: "inset 0 0 0 20px",
-          },
-        },
       }}
       variant="persistent"
       anchor="left"
@@ -185,11 +232,35 @@ const LeftPanel = (props: Props) => {
         >
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox value="male" onChange={handleChangeGender} />}
+              control={
+                <Checkbox
+                  checked={filter.gender.includes("male") ? true : false}
+                  value="male"
+                  onChange={handleChangeGender}
+                />
+              }
               label="Men"
             />
-            <FormControlLabel control={<Checkbox value="female" onChange={handleChangeGender}/>} label="Women" />
-            <FormControlLabel control={<Checkbox />} label="Unisex" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filter.gender.includes("female") ? true : false}
+                  value="female"
+                  onChange={handleChangeGender}
+                />
+              }
+              label="Women"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filter.gender.includes("Unisex") ? true : false}
+                  value="Unisex"
+                  onChange={handleChangeGender}
+                />
+              }
+              label="Unisex"
+            />
           </FormGroup>
         </AccordionDetails>
       </Accordion>
@@ -203,8 +274,20 @@ const LeftPanel = (props: Props) => {
           sx={{ padding: 0, display: "flex", flexDirection: "column" }}
         >
           <FormGroup>
-            <FormControlLabel control={<Checkbox value="kid" onChange={handleChangeGender}/>} label="Boys" />
-            <FormControlLabel control={<Checkbox value="kid" onChange={handleChangeGender}/>} label="Girls" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={filter.gender.includes("kid") ? true : false}
+                  value="kid"
+                  onChange={handleChangeGender}
+                />
+              }
+              label="Boys"
+            />
+            <FormControlLabel
+              control={<Checkbox value="kid" onChange={handleChangeGender} />}
+              label="Girls"
+            />
           </FormGroup>
         </AccordionDetails>
       </Accordion>

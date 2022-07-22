@@ -1,9 +1,9 @@
 import { useAppSelector } from "app/hooks";
-import Result from "component/products/Result";
 import FilterBar from "component/products/FilterBar";
+import Result from "component/products/Result";
+import { Product } from "models/products";
 import { selectDataProductReducer } from "pages/Dashboard/Product/module/ProductSlice";
-import React, { useEffect, useState } from "react";
-import FilterBarMobile from "component/products/FilterBarMobile";
+import { useState } from "react";
 
 interface Props {}
 
@@ -13,8 +13,13 @@ export interface filter {
   listColor: string[];
 }
 const Products = (props: Props) => {
-  const products = useAppSelector(selectDataProductReducer);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [sort, setSort] = useState("");
+  const [filter, setFiltter] = useState<filter>({
+    typeProduct: [],
+    gender: [],
+    listColor: [],
+  });
   const handleToggleOpen = () => {
     setOpen(!open);
   };
@@ -29,38 +34,56 @@ const Products = (props: Props) => {
       };
     }
   );
-  const [filter, setFiltter] = useState<filter>({
-    typeProduct: [],
-    gender: [],
-    listColor: [],
-  });
 
+  //check search products
   const getValue = (value: string) =>
     typeof value === "string" ? value.toUpperCase() : value;
+
   const filterPlainArray = (array: any, filters: any) => {
     const filterKeys = Object.keys(filters);
+    // console.log(filters);
+
     return array.filter((item: any) => {
       return filterKeys.every((key) => {
         if (!filters[key].length) return true;
-        return filters[key].find((filter: any) => {
-          return getValue(item[key]).includes(getValue(filter));
-        });
+        if (key !== "gender") {
+          return filters[key].find((filter: any) => {
+            return getValue(item[key]).includes(getValue(filter));
+          });
+        } else {
+          return filters[key].find((filter: any) => {
+            return getValue(item[key]) === getValue(filter);
+          });
+        }
       });
     });
   };
-  const listProduct = filterPlainArray(getProducts, filter);
+
+  const handleSort = () => {
+    switch (sort) {
+      case "Price: High-Low":
+        return filterPlainArray(getProducts, filter).sort(
+          (a: Product, b: Product) => b.price - a.price
+        );
+      case "Price: Low-High":
+        return filterPlainArray(getProducts, filter).sort(
+          (a: Product, b: Product) => a.price - b.price
+        );
+      default:
+        return filterPlainArray(getProducts, filter);
+    }
+  };
+  const listProduct = handleSort();
   const productsLength = listProduct.length;
+
   return (
     <>
       <FilterBar
         productsLength={productsLength}
         open={open}
         setOpen={handleToggleOpen}
-      />
-      <FilterBarMobile
-        filter={filter}
-        setFiltter={setFiltter}
-        productsLength={productsLength}
+        sort={sort}
+        setSort={setSort}
       />
       <Result
         filter={filter}
@@ -68,6 +91,7 @@ const Products = (props: Props) => {
         setFiltter={setFiltter}
         open={open}
         setOpen={setOpen}
+        productsLength={productsLength}
       />
     </>
   );

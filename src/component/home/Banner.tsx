@@ -22,6 +22,7 @@ const Banner = (props: Props) => {
         title={`LOOKS GOOD. RUNS GOOD. \nFEELS GOOD.`}
         content="A smooth ride with an endless amount of comfort, the Nike React Infinity Run Flyknit 3 is the first step towards your best run yet."
         button="shop"
+        link='/products'
       />
     </ContainerCustom>
   );

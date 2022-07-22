@@ -8,6 +8,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  Theme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -26,6 +27,10 @@ import { useAppSelector } from "app/hooks";
 import { selectDataProductReducer } from "pages/Dashboard/Product/module/ProductSlice";
 import { Product } from "models/products";
 import { filter } from "pages/Products/Products";
+import useCheckMaxBreakpoints from "hooks/useCheckMaxBreakpoints";
+import { makeStyles } from "@mui/styles";
+import FilterBarMobile from "./FilterBarMobile";
+import useCheckMinBreakpoints from "hooks/useCheckMinBreakpoints";
 
 interface Props {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,10 +43,19 @@ interface Props {
     }>
   >;
   listProduct: Product[];
-  filter:filter
+  filter: filter;
+  productsLength: number;
 }
 
 const drawerWidth = 240;
+
+const useStyles = makeStyles((theme: Theme) => ({
+  main: {
+    [theme.breakpoints.down("md")]: {
+      padding: "24px 0 24px 0 !important",
+    },
+  },
+}));
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -63,7 +77,8 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
 }));
 
 export default function Result(props: Props) {
-const { open,filter, setOpen, setFiltter,listProduct } = props;
+  const { open, filter, setOpen, setFiltter, listProduct, productsLength } =
+    props;
 
   const menu = [
     "Shoes",
@@ -144,25 +159,45 @@ const { open,filter, setOpen, setFiltter,listProduct } = props;
     "High-Impact Activities",
   ];
   const collaborator = ["Patta", "sacai", "Off-White", "Gyakusou"];
-
+  const maxBreakpoint = useCheckMaxBreakpoints(950);
+  const minBreakpoint = useCheckMinBreakpoints(950);
+  const classes = useStyles();
   return (
     <ContainerCustom>
+      <>
+        {minBreakpoint && (
+          <FilterBarMobile
+            filter={filter}
+            setFiltter={setFiltter}
+            productsLength={productsLength}
+            colors={colors}
+            brands={brands}
+            sports={sports}
+            bestfor={bestfor}
+            athletes={athletes}
+            collaborator={collaborator}
+            menu={menu}
+          />
+        )}
+      </>
       <Box sx={{ display: "flex" }}>
-        <LeftPanel
-        filter={filter}
-          setFiltter={setFiltter}
-          menu={menu}
-          colors={colors}
-          drawerWidth={drawerWidth}
-          open={open}
-          brands={brands}
-          sports={sports}
-          athletes={athletes}
-          bestfor={bestfor}
-          collaborator={collaborator}
-        />
+        {maxBreakpoint && (
+          <LeftPanel
+            filter={filter}
+            setFiltter={setFiltter}
+            menu={menu}
+            colors={colors}
+            drawerWidth={drawerWidth}
+            open={open}
+            brands={brands}
+            sports={sports}
+            athletes={athletes}
+            bestfor={bestfor}
+            collaborator={collaborator}
+          />
+        )}
         {/* main list product */}
-        <Main open={open}>
+        <Main open={open} className={classes.main}>
           <ListProducts listProduct={listProduct} />
         </Main>
       </Box>

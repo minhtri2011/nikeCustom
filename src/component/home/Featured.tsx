@@ -66,7 +66,7 @@ const Featured = (props: Props) => {
           <div className={classes.content}>
             <h4>Newest Styles of the Season</h4>
             <div className={classes.positionBtn}>
-              <ButtonCustom value="Shop" black={true} />
+              <ButtonCustom link="/products" value="Shop" black={true} />
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ const Featured = (props: Props) => {
           <div className={classes.content}>
             <h4>Perfect for Picnics and Garden Parties</h4>
             <div className={classes.positionBtn}>
-              <ButtonCustom value="Shop" />
+              <ButtonCustom link="/products" value="Shop" />
             </div>
           </div>
         </div>

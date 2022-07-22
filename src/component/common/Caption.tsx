@@ -1,5 +1,6 @@
 import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Link } from "react-router-dom";
 import ButtonCustom from "./ButtonCustom";
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
   title: string;
   content: string;
   button: string;
+  link?: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -52,14 +54,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 const Caption = (props: Props) => {
-  const { miniTitle, title, content, button } = props;
+  const { miniTitle, title, content, button, link } = props;
   const classes = useStyles();
   return (
     <div className={classes.root}>
       {miniTitle && <p>{miniTitle}</p>}
       <h1>{title}</h1>
       <p>{content}</p>
-      <ButtonCustom black={true} value={button} />
+      {link ? (
+          <ButtonCustom link={link} black={true} value={button} />
+      ) : (
+        <ButtonCustom black={true} value={button} />
+      )}
     </div>
   );
 };

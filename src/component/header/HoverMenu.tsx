@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
   navHover: {
     backgroundColor: "white",
+  overflowY:'auto',
+  maxHeight:'100vh',
     position: "absolute",
     padding: "16px 40px 40px 40px",
     top: "60px",

@@ -80,19 +80,19 @@ const MoreNike = (props: Props) => {
         <div>
           <img src={img} alt="nike" />
           <div className={classes.btnPosition}>
-            <ButtonCustom value="Men`s" />
+            <ButtonCustom link="/products" value="Men`s" />
           </div>
         </div>
         <div>
           <img src={img2} alt="nike" />
           <div className={classes.btnPosition}>
-            <ButtonCustom value="Women`s" />
+            <ButtonCustom link="/products" value="Women`s" />
           </div>
         </div>
         <div>
           <img src={img3} alt="nike" />
           <div className={classes.btnPosition}>
-            <ButtonCustom value="Kid`s" />
+            <ButtonCustom link="/products" value="Kid`s" />
           </div>
         </div>
       </div>

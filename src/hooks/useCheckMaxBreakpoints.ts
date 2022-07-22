@@ -8,10 +8,11 @@ const useCheckMaxBreakpoints = (breakpoint: number) => {
     screenWidth > breakpoint ? setValue(true) : setValue(false);
   };
   useEffect(() => {
-  setBreakpoints()
-  }, []);
-  useEffect(() => {
+    setBreakpoints()
     window.addEventListener("resize", setBreakpoints);
+    return () => {
+      window.removeEventListener("resize", setBreakpoints);
+    };
   }, []);
   return value;
 };

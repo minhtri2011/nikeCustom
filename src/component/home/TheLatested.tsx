@@ -22,6 +22,7 @@ const TheLatested = (props: Props) => {
         content="Trusted by trail runners to take you from road to trail and back."
         title="Nike React Pegasus Trail 4"
         button="Shop"
+        link="/products"
       />
     </ContainerCustom>
   );

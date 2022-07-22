@@ -5,13 +5,14 @@ const useCheckMinBreakpoints = (breakpoint: number) => {
 
   const setBreakpoints = () => {
     const screenWidth = window.innerWidth;
-    screenWidth < breakpoint ? setValue(true) : setValue(false);
+    screenWidth <= breakpoint ? setValue(true) : setValue(false);
   };
   useEffect(() => {
-  setBreakpoints()
-  }, []);
-  useEffect(() => {
+    setBreakpoints()
     window.addEventListener("resize", setBreakpoints);
+    return () => {
+      window.removeEventListener('resize', setBreakpoints)
+  }
   }, []);
   return value;
 };

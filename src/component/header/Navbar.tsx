@@ -1,10 +1,11 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Button, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import useCheckScrollOverBottom from "hooks/useCheckScrollOverBottom";
+import useCheckScrollToTopElement from "hooks/useCheckScrollToTopElement";
 import { useOnClickOutside } from "hooks/useOnClickOutSide";
 // import { useScrollDirection } from "hooks/useScrollDirection";
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useScrollDirection } from "react-use-scroll-direction";
 import { navbar } from "./Header";
 import HoverMenu from "./HoverMenu";
@@ -287,9 +288,6 @@ const Navbar = (props: Props) => {
       setDirection(scrollDirection);
     }
   }, [scrollDirection]);
-  useEffect(() => {
-    console.log(direction);
-  }, [direction]);
 
   const handleClickSearch = () => {
     setBackdrop(true);
@@ -307,7 +305,7 @@ const Navbar = (props: Props) => {
   // check click outside searchbar panel
   useOnClickOutside(searchBar, handleCancleSearchBar);
 
-  const checkScroll = useCheckScrollOverBottom(nav);
+  const checkScroll = useCheckScrollToTopElement(nav);
   return (
     <div ref={nav} className={classes.navContainer}>
       <div
@@ -317,6 +315,7 @@ const Navbar = (props: Props) => {
         ref={searchBar}
       >
         <div className={classes.icon}>
+          <Link to='/'>
           <svg
             className="pre-logo-svg"
             height="60px"
@@ -326,6 +325,7 @@ const Navbar = (props: Props) => {
           >
             <path d="M68.56 4L18.4 25.36Q12.16 28 7.92 28q-4.8 0-6.96-3.36-1.36-2.16-.8-5.48t2.96-7.08q2-3.04 6.56-8-1.6 2.56-2.24 5.28-1.2 5.12 2.16 7.52Q11.2 18 14 18q2.24 0 5.04-.72z"></path>
           </svg>
+          </Link>
         </div>
         <div className={classes.navHover}>
           <ul

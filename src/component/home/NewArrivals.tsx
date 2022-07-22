@@ -6,6 +6,7 @@ import Title from "component/common/Title";
 import { Product } from "models/products";
 import { selectDataProductReducer } from "pages/Dashboard/Product/module/ProductSlice";
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Props {}
 
@@ -35,11 +36,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   productCard: {
+    listStyle:'none',
     scrollSnapAlign: "start",
     flexShrink: 0,
     minWidth: "300px",
     minHeight: "300px",
     width: "calc(100% /3)",
+    '& a':{
+      listStyle:'none',
+      textDecoration:'none',
+    }
   },
   productImg: {
     width: "100%",
@@ -80,7 +86,8 @@ const NewArrivals = (props: Props) => {
   const renderProductCard = () => {
     return filterProducts.map((product: Product) => {
       return (
-        <div className={classes.productCard} key={product._id}>
+        <li className={classes.productCard} key={product._id}>
+          <Link to={`/detail/${product._id}`}>
           <img
             className={classes.productImg}
             src={product.img}
@@ -97,7 +104,8 @@ const NewArrivals = (props: Props) => {
               <span>{product.price.toLocaleString()}₫</span>
             </div>
           </div>
-        </div>
+          </Link>
+        </li>
       );
     });
   };

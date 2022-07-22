@@ -1,14 +1,19 @@
 import { Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface Props {
   value: string;
   black?: boolean;
+  link?: string;
 }
 const useStyles = makeStyles((theme) => ({
+  linkBtn:{
+    textDecoration:'none',
+  },
   btn: {
-    display:'block !important',
+    display: "block !important",
     padding: "6px 20px !important",
     marginTop: "24px",
     borderRadius: "50px !important",
@@ -45,11 +50,21 @@ const useStyles = makeStyles((theme) => ({
 
 const ButtonCustom = (props: Props) => {
   const classes = useStyles();
-  const { black, value } = props;
+  const { black, value ,link} = props;
   return (
-    <Button className={`${classes.btn}${black ? " black" : ""}`}>
-      <span>{value}</span>
-    </Button>
+    <>
+      {link ? (
+        <Link to={link} className={classes.linkBtn}>
+          <Button className={`${classes.btn}${black ? " black" : ""}`}>
+            <span>{value}</span>
+          </Button>
+        </Link>
+      ) : (
+        <Button className={`${classes.btn}${black ? " black" : ""}`}>
+          <span>{value}</span>
+        </Button>
+      )}
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 // import { useScrollDirection } from "react-use-scroll-direction";
 
-const useCheckScrollOverBottom = (ref: any) => {
+const useCheckScrollToTopElement = (ref: any) => {
   const [value, setValue] = useState<boolean>(false);
  
   const handleCheck = () => {
@@ -15,10 +15,14 @@ const useCheckScrollOverBottom = (ref: any) => {
     }
   };
   useEffect(() => {
+    handleCheck()
     window.addEventListener("scroll", handleCheck);
     // return window.removeEventListener("scroll", handleCheck);
+    return () => {
+      window.removeEventListener('scroll', handleCheck)
+  }
   }, []);
   return value;
 };
 
-export default useCheckScrollOverBottom;
+export default useCheckScrollToTopElement;

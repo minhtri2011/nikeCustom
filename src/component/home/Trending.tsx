@@ -33,6 +33,7 @@ const Trending = (props: Props) => {
         title="NEVER DONE SUMMERING"
         content="Play. Let loose. Repeat. This season, turn it up in styles made for living life to the max."
         button="Shop"
+        link="/products"
       />
     </ContainerCustom>
   );

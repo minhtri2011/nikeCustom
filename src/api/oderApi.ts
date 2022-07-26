@@ -1,3 +1,4 @@
+import { cartUpload } from "models/cart";
 import { oder } from "models/oder";
 import axiosClient from "./axiosClient";
 
@@ -10,5 +11,14 @@ const oderApi = {
       },
     });
   },
+  create(data:cartUpload,token: string): Promise<cartUpload> {
+    const url = "cart/create";
+    return axiosClient.post(url,data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
 };
-export default oderApi
+
+export default oderApi;

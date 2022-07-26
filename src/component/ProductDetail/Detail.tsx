@@ -15,10 +15,14 @@ import useCheckElementAtBottomScreen from "hooks/useCheckElementAtBottomScreen";
 import useCheckMinBreakpoints from "hooks/useCheckMinBreakpoints";
 import { img, imgDetails, Product, sizes } from "models/products";
 import React, { useRef, useState } from "react";
+import { CartActions } from "pages/Cart/module/cartSlice";
+import { useAppDispatch } from "app/hooks";
+import { v4 as uuid } from "uuid";
 
 interface Props {
   data: Product;
-  setListCard: React.Dispatch<React.SetStateAction<img[] | undefined>>;
+  setListCard: React.Dispatch<React.SetStateAction<imgDetails | undefined>>;
+  listCard: imgDetails | undefined;
 }
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -204,16 +208,33 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Detail = (props: Props) => {
   const classes = useStyles();
-  const { data, setListCard } = props;
+  const dispatch = useAppDispatch();
+  const { data, setListCard, listCard } = props;
   const [size, setSize] = useState<string>();
   const breakpoint = useCheckMinBreakpoints(950);
   const btnBuy = useRef(null);
   const checkScrollToBtn = useCheckElementAtBottomScreen(btnBuy);
-  const handleChangeListCardImg = (value: img[]) => {
+  const handleChangeListCardImg = (value: imgDetails) => {
     setListCard(value);
   };
   const handleSetSize = (value: string) => {
     setSize(value);
+  };
+  const handleAddCartBag = () => {
+    const id = uuid();
+    const dataUpload = {
+      id: id,
+      quantity: 1,
+      name: data.name || "",
+      price: data.price || 0,
+      size: size || "",
+      img: data.img || "",
+      color: listCard?.color || "",
+      sizes: data.sizes || [],
+      typeProduct: data.typeProduct || "",
+      gender: data.gender || "",
+    };
+    dispatch(CartActions.addToCart(dataUpload));
   };
   const lazyTitle = () => {
     return (
@@ -299,24 +320,36 @@ const Detail = (props: Props) => {
   const lazyBtn = () => {
     return (
       <>
-        <Skeleton
-          width={"100%"}
-          style={{ transform: "none"}}
-        >
+        <Skeleton width={"100%"} style={{ transform: "none" }}>
           <button className={`${classes.btn} white`}>
             Favourite <FavoriteBorderIcon />
           </button>
         </Skeleton>
-        <Skeleton
-          width={"100%"}
-          style={{ transform: "none"}}
-        >
+        <Skeleton width={"100%"} style={{ transform: "none" }}>
           <button className={`${classes.btn} white`}>
             Favourite <FavoriteBorderIcon />
           </button>
         </Skeleton>
       </>
     );
+  };
+  const sortSizes = () => {
+    const sortData = [...data?.sizes];
+    return sortData
+      .sort((a: sizes, b: sizes) => +a.size - +b.size)
+      .map((item: sizes, index: number) => {
+        return (
+          <div
+            className={`${classes.sizeItem}${
+              size === item.size ? " active" : ""
+            }`}
+            key={index}
+            onClick={() => handleSetSize(item.size)}
+          >
+            {item.size}
+          </div>
+        );
+      });
   };
   return (
     <div className={classes.container}>
@@ -339,7 +372,7 @@ const Detail = (props: Props) => {
             {data.imgDetails.map((img: imgDetails) => {
               return (
                 <img
-                  onClick={() => handleChangeListCardImg(img.imgs)}
+                  onClick={() => handleChangeListCardImg(img)}
                   src={img.imgs[0].img}
                   key={img._id}
                   alt="nike"
@@ -351,25 +384,10 @@ const Detail = (props: Props) => {
             <span>Select Size</span>
             <span>Size Guide</span>
           </div>
-          <div className={classes.listSizes}>
-            {data?.sizes
-              .sort((a: sizes, b: sizes) => +a.size - +b.size)
-              .map((item: sizes, index: number) => {
-                return (
-                  <div
-                    className={`${classes.sizeItem}${
-                      size === item.size ? " active" : ""
-                    }`}
-                    key={index}
-                    onClick={() => handleSetSize(item.size)}
-                  >
-                    {item.size}
-                  </div>
-                );
-              })}
-          </div>
+          <div className={classes.listSizes}>{sortSizes()}</div>
           <div className={classes.btnPosition} ref={btnBuy}>
             <button
+              onClick={() => handleAddCartBag()}
               className={`${classes.btn}${
                 breakpoint ? (checkScrollToBtn ? "" : " fixed") : ""
               }`}

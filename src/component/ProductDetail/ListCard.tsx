@@ -1,10 +1,10 @@
 import { Skeleton, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { img } from "models/products";
+import { img, imgDetails } from "models/products";
 import React from "react";
 
 interface Props {
-  data: img[] | undefined;
+  data: imgDetails | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -47,7 +47,7 @@ const ListCard = (props: Props) => {
   return (
     <div className={classes.root}>
       {data
-        ? data.map((card:any, index:number) => {
+        ? data.imgs.map((card:any, index:number) => {
             return (
               <div className={classes.card} key={index}>
                 <img src={card.img} alt="nike" />

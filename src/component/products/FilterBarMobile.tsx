@@ -21,8 +21,9 @@ import Filter from "component/svg/filter";
 import { makeStyles } from "@mui/styles";
 import ContainerCustom from "component/common/ContainerCustom";
 import { filter } from "pages/Products/Products";
-import React, { useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import CollapseCheckBox from "./CollapseCheckBox";
+import useLockBodyScroll from "hooks/useLockBodyScroll";
 
 interface Props {
   productsLength: number;
@@ -95,7 +96,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   panel: {
     height: "100vh !important",
-    overFlow: "hidden",
+    overflowY: "auto",
     position: "relative",
   },
   titleFilter: {
@@ -231,6 +232,11 @@ const FilterBarMobile = (props: Props) => {
   const toggleDrawer = (value: boolean) => {
     setState(value);
   };
+  useLayoutEffect(() => {
+    state
+      ? (document.body.style.removeProperty('overflow'))
+      : (document.body.style.overflow = "hidden");
+  }, [state]);
 
   return (
     <>

@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 // import { NotFound } from "component/common/";
 import { AnimatePresence } from "framer-motion";
 import Admin from "layout/admin/Admin";
+import Cart from "pages/Cart/Cart";
 import Oder from "pages/Dashboard/Oder/Oder";
 import AddProduct from "pages/Dashboard/Product/AddProduct";
 import EditProduct from "pages/Dashboard/Product/EditProduct";
@@ -49,6 +50,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/detail/:id" element={<ProductDetail />} />
+            <Route path="/cart" element={<Cart/>} />
           </Route>
 
           <Route element={<AuthRoute />}>

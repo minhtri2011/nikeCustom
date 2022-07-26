@@ -2,14 +2,14 @@ import { Skeleton, Theme } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { makeStyles } from "@mui/styles";
-import { img, Product } from "models/products";
+import { img, imgDetails, Product } from "models/products";
 import React, { useRef } from "react";
 import Slider from "react-slick";
 import useCheckMinBreakpoints from "hooks/useCheckMinBreakpoints";
 
 interface Props {
   data: Product;
-  listCard: img[] | undefined;
+  listCard: imgDetails | undefined 
 }
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -159,7 +159,7 @@ const SlideProduct = (props: Props) => {
       )}
       <Slider {...settings}>
         {listCard
-          ? listCard.map((card: img, index: number) => {
+          ? listCard.imgs.map((card: img, index: number) => {
               return (
                 <div className={classes.card} key={index}>
                   <img src={card.img} alt="nike" />

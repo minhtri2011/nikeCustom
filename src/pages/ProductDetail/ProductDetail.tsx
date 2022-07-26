@@ -7,7 +7,7 @@ import ListCard from "component/ProductDetail/ListCard";
 import SlideProduct from "component/ProductDetail/SlideProduct";
 import useCheckMaxBreakpoints from "hooks/useCheckMaxBreakpoints";
 import useCheckMinBreakpoints from "hooks/useCheckMinBreakpoints";
-import { img, Product } from "models/products";
+import { img, Product,imgDetails } from "models/products";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getToken } from "ultis/getToken";
@@ -30,23 +30,19 @@ const ProductDetail = (props: Props) => {
   const { id } = useParams();
   const token = getToken();
   const [product, setProduct] = useState<Product>();
-  const [listCard, setListCard] = useState<img[]>();
+  const [listCard, setListCard] = useState<imgDetails | undefined>();
   const breakpoint = useCheckMinBreakpoints(950);
   useEffect(() => {
     (async () => {
       try {
         const res = await productApi.getById(id as string, token);
         setProduct(res as Product);
+        setListCard(res?.imgDetails[0] as imgDetails);
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
-  useEffect(() => {
-    if (product) {
-      setListCard(product?.imgDetails[0]?.imgs);
-    }
-  }, [product]);
 
   return (
     <ContainerCustom>
@@ -56,7 +52,7 @@ const ProductDetail = (props: Props) => {
         ) : (
           <ListCard data={listCard} />
         )}
-        <Detail setListCard={setListCard} data={product as Product} />
+        <Detail listCard={listCard} setListCard={setListCard} data={product as Product} />
       </div>
     </ContainerCustom>
   );

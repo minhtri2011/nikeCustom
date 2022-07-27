@@ -3,14 +3,13 @@ import { Button, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import useCheckScrollToTopElement from "hooks/useCheckScrollToTopElement";
 import { useOnClickOutside } from "hooks/useOnClickOutSide";
-// import { useScrollDirection } from "hooks/useScrollDirection";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useScrollDirection } from "react-use-scroll-direction";
 import { navbar } from "./Header";
 import HoverMenu from "./HoverMenu";
 import MobileMenu from "./MobileMenu";
 import SearchBoxResult from "./SearchBoxResult";
+import { useScrollDirection } from "react-use-scroll-direction";
 interface Props {
   data: navbar[];
   animate: number;
@@ -287,6 +286,7 @@ const Navbar = (props: Props) => {
     ) {
       setDirection(scrollDirection);
     }
+    return () => setDirection(scrollDirection as string || 'UP');
   }, [scrollDirection]);
 
   const handleClickSearch = () => {

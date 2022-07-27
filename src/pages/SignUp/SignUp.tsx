@@ -314,6 +314,7 @@ const SignUpPage = (props: Props) => {
             <InputLabel shrink>Name</InputLabel>
             <FormControl fullWidth className={classes.formInput}>
               <InputBase
+                sx={{'& input':{height:'40px'}}}
                 className={classes.input}
                 autoFocus
                 fullWidth
@@ -326,6 +327,7 @@ const SignUpPage = (props: Props) => {
             <InputLabel shrink>Age</InputLabel>
             <FormControl fullWidth className={classes.formInput}>
               <InputBase
+                sx={{'& input':{height:'40px'}}}
                 className={classes.input}
                 fullWidth
                 type="number"
@@ -338,6 +340,7 @@ const SignUpPage = (props: Props) => {
             <InputLabel shrink>Email</InputLabel>
             <FormControl fullWidth className={classes.formInput}>
               <InputBase
+                sx={{'& input':{height:'40px'}}}
                 className={classes.input}
                 fullWidth
                 {...register("email")}
@@ -355,6 +358,7 @@ const SignUpPage = (props: Props) => {
             <InputLabel shrink>Password</InputLabel>
             <FormControl fullWidth className={classes.formInput}>
               <InputBase
+                sx={{'& input':{height:'40px'}}}
                 className={classes.input}
                 id="outlined-adornment-password"
                 type={values.showPassword ? "text" : "password"}

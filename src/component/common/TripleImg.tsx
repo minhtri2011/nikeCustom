@@ -1,18 +1,26 @@
 import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import img from "assest/moreNike1.jpg";
-import img2 from "assest/moreNike2.jpg";
-import img3 from "assest/moreNike3.jpg";
+
 import ButtonCustom from "component/common/ButtonCustom";
 import Title from "component/common/Title";
 
-interface Props {}
+interface Props {
+  img1: string;
+  button1: string;
+  link1: string;
+  img2: string;
+  button2: string;
+  link2: string;
+  img3: string;
+  button3: string;
+  link3: string;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    margin: "84px 48px 0",
+    margin: "0px 48px 0",
     [theme.breakpoints.down("md")]: {
-      margin: "84px 0 0 24px",
+      margin: "0px 0 0 24px",
     },
   },
   listItems: {
@@ -45,10 +53,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: "rgb(0, 0, 0, .6)",
     },
     "& > div": {
-      height: "100%",
       position: "relative",
       scrollSnapAlign: "start",
-      width: "100%",
       [theme.breakpoints.down("md")]: {
         flexShrink: 0,
         width: "80vw",
@@ -57,6 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         display: "block",
         width: "100%",
         height: "100%",
+        objectFit:'cover',
       },
     },
   },
@@ -71,28 +78,32 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const MoreNike = (props: Props) => {
+const TripleImg = (props: Props) => {
+    const {
+       img1,button1,link1, 
+       img2,button2,link2, 
+       img3,button3,link3 
+    }=props
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Title title="More Nike" />
       <div className={classes.listItems}>
         <div>
-          <img src={img} alt="nike" />
+          <img src={img1} alt="nike" />
           <div className={classes.btnPosition}>
-            <ButtonCustom link="/products" value="Men`s" />
+            <ButtonCustom link={link1} value={button1} />
           </div>
         </div>
         <div>
           <img src={img2} alt="nike" />
           <div className={classes.btnPosition}>
-            <ButtonCustom link="/products" value="Women`s" />
+            <ButtonCustom link={link2} value={button2} />
           </div>
         </div>
         <div>
           <img src={img3} alt="nike" />
           <div className={classes.btnPosition}>
-            <ButtonCustom link="/products" value="Kid`s" />
+            <ButtonCustom link={link3} value={button3} />
           </div>
         </div>
       </div>
@@ -100,4 +111,4 @@ const MoreNike = (props: Props) => {
   );
 };
 
-export default MoreNike;
+export default TripleImg;

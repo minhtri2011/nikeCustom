@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: "flex",
     maxWidth: "920px",
-    margin: "0 auto",
+    margin: "0 auto 50px",
     justifyContent: "space-between",
     [theme.breakpoints.down("sm")]: {
       display: "none",

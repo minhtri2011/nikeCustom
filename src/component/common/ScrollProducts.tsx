@@ -1,11 +1,8 @@
 import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useAppSelector } from "app/hooks";
-import ContainerCustom from "component/common/ContainerCustom";
-import Title from "component/common/Title";
 import { Product } from "models/products";
 import { selectDataProductReducer } from "pages/Dashboard/Product/module/ProductSlice";
-import React from "react";
 import { Link } from "react-router-dom";
 
 interface Props {}
@@ -36,16 +33,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   productCard: {
-    listStyle:'none',
+    listStyle: "none",
     scrollSnapAlign: "start",
     flexShrink: 0,
     minWidth: "300px",
     minHeight: "300px",
     width: "calc(100% /3)",
-    '& a':{
-      listStyle:'none',
-      textDecoration:'none',
-    }
+    "& a": {
+      listStyle: "none",
+      textDecoration: "none",
+    },
   },
   productImg: {
     width: "100%",
@@ -76,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const NewArrivals = (props: Props) => {
+const ScrollProducts = (props: Props) => {
   const classes = useStyles();
   const products = useAppSelector(selectDataProductReducer);
   const filterProducts = products
@@ -88,34 +85,29 @@ const NewArrivals = (props: Props) => {
       return (
         <li className={classes.productCard} key={product._id}>
           <Link to={`/detail/${product._id}`}>
-          <img
-            className={classes.productImg}
-            src={product.img}
-            alt={product.name}
-          />
-          <div className={classes.inforProduct}>
-            <div>
-              <h4>{product.name}</h4>
-              <p>
-                {product.gender} {product.typeProduct}
-              </p>
+            <img
+              className={classes.productImg}
+              src={product.img}
+              alt={product.name}
+            />
+            <div className={classes.inforProduct}>
+              <div>
+                <h4>{product.name}</h4>
+                <p>
+                  {product.gender} {product.typeProduct}
+                </p>
+              </div>
+              <div>
+                <span>{product.price.toLocaleString()}₫</span>
+              </div>
             </div>
-            <div>
-              <span>{product.price.toLocaleString()}₫</span>
-            </div>
-          </div>
           </Link>
         </li>
       );
     });
   };
 
-  return (
-    <ContainerCustom mgt={true}>
-      <Title title="New Arrivals" />
-      <ul className={classes.listProducts}>{renderProductCard()}</ul>
-    </ContainerCustom>
-  );
+  return <ul className={classes.listProducts}>{renderProductCard()}</ul>;
 };
 
-export default NewArrivals;
+export default ScrollProducts;

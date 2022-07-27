@@ -15,6 +15,7 @@ export interface navbarData {
 }
 export interface navbar {
   title: string;
+  link:string;
   data?: navbarData[];
 }
 
@@ -43,6 +44,7 @@ const Header = (props: Props) => {
   const navbar = [
     {
       title: "Men",
+      link:'/men',
       data: [
         {
           title: "New & Featured",
@@ -237,6 +239,7 @@ const Header = (props: Props) => {
     },
     {
       title: "Women",
+      link:'/women',
       data: [
         {
           title: "New & Featured",
@@ -440,6 +443,7 @@ const Header = (props: Props) => {
     },
     {
       title: "Kids",
+      link:'/kids',
       data: [
         {
           title: "New & Featured",
@@ -572,6 +576,7 @@ const Header = (props: Props) => {
     },
     {
       title: "Customise",
+      link:'/',
       data: [
         { title: "Featured", item: [{ name: "Nike By You New Releases" }] },
         { title: "Nike By You", item: [{ name: "Men" }, { name: "Women" }] },
@@ -599,6 +604,7 @@ const Header = (props: Props) => {
     },
     {
       title: "Sale",
+      link:'/',
       data: [
         {
           title: "Featured",
@@ -632,6 +638,7 @@ const Header = (props: Props) => {
     },
     {
       title: "SNKRS",
+      link:'/'
     },
   ];
   const [animate, setAnimate] = useState(0);
@@ -651,5 +658,6 @@ const Header = (props: Props) => {
     </div>
   );
 };
+
 
 export default Header;

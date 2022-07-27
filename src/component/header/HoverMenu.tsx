@@ -1,12 +1,13 @@
 import { Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { navbar } from "./Header";
 
 interface Props {
   item: navbar;
   setAnimate: React.Dispatch<React.SetStateAction<number>>;
-  setBackdrop: React.Dispatch<React.SetStateAction<boolean>>
+  setBackdrop: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -22,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
   },
   navHover: {
     backgroundColor: "white",
-  overflowY:'auto',
-  maxHeight:'100vh',
+    overflowY: "auto",
+    maxHeight: "100vh",
     position: "absolute",
     padding: "16px 40px 40px 40px",
     top: "60px",
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
       "transform .1s ease,opacity 0ms linear .1s,visibility 0ms linear .1s",
     transformOrigin: "top center",
     transform: "scaleY(0)",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
     "&.active": {
       transform: "scaleY(1)",
       opacity: 1,
@@ -95,28 +99,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const HoverMenu = (props: Props) => {
-  const { item, setAnimate,setBackdrop } = props;
+  const { item, setAnimate, setBackdrop } = props;
   const classes = useStyles();
   const [active, setActive] = useState(false);
-  const handleOver=()=>{
+  const handleOver = () => {
     setActive(true);
     setAnimate((v) => ++v);
-    setBackdrop(true)
-  }
-  
+    setBackdrop(true);
+  };
+
   return item.data ? (
     <li
-    onMouseLeave={() => {
-      setActive(false);
-      setBackdrop(false)
+      onMouseLeave={() => {
+        setActive(false);
+        setBackdrop(false);
       }}
     >
-      <Typography
-        className={classes.navTitleItem}
-        onMouseEnter={handleOver}
-      >
-        {item.title}
-      </Typography>
+      <Link to={item.link} style={{ textDecoration: "none" }}>
+        <Typography className={classes.navTitleItem} onMouseEnter={handleOver}>
+          {item.title}
+        </Typography>
+      </Link>
       <div className={`${classes.navHover}${active ? " active" : ""}`}>
         <div className={classes.navContent}>
           {item.data?.map((data, indexData) => {

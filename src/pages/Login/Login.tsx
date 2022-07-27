@@ -276,6 +276,7 @@ const LoginPage = (props: Props) => {
                 className={classes.input}
                 autoFocus
                 fullWidth
+                sx={{'& input':{height:'40px'}}}
                 inputProps={{
                   // autoComplete: "new-password",
                   autofill:'off',
@@ -295,6 +296,7 @@ const LoginPage = (props: Props) => {
                 className={classes.input}
                 id="outlined-adornment-password"
                 type={values.showPassword ? "text" : "password"}
+                sx={{'& input':{height:'40px'}}}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -349,7 +351,7 @@ const LoginPage = (props: Props) => {
             align="center"
             mb={3}
           >
-            Don't have account?{" "}
+            Don't have account?
             <Link to="/signUp" className={classes.linkStyle}>
               Sign up for free
             </Link>

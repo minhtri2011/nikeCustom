@@ -28,6 +28,7 @@ const InputField = ({ name, label, control, type, ...inputProps }: Props) => {
       error={invalid}
       helperText={error?.message}
       inputProps={inputProps}
+      sx={{ '& input':{height:'56px !important'}}}
     ></TextField>
   );
 };

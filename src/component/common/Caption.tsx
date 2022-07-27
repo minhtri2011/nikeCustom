@@ -5,10 +5,10 @@ import ButtonCustom from "./ButtonCustom";
 
 interface Props {
   miniTitle?: string;
-  title: string;
-  content: string;
+  title?: string;
+  content?: string;
   button: string;
-  link?: string;
+  link: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -58,7 +58,7 @@ const Caption = (props: Props) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      {miniTitle && <p>{miniTitle}</p>}
+      {miniTitle && miniTitle.length && <p>{miniTitle}</p>}
       <h1>{title}</h1>
       <p>{content}</p>
       {link ? (

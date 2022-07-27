@@ -13,11 +13,14 @@ import AddUser from "pages/Dashboard/User/AddUser";
 import EditUser from "pages/Dashboard/User/EditUser";
 import User from "pages/Dashboard/User/User";
 import Home from "pages/Home/Home";
+import Kids from "pages/Kids/Kids";
 import LoginPage from "pages/Login/Login";
+import Men from "pages/Men/Men";
 import ProductDetail from "pages/ProductDetail/ProductDetail";
 import Products from "pages/Products/Products";
 import SignUpPage from "pages/SignUp/SignUp";
-import { useEffect } from "react";
+import Women from "pages/Women/Women";
+import React, { EffectCallback, useEffect } from "react";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useLocation } from "react-router";
 import { Route, Routes } from "react-router-dom";
@@ -41,16 +44,19 @@ function App() {
     dispatch(ThemeActions.setTheme(darkmode));
     dispatch(ProductActions.fetchProducts());
   }, [darkmode, dispatch]);
-
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+    //   <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={lightTheme}>
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.pathname}>
           <Route element={<PublicRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/detail/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart/>} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/women" element={<Women />} />
+            <Route path="/kids" element={<Kids />} />
+            <Route path="/men" element={<Men/>} />
           </Route>
 
           <Route element={<AuthRoute />}>

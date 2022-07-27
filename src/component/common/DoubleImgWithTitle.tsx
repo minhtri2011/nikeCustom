@@ -1,12 +1,21 @@
 import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import img1 from "assest/featured1.jpg";
-import img2 from "assest/featured2.jpg";
+
 import ButtonCustom from "component/common/ButtonCustom";
 import ContainerCustom from "component/common/ContainerCustom";
 import Title from "component/common/Title";
 
-interface Props {}
+interface Props {
+  title: string;
+  img1: string;
+  img2: string;
+  content1: string;
+  content2: string;
+  button1: string;
+  link1: string;
+  button2: string;
+  link2: string;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -22,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     "& > div": {
       position: "relative",
+      width:'100%',
       "&:nth-child(2)": {
         "& h4": {
           color: "white",
@@ -55,27 +65,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Featured = (props: Props) => {
+const DoubleImgWithTitle = (props: Props) => {
+  const {
+    img1,
+    img2,
+    title,
+    content1,
+    content2,
+    button1,
+    button2,
+    link1,
+    link2,
+  }=props;
   const classes = useStyles();
   return (
     <ContainerCustom mgt={true}>
-      <Title title="Featured" />
+      <Title title={title} />
       <div className={classes.root}>
         <div>
           <img src={img1} alt="nike" />
           <div className={classes.content}>
-            <h4>Newest Styles of the Season</h4>
+            <h4>{content1}</h4>
             <div className={classes.positionBtn}>
-              <ButtonCustom link="/products" value="Shop" black={true} />
+              <ButtonCustom link={link1} value={button1} black={true} />
             </div>
           </div>
         </div>
         <div>
           <img src={img2} alt="nike" />
           <div className={classes.content}>
-            <h4>Perfect for Picnics and Garden Parties</h4>
+            <h4>{content2}</h4>
             <div className={classes.positionBtn}>
-              <ButtonCustom link="/products" value="Shop" />
+              <ButtonCustom link={link2} value={button2} />
             </div>
           </div>
         </div>
@@ -84,4 +105,4 @@ const Featured = (props: Props) => {
   );
 };
 
-export default Featured;
+export default DoubleImgWithTitle;

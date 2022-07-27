@@ -1,30 +1,34 @@
 import { Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
+import { useAppSelector } from "app/hooks";
+import { selectIsLoggedIn, selectUserName } from "pages/Login/module/LoginSlice";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { getToken } from "ultis/getToken";
 
 type Props = {};
 
-const useStyles = makeStyles((theme:Theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
   brandHeader: {
     position: "relative",
     background: "#f5f5f5",
     height: "36px",
     width: "100%",
-    zIndex:6,
+    zIndex: 6,
     display: "flex",
     justifyContent: "space-between",
     padding: "0 36px 0 38px",
-    [theme.breakpoints.down('md')]:{
-      display:'none'
-    }
+    [theme.breakpoints.down("md")]: {
+      display: "none",
+    },
   },
   listMenu: {
     height: "100%",
     padding: 0,
     margin: 0,
     display: "flex",
-    alignItems:'center',
+    alignItems: "center",
     "& > li": {
       alignItems: "center",
       listStyle: "none",
@@ -42,7 +46,7 @@ const useStyles = makeStyles((theme:Theme) => ({
     paddingLeft: "12px",
   },
   submenu: {
-    zIndex:2,
+    zIndex: 2,
     position: "absolute",
     minWidth: "240px",
     padding: "24px 24px 24px 16px",
@@ -63,8 +67,8 @@ const useStyles = makeStyles((theme:Theme) => ({
   },
   titleMenu: {
     position: "relative",
-    display:'flex',
-    alightItem:'center',
+    display: "flex",
+    alightItem: "center",
   },
   listItemSubMenu: {
     listStyle: "none",
@@ -92,15 +96,16 @@ const useStyles = makeStyles((theme:Theme) => ({
     padding: "4px 8px",
     marginBottom: "12px !important",
   },
-  bar:{
-    padding:'4px',
-    fontSize:'12px !important',
-  }
+  bar: {
+    padding: "4px",
+    fontSize: "12px !important",
+  },
 }));
 
 const dataList = [
   {
     title: "Help",
+    link: "/",
     data: {
       title: "Help",
       content: [
@@ -117,15 +122,20 @@ const dataList = [
   },
   {
     title: "Join Us",
+    link: "/signup",
   },
   {
     title: "Sign in",
+    link: "/login",
   },
 ];
 
 const BrandHeader = (props: Props) => {
   const classes = useStyles();
   const [active, setActive] = useState<boolean>(false);
+  const token = getToken();
+  const userName=useAppSelector(selectUserName)
+  const isLogin=useAppSelector(selectIsLoggedIn)
 
   return (
     <div className={classes.brandHeader}>
@@ -135,55 +145,93 @@ const BrandHeader = (props: Props) => {
         </svg>
       </div>
       <ul className={classes.listMenu}>
-        {dataList.map((item, index) => {
-          return (
-            <li
-              key={index}
-              className={classes.titleMenu}
-              onMouseLeave={() => setActive(false)}
+        <li className={classes.titleMenu} onMouseLeave={() => setActive(false)}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography
+              variant="caption"
+              onMouseEnter={() => setActive(true)}
+              className={classes.titleHover}
             >
-              {index > 0 && (
-                <Typography className={classes.bar}>
-                  |
+              Help
+            </Typography>
+          </Link>
+          <div className={`${classes.submenu} ${active ? "active" : ""}`}>
+            <Typography className={classes.titleSubMenu}>Help</Typography>
+            <ul className={classes.listItemSubMenu}>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Order Status
                 </Typography>
-              )}
-              {item.data ? (
-                <>
-                  <Typography
-                    variant="caption"
-                    onMouseEnter={() => setActive(true)}
-                    className={classes.titleHover}
-                  >
-                    {item.title}
-                  </Typography>
-                  <div
-                    className={`${classes.submenu} ${active ? "active" : ""}`}
-                  >
-                    <Typography className={classes.titleSubMenu}>
-                      {item.data.title}
-                    </Typography>
-                    <ul className={classes.listItemSubMenu}>
-                      {item.data.content.map((contentItem, indexContent) => {
-                        return (
-                          <Typography
-                            key={indexContent}
-                            className={classes.itemHover}
-                          >
-                            {contentItem}
-                          </Typography>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </>
-              ) : (
-                <Typography className={classes.titleHover} variant="caption">
-                  {item.title}
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Dispatch and Delivery
                 </Typography>
-              )}
-            </li>
-          );
-        })}
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>Returns</Typography>
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Contact Us
+                </Typography>
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Privacy Policy
+                </Typography>
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Terms of Sale
+                </Typography>
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Terms of Use
+                </Typography>
+              </li>
+              <li>
+                <Typography className={classes.itemHover}>
+                  Send Us Feedback
+                </Typography>
+              </li>
+            </ul>
+          </div>
+          <Typography className={classes.bar}>|</Typography>
+          {!isLogin ? (
+            <>
+              <Link to="/signup" style={{ textDecoration: "none" }}>
+                <Typography
+                  variant="caption"
+                  className={classes.titleHover}
+                >
+                  Join Us
+                </Typography>
+              </Link>
+              <Typography className={classes.bar}>|</Typography>
+              <Link to="/login" style={{ textDecoration: "none" }}>
+                <Typography
+                  variant="caption"
+                  className={classes.titleHover}
+                >
+                  Sign in
+                </Typography>
+              </Link>
+            </>
+          ) : (
+            <>
+             <Link to="/" style={{ textDecoration: "none" }}>
+                <Typography
+                  variant="caption"
+                  className={classes.titleHover}
+                >
+                  Hi, {userName}
+                </Typography>
+              </Link>
+            </>
+          )}
+        </li>
       </ul>
     </div>
   );

@@ -23,7 +23,7 @@ interface dataMenu {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    minHeigh: "200px",
+    minHeight: "200px",
     backgroundColor: "#111",
   },
   footer: {

@@ -11,10 +11,8 @@ function* handleLogin(payload: LoginPayload): any {
     const res = yield call(userApi.login, data);
     if (check) {
       localStorage.setItem("access_token", JSON.stringify(res.token));
-      localStorage.setItem("user", JSON.stringify(res.user));
     } else {
       sessionStorage.setItem("access_token", JSON.stringify(res.token));
-      sessionStorage.setItem("user", JSON.stringify(res.user));
     }
     yield put(LoginActions.loginSuccess(res.user));
 
@@ -27,8 +25,7 @@ function* handleLogin(payload: LoginPayload): any {
   }
 }
 function* handleLogout() {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("user");
+ yield localStorage.removeItem("access_token");
 }
 
 function* watchLoginFlow() {
@@ -39,11 +36,11 @@ function* watchLoginFlow() {
 
   // check login user in localstorage then push to redux store
   if (isLoggedIn) {
-    yield put(LoginActions.loginSuccess(dataUser));
+    // yield put(LoginActions.loginSuccess(dataUser));
     yield put(LoginActions.setAuth());
   }
   if (isLoggedInOneTime) {
-    yield put(LoginActions.loginSuccess(dataUserInOneTime));
+    // yield put(LoginActions.loginSuccess(dataUserInOneTime));
     yield put(LoginActions.setAuth());
   }
 

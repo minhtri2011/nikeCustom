@@ -194,6 +194,7 @@ export default function ProductTable(props: UserProps) {
               label="Search product"
               variant="outlined"
               onChange={handleChangeSearchUser}
+              sx={{'& input':{height:'56px'}}}
             />
             <Link to="/dashboard/products/add" className={classes.linkBtn}>
               <Button className={classes.addBtn} variant="contained">

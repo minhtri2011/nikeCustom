@@ -6,7 +6,7 @@ interface Props {}
 const PublicRoute = (props: Props) => {
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <Outlet />
       <Footer />
     </>

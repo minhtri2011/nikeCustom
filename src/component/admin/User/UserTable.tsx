@@ -191,6 +191,7 @@ export default function UserTable(props: UserProps) {
               label="Search user"
               variant="outlined"
               onChange={handleChangeSearchUser}
+              sx={{'& input':{height:'56px'}}}
             />
             <Link to="/dashboard/users/add" className={classes.linkBtn}>
               <Button className={classes.addBtn} variant="contained">

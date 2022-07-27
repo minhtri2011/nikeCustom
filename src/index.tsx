@@ -1,5 +1,5 @@
 import CssBaseline from "@mui/material/CssBaseline";
-import ScrollToTop from "component/common/ScrollToTop";
+import ScrollToTop from "ultis/ScrollToTop";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";

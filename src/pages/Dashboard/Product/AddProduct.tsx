@@ -240,7 +240,8 @@ const AddProduct = (props: Props) => {
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeState("name", e.target.value)
-            }
+            }            
+            sx={{'& input':{height:'56px'}}}
           />
           <Grid container spacing={2}>
             <Grid item xs={5}>
@@ -330,6 +331,7 @@ const AddProduct = (props: Props) => {
             type="text"
             variant="outlined"
             fullWidth
+            sx={{'& input':{height:'56px'}}}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeState(
                 "price",
@@ -344,6 +346,7 @@ const AddProduct = (props: Props) => {
             label="Link image"
             variant="outlined"
             fullWidth
+            sx={{'& input':{height:'56px'}}}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeState("img", e.target.value)
             }
@@ -353,6 +356,7 @@ const AddProduct = (props: Props) => {
             label="Description"
             value={data.description}
             variant="outlined"
+            sx={{'& input':{height:'56px'}}}
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChangeState("description", e.target.value)
@@ -362,6 +366,7 @@ const AddProduct = (props: Props) => {
             className={classes.input}
             label="Message"
             variant="outlined"
+            sx={{'& input':{height:'56px'}}}
             value={data.message}
             fullWidth
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

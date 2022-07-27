@@ -1,8 +1,6 @@
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import {
-  Divider, Grid, Theme
-} from "@mui/material";
+import { Divider, Grid, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import oderApi from "api/oderApi";
@@ -12,7 +10,7 @@ import { cartCreate } from "models/cart";
 import {
   CartActions,
   selectDataCart,
-  selectTotalCart
+  selectTotalCart,
 } from "pages/Cart/module/cartSlice";
 import React, { ChangeEvent } from "react";
 import Swal from "sweetalert2";
@@ -21,6 +19,7 @@ import { getToken } from "ultis/getToken";
 type Props = {};
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
+    padding: "0 20px",
     display: "flex",
     maxWidth: "1100px",
     margin: "40px auto 0",
@@ -37,6 +36,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       aspectRatio: "1/1",
       marginRight: "30px",
       marginBottom: "30px",
+      [theme.breakpoints.down("md")]: {
+        marginRight: "10px",
+        width: "100px",
+        height: "100px",
+      },
     },
     "& > div": {
       "& p:nth-child(2)": {
@@ -89,6 +93,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     justifyContent: "space-between",
     paddingBottom: "12px",
+  },
+  paypal: {
+    display: "flex",
+    justifyContent: "center",
+    "& >div": {
+      width: "100%",
+    },
   },
 }));
 
@@ -150,6 +161,7 @@ const CartBody = (props: Props) => {
   };
 
   const cardProduct = (value: cartCreate) => {
+    // const token = getToken();
     return (
       <div className={classes.cardProduct}>
         <img src={value.img} alt="nike" />
@@ -210,8 +222,9 @@ const CartBody = (props: Props) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={4}>
-        <Grid item xs={8}>
+        <Grid item lg={8} xs={12}>
           <h4 className={classes.topTitle}>Bag</h4>
+          {cart.length === 0 && <h5>There are no items in your bag.</h5>}
           {cart?.map((product: cartCreate, index: number) => {
             return (
               <div key={product.id}>
@@ -221,7 +234,7 @@ const CartBody = (props: Props) => {
             );
           })}
         </Grid>
-        <Grid item xs={4}>
+        <Grid item lg={4} xs={12}>
           <h4 className={classes.titleSummary}>Summary</h4>
           <div className={classes.flextotal}>
             <span>Subtotal</span>
@@ -237,8 +250,12 @@ const CartBody = (props: Props) => {
             <span>{total.toLocaleString()}₫</span>
           </div>
           <Divider />
-          <Box pt={"30px"}>
-            <Paypal onsuccess={buyProduct} amount={total / 23000} />
+          <Box pt={"30px"} className={classes.paypal}>
+            <Paypal
+              onsuccess={buyProduct}
+              amount={total / 23000}
+              disable={token && total > 0 ? false : true}
+            />
           </Box>
         </Grid>
       </Grid>

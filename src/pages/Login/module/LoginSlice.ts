@@ -14,6 +14,7 @@ export interface LoginState {
   auth: boolean;
   errorMessage: boolean;
   currentUser?: User;
+  saveUser:boolean;
 }
 
 export interface LoginErrorPayload {
@@ -26,6 +27,7 @@ const initialState: LoginState = {
   logging: false,
   auth: false,
   errorMessage: false,
+  saveUser:false,
   currentUser: undefined,
 };
 
@@ -61,6 +63,12 @@ const LoginSlice = createSlice({
     setAuth(state) {
       state.auth = true;
     },
+    setSaveUser(state){
+      state.saveUser=true
+    },
+    disableSaveUser(state){
+      state.saveUser=false
+    }
   },
 });
 
@@ -77,6 +85,9 @@ export const selectNameLogging = (state: any) =>
 export const selectTypeUserLogging = (state: any) =>
   state.LoginReducer.currentUser?.userType;
 export const selectIDUser = (state: any) => state.LoginReducer.currentUser?._id;
+export const selectUserName = (state: any) => state.LoginReducer.currentUser?.name;
+export const selectSaveUser = (state: any) => state.LoginReducer.saveUser;
+
 
 //reducer
 const LoginReducer = LoginSlice.reducer;

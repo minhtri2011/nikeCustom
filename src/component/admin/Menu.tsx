@@ -6,9 +6,10 @@ import { useAppSelector } from "app/hooks";
 import Icon from "component/common/Icon";
 import {
   selectEmailLogging,
-  selectNameLogging
+  selectNameLogging,
 } from "pages/Login/module/LoginSlice";
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "tss-react/mui";
 import NavLinkButton from "./NavLinkButton";
 
@@ -89,7 +90,9 @@ const Menu = (props: Props) => {
       >
         <div>
           <div className={classes.logo}>
-            <Icon type="white" />
+            <Link to="/">
+              <Icon type="white" />
+            </Link>
           </div>
           <div>
             {/* <NavLinkButton setActive={setActive} link="/users" icon="dashboard" name="Dashboard" /> */}

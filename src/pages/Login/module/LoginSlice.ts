@@ -10,11 +10,10 @@ export interface LoginPayload {
 }
 export interface LoginState {
   isLoggedIn: boolean;
-  logging?: boolean;
+  logging: boolean;
   auth: boolean;
   errorMessage: boolean;
   currentUser?: User;
-  saveUser:boolean;
 }
 
 export interface LoginErrorPayload {
@@ -27,7 +26,6 @@ const initialState: LoginState = {
   logging: false,
   auth: false,
   errorMessage: false,
-  saveUser:false,
   currentUser: undefined,
 };
 
@@ -55,6 +53,10 @@ const LoginSlice = createSlice({
     },
     //logout action
     logout(state) {
+      state.logging=true
+    },
+    logoutSuccess(state) {
+      state.logging = false;
       state.errorMessage = false;
       state.isLoggedIn = false;
       state.currentUser = undefined;
@@ -63,12 +65,6 @@ const LoginSlice = createSlice({
     setAuth(state) {
       state.auth = true;
     },
-    setSaveUser(state){
-      state.saveUser=true
-    },
-    disableSaveUser(state){
-      state.saveUser=false
-    }
   },
 });
 
@@ -86,7 +82,7 @@ export const selectTypeUserLogging = (state: any) =>
   state.LoginReducer.currentUser?.userType;
 export const selectIDUser = (state: any) => state.LoginReducer.currentUser?._id;
 export const selectUserName = (state: any) => state.LoginReducer.currentUser?.name;
-export const selectSaveUser = (state: any) => state.LoginReducer.saveUser;
+export const selectUserType = (state: any) => state.LoginReducer.currentUser?.userType;
 
 
 //reducer

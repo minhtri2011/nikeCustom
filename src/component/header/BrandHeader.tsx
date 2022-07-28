@@ -1,8 +1,13 @@
 import { Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { useAppSelector } from "app/hooks";
-import { selectIsLoggedIn, selectUserName } from "pages/Login/module/LoginSlice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
+import {
+  LoginActions,
+  selectIsLoggedIn,
+  selectUserName,
+  selectUserType,
+} from "pages/Login/module/LoginSlice";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { getToken } from "ultis/getToken";
@@ -133,9 +138,14 @@ const dataList = [
 const BrandHeader = (props: Props) => {
   const classes = useStyles();
   const [active, setActive] = useState<boolean>(false);
-  const token = getToken();
-  const userName=useAppSelector(selectUserName)
-  const isLogin=useAppSelector(selectIsLoggedIn)
+  const [activeUserPanel, setActiveUserPanel] = useState<boolean>(false);
+  const userName = useAppSelector(selectUserName);
+  const isLogin = useAppSelector(selectIsLoggedIn);
+  const userType = useAppSelector(selectUserType);
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(LoginActions.logout());
+  };
 
   return (
     <div className={classes.brandHeader}>
@@ -198,40 +208,103 @@ const BrandHeader = (props: Props) => {
               </li>
             </ul>
           </div>
-          <Typography className={classes.bar}>|</Typography>
-          {!isLogin ? (
-            <>
+        </li>
+        <Typography className={classes.bar}>|</Typography>
+        {!isLogin ? (
+          <>
+            <li className={classes.titleMenu}>
               <Link to="/signup" style={{ textDecoration: "none" }}>
-                <Typography
-                  variant="caption"
-                  className={classes.titleHover}
-                >
+                <Typography variant="caption" className={classes.titleHover}>
                   Join Us
                 </Typography>
               </Link>
+            </li>
+            <li className={classes.titleMenu}>
               <Typography className={classes.bar}>|</Typography>
               <Link to="/login" style={{ textDecoration: "none" }}>
-                <Typography
-                  variant="caption"
-                  className={classes.titleHover}
-                >
+                <Typography variant="caption" className={classes.titleHover}>
                   Sign in
                 </Typography>
               </Link>
-            </>
-          ) : (
-            <>
-             <Link to="/" style={{ textDecoration: "none" }}>
-                <Typography
-                  variant="caption"
-                  className={classes.titleHover}
-                >
-                  Hi, {userName}
-                </Typography>
-              </Link>
-            </>
-          )}
-        </li>
+            </li>
+          </>
+        ) : (
+          <li
+            className={classes.titleMenu}
+            onMouseLeave={() => setActiveUserPanel(false)}
+          >
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Typography
+                variant="caption"
+                className={classes.titleHover}
+                onMouseEnter={() => setActiveUserPanel(true)}
+              >
+                Hi, {userName}
+              </Typography>
+            </Link>
+            <div
+              className={`${classes.submenu} ${
+                activeUserPanel ? "active" : ""
+              }`}
+            >
+              <Typography className={classes.titleSubMenu}>Account</Typography>
+              <ul className={classes.listItemSubMenu}>
+                {userType === "admin" && (
+                  <li>
+                    <Link to="/dashboard/users" style={{ textDecoration: "none" }}>
+                      <Typography className={classes.itemHover}>
+                        Dashboard
+                      </Typography>
+                    </Link>
+                  </li>
+                )}
+                <li>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Typography className={classes.itemHover}>
+                      Profile
+                    </Typography>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Typography className={classes.itemHover}>
+                      Orders
+                    </Typography>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Typography className={classes.itemHover}>
+                      Favorites
+                    </Typography>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Typography className={classes.itemHover}>Inbox</Typography>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Typography className={classes.itemHover}>
+                      Experiences
+                    </Typography>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    <Typography className={classes.itemHover}>
+                      Account settings
+                    </Typography>
+                  </Link>
+                </li>
+                <li onClick={handleLogout}>
+                  <Typography className={classes.itemHover}>Logout</Typography>
+                </li>
+              </ul>
+            </div>
+          </li>
+        )}
       </ul>
     </div>
   );

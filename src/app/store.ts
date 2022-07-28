@@ -2,7 +2,7 @@ import {
   Action,
   combineReducers,
   configureStore,
-  ThunkAction
+  ThunkAction,
 } from "@reduxjs/toolkit";
 import CartReducer from "pages/Cart/module/cartSlice";
 import OderReducer from "pages/Dashboard/Oder/module/OderSlice";
@@ -16,21 +16,18 @@ import {
   persistReducer,
   PURGE,
   REGISTER,
-  REHYDRATE
+  REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import ThemeReducer from "theme/module/themeSlice";
-import { getToken } from "ultis/getToken";
 import rootSaga from "./rootSaga";
 const sagaMiddleware = createSagaMiddleware();
-const token=getToken()
-
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["CartReducer", token.length>0 ? "LoginReducer":'' ],
+  whitelist: ["CartReducer", "LoginReducer"],
 };
 const rootReducer = combineReducers({
   ThemeReducer,

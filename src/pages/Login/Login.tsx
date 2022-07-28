@@ -318,11 +318,11 @@ const LoginPage = (props: Props) => {
                 </p>
               )}
             </FormControl>
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox />}
               label="Remember me"
               {...register("checkInfo")}
-            />
+            /> */}
             {!loading ? (
               <Button
                 type="submit"

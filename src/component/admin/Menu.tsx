@@ -2,9 +2,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Avatar, Button, Paper, Typography } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
-import { useAppSelector } from "app/hooks";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 import Icon from "component/common/Icon";
 import {
+  LoginActions,
   selectEmailLogging,
   selectNameLogging,
 } from "pages/Login/module/LoginSlice";
@@ -80,6 +81,8 @@ const Menu = (props: Props) => {
   const { classes } = useStyle();
   const emailText = useAppSelector(selectEmailLogging);
   const nameText = useAppSelector(selectNameLogging);
+  const dispatch = useAppDispatch();
+  const handleLogout=()=> dispatch(LoginActions.logout())
 
   return (
     <div>
@@ -130,7 +133,7 @@ const Menu = (props: Props) => {
             <Button className={classes.btn} variant="contained">
               <SettingsIcon />
             </Button>
-            <Button className={classes.btn} variant="contained">
+            <Button className={classes.btn} variant="contained" onClick={handleLogout}>
               <LogoutIcon />
             </Button>
           </div>

@@ -1,6 +1,7 @@
 import { useAppSelector } from "app/hooks";
-import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { getToken } from "ultis/getToken";
 
 interface Props {}
 

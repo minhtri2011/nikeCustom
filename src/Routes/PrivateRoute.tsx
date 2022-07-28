@@ -1,16 +1,24 @@
+import { useAppSelector } from "app/hooks";
+import { selectUserType } from "pages/Login/module/LoginSlice";
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 interface Props {}
 
 const useAuth = () => {
-  const user = localStorage.getItem("user");
-  return user ? true : false;
+  const accessToken = localStorage.getItem("access_token");
+  return accessToken !== null ? true : false;
 };
 
 const PrivateRoute = (props: Props) => {
-  const auth=useAuth();
-  return auth?<Outlet/>:<Navigate to='/login' />
+  const userType = useAppSelector(selectUserType);
+  return userType === "admin" ? (
+    <Outlet />
+    ) : (
+    <Navigate to="/" replace={true} />
+  );
+
+  // return <Outlet />;
 };
 
 export default PrivateRoute;

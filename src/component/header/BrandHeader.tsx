@@ -233,7 +233,7 @@ const BrandHeader = (props: Props) => {
             className={classes.titleMenu}
             onMouseLeave={() => setActiveUserPanel(false)}
           >
-            <Link to="/" style={{ textDecoration: "none" }}>
+            <Link to="/profile" style={{ textDecoration: "none" }}>
               <Typography
                 variant="caption"
                 className={classes.titleHover}

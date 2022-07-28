@@ -18,6 +18,9 @@ import React, { useRef, useState } from "react";
 import { CartActions } from "pages/Cart/module/cartSlice";
 import { useAppDispatch } from "app/hooks";
 import { v4 as uuid } from "uuid";
+import userApi from "api/userApi";
+import { getToken } from "ultis/getToken";
+import { favoriteProducts } from "models/user";
 
 interface Props {
   data: Product;
@@ -220,6 +223,29 @@ const Detail = (props: Props) => {
   const handleSetSize = (value: string) => {
     setSize(value);
   };
+  const handleAddFavorites = async() => {
+    const token = getToken()
+    const dataUpload:favoriteProducts = {
+      productsFavorite: [
+        {
+          productId: data._id || '',
+          name: data.name  || '',
+          price: data.price || 0,
+          size: size  || "",
+          img: data.img || "",
+          color: listCard?.color || "",
+          quantity: 1,
+          message: data.message || "",
+          sizes: [null],
+        },
+      ],
+    };
+    try {
+      const res = await userApi.addFavoriteProducts(dataUpload ,token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleAddCartBag = () => {
     const id = uuid();
     const dataUpload = {
@@ -387,6 +413,7 @@ const Detail = (props: Props) => {
           <div className={classes.listSizes}>{sortSizes()}</div>
           <div className={classes.btnPosition} ref={btnBuy}>
             <button
+              disabled={Boolean(size) ? false : true}
               onClick={() => handleAddCartBag()}
               className={`${classes.btn}${
                 breakpoint ? (checkScrollToBtn ? "" : " fixed") : ""
@@ -395,7 +422,10 @@ const Detail = (props: Props) => {
               Add to Bag
             </button>
           </div>
-          <button className={`${classes.btn} white`}>
+          <button
+            className={`${classes.btn} white`}
+            onClick={() => handleAddFavorites()}
+          >
             Favourite <FavoriteBorderIcon />
           </button>
           <p className={classes.description}>{data.description}</p>

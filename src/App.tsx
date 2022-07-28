@@ -62,10 +62,10 @@ function App() {
             <Route path="/kids" element={<Kids />} />
             <Route path="/men" element={<Men />} />
           </Route>
-          {/* <Route element={<AuthRoute />}> */}
+          <Route element={<AuthRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signUp" element={<SignUpPage />} />
-          {/* </Route> */}
+          </Route>
           <Route element={<PrivateRoute />}>
             <Route element={<Admin />}>
               <Route path="/dashboard/users" element={<User />} />

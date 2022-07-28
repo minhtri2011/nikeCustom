@@ -1,3 +1,4 @@
+import { favoriteProduct, favoriteProducts } from './../models/user';
 import {
   DeleteId,
   Login,
@@ -58,6 +59,14 @@ const userApi = {
       },
     });
   },
+  addFavoriteProducts(data:favoriteProducts,token:string): Promise<favoriteProducts> {
+    const url='/users/addUpdateFavorite'
+    return axiosClient.post(url,data,{
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+    })
+  }
 };
 
 export default userApi;

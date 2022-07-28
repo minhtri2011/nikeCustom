@@ -54,3 +54,17 @@ export interface SignUp{
   typeUser:string;
   age:number;
 }
+export interface favoriteProducts{
+  productsFavorite: favoriteProduct[]
+}
+export interface favoriteProduct{
+  productId:string
+  name:string
+  price:number
+  size:string
+  img:string
+  color:string
+  quantity:number
+  message:string
+  sizes:[null]
+}

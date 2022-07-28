@@ -12,6 +12,7 @@ import {
   selectDataCart,
   selectTotalCart,
 } from "pages/Cart/module/cartSlice";
+import { selectIsLoggedIn } from "pages/Login/module/LoginSlice";
 import React, { ChangeEvent } from "react";
 import Swal from "sweetalert2";
 import { getToken } from "ultis/getToken";
@@ -113,6 +114,7 @@ const CartBody = (props: Props) => {
   const handleDelete = (product: cartCreate) => {
     dispatch(CartActions.deleteProduct(product));
   };
+  const isLogin=useAppSelector(selectIsLoggedIn)
   const handleChange = (
     e: ChangeEvent<HTMLSelectElement>,
     value: cartCreate
@@ -254,7 +256,7 @@ const CartBody = (props: Props) => {
             <Paypal
               onsuccess={buyProduct}
               amount={total / 23000}
-              disable={token && total > 0 ? false : true}
+              disable={!isLogin ? true : false}
             />
           </Box>
         </Grid>

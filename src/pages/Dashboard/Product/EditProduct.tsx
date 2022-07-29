@@ -62,6 +62,9 @@ const useStyles = makeStyles()((theme) => {
     },
     input: {
       marginBottom: "10px !important",
+      '& input':{
+        height:'100%'
+      }
     },
     img: {
       maxHeight: "250px",
@@ -399,7 +402,7 @@ const EditProduct = (props: Props) => {
               fullWidth
               className={classes.btn}
             >
-              Create user
+              Create product 
             </Button>
           ) : (
             <Button

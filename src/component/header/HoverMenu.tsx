@@ -77,8 +77,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   itemNavContent: {
+    display: "block",
     wordWrap: "break-word",
     whiteSpace: "normal",
+    textDecoration:'none',
     cursor: "pointer",
     color: "#757575",
     margin: 0,
@@ -130,9 +132,7 @@ const HoverMenu = (props: Props) => {
                 </Typography>
                 {data.item?.map((contentItem, indexContent) => {
                   return (
-                    <p key={indexContent} className={classes.itemNavContent}>
-                      {contentItem.name}
-                    </p>
+                      <Link key={indexContent} className={classes.itemNavContent} to='/products'>{contentItem.name}</Link>
                   );
                 })}
                 {data.title2 && (
@@ -142,12 +142,12 @@ const HoverMenu = (props: Props) => {
                     </Typography>
                     {data.item2?.map((contentItem, indexContent) => {
                       return (
-                        <p
+                        <Link to='/products'
                           key={indexContent}
                           className={classes.itemNavContent}
                         >
                           {contentItem.name}
-                        </p>
+                        </Link>
                       );
                     })}
                   </>

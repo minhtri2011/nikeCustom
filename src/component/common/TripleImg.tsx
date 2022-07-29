@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     "& > div": {
       position: "relative",
       scrollSnapAlign: "start",
+      width: "100%",
       [theme.breakpoints.down("md")]: {
         flexShrink: 0,
         width: "80vw",

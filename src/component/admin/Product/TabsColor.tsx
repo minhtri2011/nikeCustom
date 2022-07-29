@@ -21,9 +21,18 @@ interface Props {
 }
 const useStyles = makeStyles((theme: Theme) => ({
   imgList: {
-    display: "flex",
+    display: "grid",
+    gridTemplateColumns: "repeat(5,1fr)",
     flexWrap: "wrap",
     gap: "10px",
+    marginBottom:'20px',
+    marginTop:'20px',
+    [theme.breakpoints.down("md")]:{
+      gridTemplateColumns: "repeat(4,1fr)",
+    },
+    [theme.breakpoints.down("sm")]:{
+      gridTemplateColumns: "repeat(3,1fr)",
+    },
   },
   img: {
     width: "100%",
@@ -46,6 +55,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   inputStyle: {
     maxWidth: "70%",
+    '& input':{
+      height:'56px'
+    }
   },
   addBox: {
     display: "flex",
@@ -65,8 +77,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     transition: "opacity .1s ease-in-out",
   },
   imgItem: {
-    width: "100px",
-    height: "100px",
+    width: "100p%",
+    aspectRatio: "1/1",
     position: "relative",
     "&:hover svg": {
       opacity: 0.6,

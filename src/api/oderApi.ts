@@ -11,6 +11,14 @@ const oderApi = {
       },
     });
   },
+  getUserCart(token: string): Promise<any> {
+    const url = "cart";
+    return axiosClient.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
   create(data:cartUpload,token: string): Promise<cartUpload> {
     const url = "cart/create";
     return axiosClient.post(url,data, {

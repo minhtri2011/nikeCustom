@@ -259,28 +259,28 @@ const BrandHeader = (props: Props) => {
                   </li>
                 )}
                 <li>
-                  <Link to="/" style={{ textDecoration: "none" }}>
+                  <Link to="/profile" style={{ textDecoration: "none" }}>
                     <Typography className={classes.itemHover}>
                       Profile
                     </Typography>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/" style={{ textDecoration: "none" }}>
+                  <Link to="/orders" style={{ textDecoration: "none" }}>
                     <Typography className={classes.itemHover}>
                       Orders
                     </Typography>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/" style={{ textDecoration: "none" }}>
+                  <Link to="/favorite" style={{ textDecoration: "none" }}>
                     <Typography className={classes.itemHover}>
                       Favorites
                     </Typography>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/" style={{ textDecoration: "none" }}>
+                  <Link to="/inbox" style={{ textDecoration: "none" }}>
                     <Typography className={classes.itemHover}>Inbox</Typography>
                   </Link>
                 </li>

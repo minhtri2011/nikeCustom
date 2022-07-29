@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     [theme.breakpoints.down("md")]: {
       justifyContent: "space-between",
+      padding: "0 18px 0 18px",
     },
     "&.active": {
       position: "fixed",

@@ -20,7 +20,7 @@ import { useAppDispatch } from "app/hooks";
 import { v4 as uuid } from "uuid";
 import userApi from "api/userApi";
 import { getToken } from "ultis/getToken";
-import { favoriteProducts } from "models/user";
+import { favoriteProduct, favoriteProducts } from "models/user";
 
 interface Props {
   data: Product;
@@ -225,9 +225,7 @@ const Detail = (props: Props) => {
   };
   const handleAddFavorites = async() => {
     const token = getToken()
-    const dataUpload:favoriteProducts = {
-      productsFavorite: [
-        {
+    const dataUpload:favoriteProduct = {
           productId: data._id || '',
           name: data.name  || '',
           price: data.price || 0,
@@ -237,8 +235,6 @@ const Detail = (props: Props) => {
           quantity: 1,
           message: data.message || "",
           sizes: [null],
-        },
-      ],
     };
     try {
       const res = await userApi.addFavoriteProducts(dataUpload ,token);

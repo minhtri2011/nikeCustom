@@ -59,7 +59,7 @@ const userApi = {
       },
     });
   },
-  addFavoriteProducts(data:favoriteProducts,token:string): Promise<favoriteProducts> {
+  addFavoriteProducts(data:favoriteProduct,token:string): Promise<favoriteProducts> {
     const url='/users/addUpdateFavorite'
     return axiosClient.post(url,data,{
       headers:{

@@ -9,6 +9,7 @@ import OderReducer from "pages/Dashboard/Oder/module/OderSlice";
 import ProductReducer from "pages/Dashboard/Product/module/ProductSlice";
 import UserReducer from "pages/Dashboard/User/module/UserSlice";
 import LoginReducer from "pages/Login/module/LoginSlice";
+import OrderUserReducer from "pages/OrdersUser/module/OrderUserSlice";
 import {
   FLUSH,
   PAUSE,
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   ProductReducer,
   OderReducer,
   CartReducer,
+  OrderUserReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = configureStore({

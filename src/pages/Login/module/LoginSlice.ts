@@ -1,3 +1,4 @@
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "models/user";
 
@@ -83,6 +84,7 @@ export const selectTypeUserLogging = (state: any) =>
 export const selectIDUser = (state: any) => state.LoginReducer.currentUser?._id;
 export const selectUserName = (state: any) => state.LoginReducer.currentUser?.name;
 export const selectUserType = (state: any) => state.LoginReducer.currentUser?.userType;
+export const selectUserFavorites = (state:any) => state.LoginReducer.currentUser?.productsFavorite
 
 
 //reducer

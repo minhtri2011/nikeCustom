@@ -16,7 +16,6 @@ function* handleLogin(payload:any): any {
     yield delay(2000);
     yield put(LoginActions.setAuth());
   } catch (error: any) {
-    console.log(error.response.data.error);
     yield put(LoginActions.loginFailed());
   }
 }

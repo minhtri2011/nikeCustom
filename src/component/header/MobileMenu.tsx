@@ -1,4 +1,5 @@
 import { HelpOutline } from "@mui/icons-material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -11,8 +12,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
+import { useAppSelector } from "app/hooks";
+import { selectUserName } from "pages/Login/module/LoginSlice";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { getToken } from "ultis/getToken";
 
 interface Props {
   active: boolean;
@@ -535,6 +539,8 @@ const MobileMenu = (props: Props) => {
     toggle(false);
     setPanel(0);
   };
+  const token = getToken();
+  const userName = useAppSelector(selectUserName);
 
   return (
     <Drawer anchor={"right"} open={active} onClose={onCloseMenu}>
@@ -554,7 +560,24 @@ const MobileMenu = (props: Props) => {
                 <CloseIcon />
               </Button>
             </div>
+
             <List>
+              <ListItem
+                disablePadding
+                secondaryAction={
+                  <IconButton>
+                    <ChevronRightIcon />
+                  </IconButton>
+                }
+                sx={{display:'flex !important',alignItems:'center',marginBottom:'20px'}}
+              >
+                <ListItemButton className={classes.itemBtn} >
+                  <Link style={{textDecoration:'none',display:'flex',alignItems:'center',color:'#000'}} to="/profile">
+                    <AccountCircleIcon/>
+                    <ListItemText sx={{paddingLeft:'5px','& span':{fontSize:'17px'}}} primary={`Hi, ${userName}`} />
+                  </Link>
+                </ListItemButton>
+              </ListItem>
               {data.map((item, index: number) => {
                 return (
                   <ListItem
@@ -584,14 +607,16 @@ const MobileMenu = (props: Props) => {
               Become a Nike Member for the best products, inspiration and
               stories in sport. Learn more
             </p>
-            <div className={classes.listBtn}>
-              <Link to="/signup" className={classes.btnCustom}>
-                <Button variant="contained">Join Us</Button>
-              </Link>
-              <Link to="/login" className={classes.btnCustom}>
-                <Button variant="contained">Sign In</Button>
-              </Link>
-            </div>
+            {token === null && (
+              <div className={classes.listBtn}>
+                <Link to="/signup" className={classes.btnCustom}>
+                  <Button variant="contained">Join Us</Button>
+                </Link>
+                <Link to="/login" className={classes.btnCustom}>
+                  <Button variant="contained">Sign In</Button>
+                </Link>
+              </div>
+            )}
             <div className={classes.listToolBox}>
               <List>
                 <ListItem disablePadding>
@@ -678,7 +703,7 @@ const MobileMenu = (props: Props) => {
                 {thirdMenu?.map((item: any, index: number) => {
                   return (
                     <ListItem key={index} disablePadding>
-                      <Link to='/products' className={classes.customLink}>
+                      <Link to="/products" className={classes.customLink}>
                         <ListItemButton
                           onClick={onCloseMenu}
                           className={classes.itemNextPanelBtn}

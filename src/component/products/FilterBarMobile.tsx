@@ -23,7 +23,6 @@ import ContainerCustom from "component/common/ContainerCustom";
 import { filter } from "pages/Products/Products";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import CollapseCheckBox from "./CollapseCheckBox";
-import useLockBodyScroll from "hooks/useLockBodyScroll";
 
 interface Props {
   productsLength: number;
@@ -232,12 +231,19 @@ const FilterBarMobile = (props: Props) => {
   const toggleDrawer = (value: boolean) => {
     setState(value);
   };
-  useLayoutEffect(() => {
-    state
-      ? (document.body.style.removeProperty('overflow'))
-      : (document.body.style.overflow = "hidden");
-  }, [state]);
-
+  // useLayoutEffect(() => {
+  //   state
+  //     ? (document.body.style.removeProperty('overflow'))
+  //     : (document.body.style.overflow = "hidden");
+  // }, [state]);
+  const handleClickFilter = () => {
+    toggleDrawer(true);
+    document.body.style.removeProperty("overflow");
+  };
+  const handleClosePanel = () => {
+    toggleDrawer(false);
+    document.body.style.removeProperty("overflow");
+  };
   return (
     <>
       {/* scroll menu */}
@@ -254,14 +260,14 @@ const FilterBarMobile = (props: Props) => {
       <Divider />
       <div className={classes.tools}>
         <span>{productsLength} Results</span>
-        <button onClick={() => toggleDrawer(true)}>
+        <button onClick={handleClickFilter}>
           Filter <Filter />
         </button>
       </div>
       <Drawer
         anchor="bottom"
         open={state}
-        onClose={() => toggleDrawer(false)}
+        onClose={handleClosePanel}
         transitionDuration={200}
       >
         <div className={classes.panel}>

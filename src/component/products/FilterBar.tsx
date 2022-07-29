@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       left: 0,
       padding: "0 48px",
       transition:'transform .15s ease',
+      [theme.breakpoints.down("md")]:{
+        padding:'0 24px',
+      },
       "& h1": {
         transform: "scale(.75)",
       },

@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import { useAppSelector } from "app/hooks";
 import {
   selectDataProductReducer,
-  selectLoadingDataProductReducer
+  selectLoadingDataProductReducer,
 } from "pages/Dashboard/Product/module/ProductSlice";
 
 import { Product } from "models/products";
@@ -109,9 +109,10 @@ const SearchBoxResult = (props: Props) => {
   const classes = useStyles();
   const loading = useAppSelector(selectLoadingDataProductReducer);
   const products = useAppSelector(selectDataProductReducer);
-  const searchProductsData = products
+  const data = products
     .filter((product: Product) => product?.name.toLowerCase().includes(search))
     .slice(0, 4);
+  const searchProductsData = [...data];
   const renderListNames = () => {
     return searchProductsData.map((product: Product, index: number) => {
       return (
@@ -163,7 +164,11 @@ const SearchBoxResult = (props: Props) => {
                 <Grid item xs={12} md={10} className={classes.productList}>
                   {searchProductsData.map((product: Product, index: number) => {
                     return (
-                      <Link to={`/detail/${product._id}`} key={index} className={classes.productCard}>
+                      <Link
+                        to={`/detail/${product._id}`}
+                        key={index}
+                        className={classes.productCard}
+                      >
                         <img src={product.img} alt={product.name} />
                         <h4 className={classes.productName}>{product.name}</h4>
                         <p className={classes.productType}>

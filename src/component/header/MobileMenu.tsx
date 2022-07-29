@@ -678,7 +678,7 @@ const MobileMenu = (props: Props) => {
                 {thirdMenu?.map((item: any, index: number) => {
                   return (
                     <ListItem key={index} disablePadding>
-                      <Link to={item.link} className={classes.customLink}>
+                      <Link to='/products' className={classes.customLink}>
                         <ListItemButton
                           onClick={onCloseMenu}
                           className={classes.itemNextPanelBtn}

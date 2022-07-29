@@ -241,7 +241,7 @@ const DropdownFooter = (props: Props) => {
   const renderFirstData = (value: firstData[]) => {
     return value.map((item: firstData, index: number) => {
       return (
-        <Link key={index} to={item.link} className={classes.link}>
+        <Link key={index} to='/products' className={classes.link}>
           {item.title}
         </Link>
       );
@@ -250,7 +250,7 @@ const DropdownFooter = (props: Props) => {
   const renderSecondData = (value: secondData[]) => {
     return value.map((item: firstData, index: number) => {
       return (
-        <Link key={index} to={item.link} className={classes.link}>
+        <Link key={index} to='/products' className={classes.link}>
           {item.title}
         </Link>
       );

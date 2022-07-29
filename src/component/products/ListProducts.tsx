@@ -4,8 +4,8 @@ import { useAppSelector } from "app/hooks";
 import { motion } from "framer-motion";
 import { Product } from "models/products";
 import { selectLoadingDataProductReducer } from "pages/Dashboard/Product/module/ProductSlice";
-import React from "react";
-import { Link } from "react-router-dom";
+import React from "react";import { Link } from "react-router-dom";
+;
 interface Props {
   listProduct: Product[];
 }

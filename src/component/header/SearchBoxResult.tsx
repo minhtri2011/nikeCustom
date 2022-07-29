@@ -9,6 +9,7 @@ import {
 
 import { Product } from "models/products";
 import Highlighter from "react-highlight-words";
+import { Link } from "react-router-dom";
 interface Props {
   active: boolean;
   search: string;
@@ -68,6 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexWrap: "wrap",
   },
   productCard: {
+    textDecoration: "none",
     cursor: "pointer",
     width: "calc( (100% - (8px * 3)) / 4)",
     [theme.breakpoints.down("md")]: {
@@ -161,7 +163,7 @@ const SearchBoxResult = (props: Props) => {
                 <Grid item xs={12} md={10} className={classes.productList}>
                   {searchProductsData.map((product: Product, index: number) => {
                     return (
-                      <div key={index} className={classes.productCard}>
+                      <Link to={`/detail/${product._id}`} key={index} className={classes.productCard}>
                         <img src={product.img} alt={product.name} />
                         <h4 className={classes.productName}>{product.name}</h4>
                         <p className={classes.productType}>
@@ -170,7 +172,7 @@ const SearchBoxResult = (props: Props) => {
                         <p className={classes.productPrice}>
                           ₫{product.price.toLocaleString()}
                         </p>
-                      </div>
+                      </Link>
                     );
                   })}
                 </Grid>

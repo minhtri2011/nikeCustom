@@ -18,6 +18,7 @@ import Inbox from "pages/Inbox/Inbox";
 import Kids from "pages/Kids/Kids";
 import LoginPage from "pages/Login/Login";
 import Men from "pages/Men/Men";
+import { NotFound } from "pages/NotFound/NotFound";
 import OrdersUser from "pages/OrdersUser/OrdersUser";
 import ProductDetail from "pages/ProductDetail/ProductDetail";
 import Products from "pages/Products/Products";
@@ -65,7 +66,7 @@ function App() {
             <Route path="/inbox" element={<Inbox />} />
             <Route path="/favorite" element={<Favorites />} />
             <Route path="/orders" element={<OrdersUser />} />
-            <Route path="/settings" element={<Setting/>} />
+            <Route path="/settings" element={<Setting />} />
           </Route>
           <Route element={<AuthRoute />}>
             <Route path="/login" element={<LoginPage />} />
@@ -85,7 +86,7 @@ function App() {
               <Route path="/dashboard/oder" element={<Oder />} />
             </Route>
           </Route>
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AnimatePresence>
     </ThemeProvider>

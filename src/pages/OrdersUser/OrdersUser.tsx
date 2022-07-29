@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   productCard: {
+    marginBottom: "20px",
     display: "flex",
     "& img": {
       marginRight: "20px",
@@ -37,33 +38,37 @@ const OrdersUser = (props: Props) => {
   useEffect(() => {
     dispatch(OrderUserAction.fetchUserOrder());
   }, [dispatch]);
-  const data = useAppSelector(selectorOrderUserData);
+  const dataFromRedux = useAppSelector(selectorOrderUserData);
+  const data = [...dataFromRedux];
   return (
     <>
       <MemberNav />
       <ContainerCustom mgt mgb>
-        {data?.map((item: userOder) => {
-          return (
-            <div className={classes.listProducts} key={item._id}>
-              <h3>Order date: {moment(item.createdAt).format("DD-MM-YYYY")}</h3>
-              {item.products.map((product: userOrderProduct) => {
-                return (
-                  <div key={product._id} className={classes.productCard}>
-                    <img alt={product.name} src={product.img} />
-                    <div>
-                      <p>{product.name}</p>
-                      <p>Size: {product.size}</p>
-                      <p>Price: {product.price.toLocaleString()}đ</p>
-                      <p>Your order is being shipped</p>
+        {data
+          ?.reverse()
+          .map((item: userOder) => {
+            return (
+              <div className={classes.listProducts} key={item._id}>
+                <h3>
+                  Order date: {moment(item.createdAt).format("DD-MM-YYYY")}
+                </h3>
+                {item.products.map((product: userOrderProduct) => {
+                  return (
+                    <div key={product._id} className={classes.productCard}>
+                      <img alt={product.name} src={product.img} />
+                      <div>
+                        <p>{product.name}</p>
+                        <p>Size: {product.size}</p>
+                        <p>Price: {product.price.toLocaleString()}đ</p>
+                        <p>Your order is being shipped</p>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+                  );
+                })}
+              </div>
+            );
+          })}
       </ContainerCustom>
-      
     </>
   );
 };

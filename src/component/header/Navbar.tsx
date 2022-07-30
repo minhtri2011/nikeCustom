@@ -220,7 +220,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     [theme.breakpoints.down("md")]: {
       width: "50px",
-      right: "80px",
+      right: "50px",
       transition: "width .3s ease,transform .3s ease,right .25s ease",
     },
   },

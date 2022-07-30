@@ -195,7 +195,7 @@ export default function UserTable(props: UserProps) {
             />
             <Link to="/dashboard/users/add" className={classes.linkBtn}>
               <Button className={classes.addBtn} variant="contained">
-                <Typography variant="body1">+ Add user</Typography>
+                <Typography variant="body1">Add</Typography>
               </Button>
             </Link>
           </div>

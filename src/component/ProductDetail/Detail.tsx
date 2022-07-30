@@ -119,6 +119,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     "&:hover": {
       backgroundColor: "#757575",
       border: "1px solid #757575",
+      [theme.breakpoints.down("md")]: {
+        backgroundColor: "#000",
+      },
     },
     "&.white": {
       backgroundColor: "#fff",
@@ -127,6 +130,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       "&:hover": {
         backgroundColor: "#fff",
         border: "1px solid #000",
+        [theme.breakpoints.down("md")]: {
+          border: "1px solid #ccc",
+        },
       },
       "& > svg": {
         paddingLeft: "8px",
@@ -223,21 +229,21 @@ const Detail = (props: Props) => {
   const handleSetSize = (value: string) => {
     setSize(value);
   };
-  const handleAddFavorites = async() => {
-    const token = getToken()
-    const dataUpload:favoriteProduct = {
-          productId: data._id || '',
-          name: data.name  || '',
-          price: data.price || 0,
-          size: size  || "",
-          img: data.img || "",
-          color: listCard?.color || "",
-          quantity: 1,
-          message: data.message || "",
-          sizes: [null],
+  const handleAddFavorites = async () => {
+    const token = getToken();
+    const dataUpload: favoriteProduct = {
+      productId: data._id || "",
+      name: data.name || "",
+      price: data.price || 0,
+      size: size || "",
+      img: data.img || "",
+      color: listCard?.color || "",
+      quantity: 1,
+      message: data.message || "",
+      sizes: [null],
     };
     try {
-      const res = await userApi.addFavoriteProducts(dataUpload ,token);
+      const res = await userApi.addFavoriteProducts(dataUpload, token);
     } catch (error) {
       console.log(error);
     }
@@ -257,6 +263,7 @@ const Detail = (props: Props) => {
       gender: data.gender || "",
     };
     dispatch(CartActions.addToCart(dataUpload));
+    setSize("");
   };
   const lazyTitle = () => {
     return (
@@ -419,6 +426,7 @@ const Detail = (props: Props) => {
             </button>
           </div>
           <button
+            disabled={Boolean(size) ? false : true}
             className={`${classes.btn} white`}
             onClick={() => handleAddFavorites()}
           >

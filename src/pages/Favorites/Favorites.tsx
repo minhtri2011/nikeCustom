@@ -42,32 +42,34 @@ const Favorites = (props: Props) => {
   const favoriteProducts = useAppSelector(selectUserFavorites);
   const renderListFavorites = () => {
     return (
-      <div className={classes.root}>
-        {favoriteProducts.map((item: favoriteProduct, index: number) => {
-          return (
-            <Link
-              to={`/detail/${item.productId}`}
-              className={classes.card}
-              key={index}
-            >
-              <img src={item.img} alt="nike" />
-              <p>{item.name}</p>
-              <p>{item.color}</p>
-              <p>{item.price.toLocaleString()}đ</p>
-            </Link>
-          );
-        })}
-      </div>
+      <>
+        <div className={classes.root}>
+          {favoriteProducts.map((item: favoriteProduct, index: number) => {
+            return (
+              <Link
+                to={`/detail/${item.productId}`}
+                className={classes.card}
+                key={index}
+              >
+                <img src={item.img} alt="nike" />
+                <p>{item.name}</p>
+                <p>{item.color}</p>
+                <p>{item.price.toLocaleString()}đ</p>
+              </Link>
+            );
+          })}
+        </div>
+      </>
     );
   };
   return (
     <>
       <MemberNav />
       <ContainerCustom mgt mgb>
-        {favoriteProducts ? (
+        {favoriteProducts && favoriteProducts.length > 0 ? (
           renderListFavorites()
         ) : (
-          <p>Items added to your Favourites will be saved here.</p>
+          <p style={{textAlign: 'center'}}>Items added to your Favourites will be saved here.</p>
         )}
       </ContainerCustom>
     </>

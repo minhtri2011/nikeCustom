@@ -10,6 +10,7 @@ import HoverMenu from "./HoverMenu";
 import MobileMenu from "./MobileMenu";
 import SearchBoxResult from "./SearchBoxResult";
 import { useScrollDirection } from "react-use-scroll-direction";
+import useCheckMaxBreakpoints from "hooks/useCheckMaxBreakpoints";
 interface Props {
   data: navbar[];
   animate: number;
@@ -280,6 +281,7 @@ const Navbar = (props: Props) => {
 
   const [direction, setDirection] = useState<string>("");
   const { scrollDirection } = useScrollDirection();
+
   useEffect(() => {
     if (
       (scrollDirection !== null && scrollDirection === "UP") ||
@@ -287,7 +289,7 @@ const Navbar = (props: Props) => {
     ) {
       setDirection(scrollDirection);
     }
-    return () => setDirection(scrollDirection as string || 'UP');
+    return () => setDirection((scrollDirection as string) || "UP");
   }, [scrollDirection]);
 
   const handleClickSearch = () => {

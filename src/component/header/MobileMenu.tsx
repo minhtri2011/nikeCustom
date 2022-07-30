@@ -1,5 +1,5 @@
 import { HelpOutline } from "@mui/icons-material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -12,11 +12,14 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { makeStyles } from "@mui/styles";
-import { useAppSelector } from "app/hooks";
-import { selectUserName } from "pages/Login/module/LoginSlice";
+import {  useAppDispatch, useAppSelector } from "app/hooks";
+import {
+  LoginActions,
+  selectIsLoggedIn,
+  selectUserName,
+} from "pages/Login/module/LoginSlice";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { getToken } from "ultis/getToken";
 
 interface Props {
   active: boolean;
@@ -169,6 +172,353 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+const data = [
+  {
+    title: "Men",
+    data: [
+      {
+        title: "new & featured",
+        data: [
+          { linkTitle: "new releases", link: "/" },
+          { linkTitle: "SNKRS launch calendar", link: "/" },
+          { linkTitle: "member access", link: "/" },
+          { linkTitle: "air force 1", link: "/" },
+          { linkTitle: "summer essentials", link: "/" },
+          { linkTitle: "basic essentials", link: "/" },
+          { linkTitle: "football club kits", link: "/" },
+          { linkTitle: "sustainable materials", link: "/" },
+          { linkTitle: "top picks under 2,300,000đ", link: "/" },
+          { linkTitle: "last sizes available", link: "/" },
+          { linkTitle: "sale", link: "/" },
+        ],
+      },
+      {
+        title: "shoes",
+        data: [
+          { linkTitle: "newest sneakers", link: "/" },
+          { linkTitle: "all shoes", link: "/" },
+          { linkTitle: "lifestyle", link: "/" },
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "jordan", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "gym and training", link: "/" },
+          { linkTitle: "skateboarding", link: "/" },
+          { linkTitle: "tennis", link: "/" },
+          { linkTitle: "sandals and slides", link: "/" },
+          { linkTitle: "customise with nike by you", link: "/" },
+          { linkTitle: "all sale shoes", link: "/" },
+        ],
+      },
+      {
+        title: "clothing",
+        data: [
+          { linkTitle: "all clothing", link: "/" },
+          { linkTitle: "tops and t-shirts", link: "/" },
+          { linkTitle: "jerseys and kits", link: "/" },
+          { linkTitle: "hoodies and sweatshirts", link: "/" },
+          { linkTitle: "jackets and gilets", link: "/" },
+          { linkTitle: "pants and leggings", link: "/" },
+          { linkTitle: "tracksuits", link: "/" },
+          { linkTitle: "compression and base layer", link: "/" },
+          { linkTitle: "shorts", link: "/" },
+          { linkTitle: "caps", link: "/" },
+          { linkTitle: "socks", link: "/" },
+          { linkTitle: "bags and backpacks", link: "/" },
+          { linkTitle: "accessories and equipment", link: "/" },
+          { linkTitle: "all sale clothing", link: "/" },
+        ],
+      },
+      {
+        title: "shop by sport",
+        data: [
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "gym and training", link: "/" },
+          { linkTitle: "yoga", link: "/" },
+          { linkTitle: "skateboarding", link: "/" },
+          { linkTitle: "tennis", link: "/" },
+          { linkTitle: "golf", link: "/" },
+        ],
+      },
+      {
+        title: "shop by brand",
+        data: [
+          { linkTitle: "nike sportswear", link: "/" },
+          { linkTitle: "NikeLab", link: "/" },
+          { linkTitle: "Nike By You", link: "/" },
+          { linkTitle: "Jordan", link: "/" },
+          { linkTitle: "ACG", link: "/" },
+          { linkTitle: "NBA", link: "/" },
+          { linkTitle: "nike SB", link: "/" },
+        ],
+      },
+      {
+        title: "icons",
+        data: [
+          { linkTitle: "air force 1", link: "/" },
+          { linkTitle: "pegasus", link: "/" },
+          { linkTitle: "blazer", link: "/" },
+          { linkTitle: "air jordan 1", link: "/" },
+          { linkTitle: "air max", link: "/" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Women",
+    data: [
+      {
+        title: "new & featured",
+        data: [
+          { linkTitle: "new releases", link: "/" },
+          { linkTitle: "SNKRS launch calendar", link: "/" },
+          { linkTitle: "member access", link: "/" },
+          { linkTitle: "air force 1", link: "/" },
+          { linkTitle: "summer essentials", link: "/" },
+          { linkTitle: "performance essentials", link: "/" },
+          { linkTitle: "bra and legging dous", link: "/" },
+          { linkTitle: "sustainabel materials", link: "/" },
+          { linkTitle: "top picks under 2,300,000đ", link: "/" },
+          { linkTitle: "last sizes availabel", link: "/" },
+          { linkTitle: "sale", link: "/" },
+        ],
+      },
+      {
+        title: "shoes",
+        data: [
+          { linkTitle: "all shoes", link: "/" },
+          { linkTitle: "lifestyle", link: "/" },
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "gym and training", link: "/" },
+          { linkTitle: "jordan", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "skateboarding", link: "/" },
+          { linkTitle: "tennis", link: "/" },
+          { linkTitle: "sandals and slides", link: "/" },
+          { linkTitle: "customise with nike by you", link: "/" },
+          { linkTitle: "all sale shoes", link: "/" },
+        ],
+      },
+      {
+        title: "clothing",
+        data: [
+          { linkTitle: "all clothing", link: "/" },
+          { linkTitle: "performance essentials", link: "/" },
+          { linkTitle: "sports bras", link: "/" },
+          { linkTitle: "tops and T-shirts", link: "/" },
+          { linkTitle: "hoodies and sweatshirts", link: "/" },
+          { linkTitle: "jackets and gilets", link: "/" },
+          { linkTitle: "pants and leggings", link: "/" },
+          { linkTitle: "tracksuits", link: "/" },
+          { linkTitle: "compression and base layer", link: "/" },
+          { linkTitle: "short", link: "/" },
+          { linkTitle: "skirts and dresses", link: "/" },
+          { linkTitle: "jerseys and kits", link: "/" },
+          { linkTitle: "modest wear", link: "/" },
+          { linkTitle: "plus size", link: "/" },
+          { linkTitle: "caps", link: "/" },
+          { linkTitle: "socks", link: "/" },
+          { linkTitle: "bags and backpacks", link: "/" },
+          { linkTitle: "accessories and equipment", link: "/" },
+          { linkTitle: "all sale clothing", link: "/" },
+        ],
+      },
+      {
+        title: "shop by sport",
+        data: [
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "gym and training", link: "/" },
+          { linkTitle: "yoga", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "skateboarding", link: "/" },
+          { linkTitle: "tennis", link: "/" },
+          { linkTitle: "golf", link: "/" },
+        ],
+      },
+      {
+        title: "shop by brand",
+        data: [
+          { linkTitle: "nike sportswear", link: "/" },
+          { linkTitle: "nikeLab", link: "/" },
+          { linkTitle: "nike by you", link: "/" },
+          { linkTitle: "jordan", link: "/" },
+          { linkTitle: "ACG", link: "/" },
+          { linkTitle: "NBA", link: "/" },
+          { linkTitle: "nike SB", link: "/" },
+        ],
+      },
+      {
+        title: "icons",
+        data: [
+          { linkTitle: "air force 1", link: "/" },
+          { linkTitle: "pegasus", link: "/" },
+          { linkTitle: "blazer", link: "/" },
+          { linkTitle: "air jordan 1", link: "/" },
+          { linkTitle: "air max", link: "/" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Kids",
+    data: [
+      {
+        title: "new & featured",
+        data: [
+          { linkTitle: "new releases", link: "/" },
+          { linkTitle: "member access", link: "/" },
+          { linkTitle: "air force 1", link: "/" },
+          { linkTitle: "summer essentials", link: "/" },
+          { linkTitle: "bags and backpacks", link: "/" },
+          { linkTitle: "jordan", link: "/" },
+          { linkTitle: "last sizes available", link: "/" },
+          { linkTitle: "sale", link: "/" },
+        ],
+      },
+      {
+        title: "boys` shoes",
+        data: [
+          { linkTitle: "older kids (3-6.5)", link: "/" },
+          { linkTitle: "younger kids (10-2.5)", link: "/" },
+          { linkTitle: "baby and toddler (1.5-9.5)", link: "/" },
+          { linkTitle: "lifestyle", link: "/" },
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "jordan", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "sandals and slides", link: "/" },
+          { linkTitle: "all shoes", link: "/" },
+        ],
+      },
+      {
+        title: "boy`s clothing",
+        data: [
+          { linkTitle: "tops and t-shirts", link: "/" },
+          { linkTitle: "hoodies and sweatshirts", link: "/" },
+          { linkTitle: "pants and leggings", link: "/" },
+          { linkTitle: "shorts", link: "/" },
+          { linkTitle: "all boys` clothing", link: "/" },
+        ],
+      },
+      {
+        title: "girls` shoes",
+        data: [
+          { linkTitle: "older kids (3-6.5)", link: "/" },
+          { linkTitle: "younger kids (10-2.5)", link: "/" },
+          { linkTitle: "baby and toddler (1.5-9.5)", link: "/" },
+          { linkTitle: "lifestyle", link: "/" },
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "sandals and slides", link: "/" },
+          { linkTitle: "all shoes", link: "/" },
+        ],
+      },
+      {
+        title: "girls`s clothing",
+        data: [
+          { linkTitle: "tops and t-shirts", link: "/" },
+          { linkTitle: "sports bras", link: "/" },
+          { linkTitle: "hoodies and sweatshirts", link: "/" },
+          { linkTitle: "pants and leggings", link: "/" },
+          { linkTitle: "shorts", link: "/" },
+          { linkTitle: "all girls` clothing", link: "/" },
+        ],
+      },
+      {
+        title: "accessories and equipment",
+        data: [
+          { linkTitle: "Balls", link: "/" },
+          { linkTitle: "bags and backpacks", link: "/" },
+          { linkTitle: "socks", link: "/" },
+          { linkTitle: "hats and headwear", link: "/" },
+        ],
+      },
+      {
+        title: "shop by sport",
+        data: [
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "football", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "gym and training", link: "/" },
+          { linkTitle: "tennis", link: "/" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Customise",
+    data: [
+      {
+        title: "Featured",
+        data: [{ linkTitle: "nike by you new releases", link: "/" }],
+      },
+      {
+        title: "nike by you",
+        data: [
+          { linkTitle: "men", link: "/" },
+          { linkTitle: "women", link: "/" },
+        ],
+      },
+      {
+        title: "by sport",
+        data: [
+          { linkTitle: "lifestyle", link: "/" },
+          { linkTitle: "running", link: "/" },
+          { linkTitle: "basketball", link: "/" },
+          { linkTitle: "football", link: "/" },
+        ],
+      },
+      {
+        title: "icons",
+        data: [
+          { linkTitle: "air max", link: "/" },
+          { linkTitle: "air force 1", link: "/" },
+          { linkTitle: "free", link: "/" },
+          { linkTitle: "flyknit", link: "/" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Sale",
+    data: [
+      {
+        title: "featured",
+        data: [{ linkTitle: "shop all sale", link: "/" }],
+      },
+      {
+        title: "men`s sale",
+        data: [
+          { linkTitle: "shoes", link: "/" },
+          { linkTitle: "clothing", link: "/" },
+          { linkTitle: "accessories and equipment", link: "/" },
+        ],
+      },
+      {
+        title: "women`s sale",
+        data: [
+          { linkTitle: "shoes", link: "/" },
+          { linkTitle: "clothing", link: "/" },
+          { linkTitle: "accessories and eqquipment", link: "/" },
+        ],
+      },
+      {
+        title: "kids` sale",
+        data: [
+          { linkTitle: "shoes", link: "/" },
+          { linkTitle: "clothing", link: "/" },
+          { linkTitle: "accessories and eqquipment", link: "/" },
+        ],
+      },
+    ],
+  },
+  { title: "SNKTS" },
+];
 const MobileMenu = (props: Props) => {
   const { active, toggle } = props;
   const classes = useStyles();
@@ -177,353 +527,7 @@ const MobileMenu = (props: Props) => {
   const [title, setTitle] = useState<string>();
   const [secondTitle, setSecondTitle] = useState<string>();
   const [thirdMenu, setThirdMenu] = useState<dataSecondMenuMobile[]>();
-  const data = [
-    {
-      title: "Men",
-      data: [
-        {
-          title: "new & featured",
-          data: [
-            { linkTitle: "new releases", link: "/" },
-            { linkTitle: "SNKRS launch calendar", link: "/" },
-            { linkTitle: "member access", link: "/" },
-            { linkTitle: "air force 1", link: "/" },
-            { linkTitle: "summer essentials", link: "/" },
-            { linkTitle: "basic essentials", link: "/" },
-            { linkTitle: "football club kits", link: "/" },
-            { linkTitle: "sustainable materials", link: "/" },
-            { linkTitle: "top picks under 2,300,000đ", link: "/" },
-            { linkTitle: "last sizes available", link: "/" },
-            { linkTitle: "sale", link: "/" },
-          ],
-        },
-        {
-          title: "shoes",
-          data: [
-            { linkTitle: "newest sneakers", link: "/" },
-            { linkTitle: "all shoes", link: "/" },
-            { linkTitle: "lifestyle", link: "/" },
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "jordan", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "gym and training", link: "/" },
-            { linkTitle: "skateboarding", link: "/" },
-            { linkTitle: "tennis", link: "/" },
-            { linkTitle: "sandals and slides", link: "/" },
-            { linkTitle: "customise with nike by you", link: "/" },
-            { linkTitle: "all sale shoes", link: "/" },
-          ],
-        },
-        {
-          title: "clothing",
-          data: [
-            { linkTitle: "all clothing", link: "/" },
-            { linkTitle: "tops and t-shirts", link: "/" },
-            { linkTitle: "jerseys and kits", link: "/" },
-            { linkTitle: "hoodies and sweatshirts", link: "/" },
-            { linkTitle: "jackets and gilets", link: "/" },
-            { linkTitle: "pants and leggings", link: "/" },
-            { linkTitle: "tracksuits", link: "/" },
-            { linkTitle: "compression and base layer", link: "/" },
-            { linkTitle: "shorts", link: "/" },
-            { linkTitle: "caps", link: "/" },
-            { linkTitle: "socks", link: "/" },
-            { linkTitle: "bags and backpacks", link: "/" },
-            { linkTitle: "accessories and equipment", link: "/" },
-            { linkTitle: "all sale clothing", link: "/" },
-          ],
-        },
-        {
-          title: "shop by sport",
-          data: [
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "gym and training", link: "/" },
-            { linkTitle: "yoga", link: "/" },
-            { linkTitle: "skateboarding", link: "/" },
-            { linkTitle: "tennis", link: "/" },
-            { linkTitle: "golf", link: "/" },
-          ],
-        },
-        {
-          title: "shop by brand",
-          data: [
-            { linkTitle: "nike sportswear", link: "/" },
-            { linkTitle: "NikeLab", link: "/" },
-            { linkTitle: "Nike By You", link: "/" },
-            { linkTitle: "Jordan", link: "/" },
-            { linkTitle: "ACG", link: "/" },
-            { linkTitle: "NBA", link: "/" },
-            { linkTitle: "nike SB", link: "/" },
-          ],
-        },
-        {
-          title: "icons",
-          data: [
-            { linkTitle: "air force 1", link: "/" },
-            { linkTitle: "pegasus", link: "/" },
-            { linkTitle: "blazer", link: "/" },
-            { linkTitle: "air jordan 1", link: "/" },
-            { linkTitle: "air max", link: "/" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Women",
-      data: [
-        {
-          title: "new & featured",
-          data: [
-            { linkTitle: "new releases", link: "/" },
-            { linkTitle: "SNKRS launch calendar", link: "/" },
-            { linkTitle: "member access", link: "/" },
-            { linkTitle: "air force 1", link: "/" },
-            { linkTitle: "summer essentials", link: "/" },
-            { linkTitle: "performance essentials", link: "/" },
-            { linkTitle: "bra and legging dous", link: "/" },
-            { linkTitle: "sustainabel materials", link: "/" },
-            { linkTitle: "top picks under 2,300,000đ", link: "/" },
-            { linkTitle: "last sizes availabel", link: "/" },
-            { linkTitle: "sale", link: "/" },
-          ],
-        },
-        {
-          title: "shoes",
-          data: [
-            { linkTitle: "all shoes", link: "/" },
-            { linkTitle: "lifestyle", link: "/" },
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "gym and training", link: "/" },
-            { linkTitle: "jordan", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "skateboarding", link: "/" },
-            { linkTitle: "tennis", link: "/" },
-            { linkTitle: "sandals and slides", link: "/" },
-            { linkTitle: "customise with nike by you", link: "/" },
-            { linkTitle: "all sale shoes", link: "/" },
-          ],
-        },
-        {
-          title: "clothing",
-          data: [
-            { linkTitle: "all clothing", link: "/" },
-            { linkTitle: "performance essentials", link: "/" },
-            { linkTitle: "sports bras", link: "/" },
-            { linkTitle: "tops and T-shirts", link: "/" },
-            { linkTitle: "hoodies and sweatshirts", link: "/" },
-            { linkTitle: "jackets and gilets", link: "/" },
-            { linkTitle: "pants and leggings", link: "/" },
-            { linkTitle: "tracksuits", link: "/" },
-            { linkTitle: "compression and base layer", link: "/" },
-            { linkTitle: "short", link: "/" },
-            { linkTitle: "skirts and dresses", link: "/" },
-            { linkTitle: "jerseys and kits", link: "/" },
-            { linkTitle: "modest wear", link: "/" },
-            { linkTitle: "plus size", link: "/" },
-            { linkTitle: "caps", link: "/" },
-            { linkTitle: "socks", link: "/" },
-            { linkTitle: "bags and backpacks", link: "/" },
-            { linkTitle: "accessories and equipment", link: "/" },
-            { linkTitle: "all sale clothing", link: "/" },
-          ],
-        },
-        {
-          title: "shop by sport",
-          data: [
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "gym and training", link: "/" },
-            { linkTitle: "yoga", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "skateboarding", link: "/" },
-            { linkTitle: "tennis", link: "/" },
-            { linkTitle: "golf", link: "/" },
-          ],
-        },
-        {
-          title: "shop by brand",
-          data: [
-            { linkTitle: "nike sportswear", link: "/" },
-            { linkTitle: "nikeLab", link: "/" },
-            { linkTitle: "nike by you", link: "/" },
-            { linkTitle: "jordan", link: "/" },
-            { linkTitle: "ACG", link: "/" },
-            { linkTitle: "NBA", link: "/" },
-            { linkTitle: "nike SB", link: "/" },
-          ],
-        },
-        {
-          title: "icons",
-          data: [
-            { linkTitle: "air force 1", link: "/" },
-            { linkTitle: "pegasus", link: "/" },
-            { linkTitle: "blazer", link: "/" },
-            { linkTitle: "air jordan 1", link: "/" },
-            { linkTitle: "air max", link: "/" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Kids",
-      data: [
-        {
-          title: "new & featured",
-          data: [
-            { linkTitle: "new releases", link: "/" },
-            { linkTitle: "member access", link: "/" },
-            { linkTitle: "air force 1", link: "/" },
-            { linkTitle: "summer essentials", link: "/" },
-            { linkTitle: "bags and backpacks", link: "/" },
-            { linkTitle: "jordan", link: "/" },
-            { linkTitle: "last sizes available", link: "/" },
-            { linkTitle: "sale", link: "/" },
-          ],
-        },
-        {
-          title: "boys` shoes",
-          data: [
-            { linkTitle: "older kids (3-6.5)", link: "/" },
-            { linkTitle: "younger kids (10-2.5)", link: "/" },
-            { linkTitle: "baby and toddler (1.5-9.5)", link: "/" },
-            { linkTitle: "lifestyle", link: "/" },
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "jordan", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "sandals and slides", link: "/" },
-            { linkTitle: "all shoes", link: "/" },
-          ],
-        },
-        {
-          title: "boy`s clothing",
-          data: [
-            { linkTitle: "tops and t-shirts", link: "/" },
-            { linkTitle: "hoodies and sweatshirts", link: "/" },
-            { linkTitle: "pants and leggings", link: "/" },
-            { linkTitle: "shorts", link: "/" },
-            { linkTitle: "all boys` clothing", link: "/" },
-          ],
-        },
-        {
-          title: "girls` shoes",
-          data: [
-            { linkTitle: "older kids (3-6.5)", link: "/" },
-            { linkTitle: "younger kids (10-2.5)", link: "/" },
-            { linkTitle: "baby and toddler (1.5-9.5)", link: "/" },
-            { linkTitle: "lifestyle", link: "/" },
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "sandals and slides", link: "/" },
-            { linkTitle: "all shoes", link: "/" },
-          ],
-        },
-        {
-          title: "girls`s clothing",
-          data: [
-            { linkTitle: "tops and t-shirts", link: "/" },
-            { linkTitle: "sports bras", link: "/" },
-            { linkTitle: "hoodies and sweatshirts", link: "/" },
-            { linkTitle: "pants and leggings", link: "/" },
-            { linkTitle: "shorts", link: "/" },
-            { linkTitle: "all girls` clothing", link: "/" },
-          ],
-        },
-        {
-          title: "accessories and equipment",
-          data: [
-            { linkTitle: "Balls", link: "/" },
-            { linkTitle: "bags and backpacks", link: "/" },
-            { linkTitle: "socks", link: "/" },
-            { linkTitle: "hats and headwear", link: "/" },
-          ],
-        },
-        {
-          title: "shop by sport",
-          data: [
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "football", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "gym and training", link: "/" },
-            { linkTitle: "tennis", link: "/" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Customise",
-      data: [
-        {
-          title: "Featured",
-          data: [{ linkTitle: "nike by you new releases", link: "/" }],
-        },
-        {
-          title: "nike by you",
-          data: [
-            { linkTitle: "men", link: "/" },
-            { linkTitle: "women", link: "/" },
-          ],
-        },
-        {
-          title: "by sport",
-          data: [
-            { linkTitle: "lifestyle", link: "/" },
-            { linkTitle: "running", link: "/" },
-            { linkTitle: "basketball", link: "/" },
-            { linkTitle: "football", link: "/" },
-          ],
-        },
-        {
-          title: "icons",
-          data: [
-            { linkTitle: "air max", link: "/" },
-            { linkTitle: "air force 1", link: "/" },
-            { linkTitle: "free", link: "/" },
-            { linkTitle: "flyknit", link: "/" },
-          ],
-        },
-      ],
-    },
-    {
-      title: "Sale",
-      data: [
-        {
-          title: "featured",
-          data: [{ linkTitle: "shop all sale", link: "/" }],
-        },
-        {
-          title: "men`s sale",
-          data: [
-            { linkTitle: "shoes", link: "/" },
-            { linkTitle: "clothing", link: "/" },
-            { linkTitle: "accessories and equipment", link: "/" },
-          ],
-        },
-        {
-          title: "women`s sale",
-          data: [
-            { linkTitle: "shoes", link: "/" },
-            { linkTitle: "clothing", link: "/" },
-            { linkTitle: "accessories and eqquipment", link: "/" },
-          ],
-        },
-        {
-          title: "kids` sale",
-          data: [
-            { linkTitle: "shoes", link: "/" },
-            { linkTitle: "clothing", link: "/" },
-            { linkTitle: "accessories and eqquipment", link: "/" },
-          ],
-        },
-      ],
-    },
-    { title: "SNKTS" },
-  ];
+  const dispatch=useAppDispatch()
 
   const handleClickItem = (v: menuMobile) => {
     setTitle(v.title);
@@ -539,9 +543,11 @@ const MobileMenu = (props: Props) => {
     toggle(false);
     setPanel(0);
   };
-  const token = getToken();
+  const isLogin = useAppSelector(selectIsLoggedIn);
   const userName = useAppSelector(selectUserName);
-
+  const handleLogout = () => {
+    dispatch(LoginActions.logout());
+  };
   return (
     <Drawer anchor={"right"} open={active} onClose={onCloseMenu}>
       <div className={classes.root}>
@@ -562,22 +568,40 @@ const MobileMenu = (props: Props) => {
             </div>
 
             <List>
-              <ListItem
+              {isLogin && <ListItem
                 disablePadding
                 secondaryAction={
                   <IconButton>
                     <ChevronRightIcon />
                   </IconButton>
                 }
-                sx={{display:'flex !important',alignItems:'center',marginBottom:'20px'}}
+                sx={{
+                  display: "flex !important",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                }}
               >
-                <ListItemButton className={classes.itemBtn} >
-                  <Link style={{textDecoration:'none',display:'flex',alignItems:'center',color:'#000'}} to="/profile">
-                    <AccountCircleIcon/>
-                    <ListItemText sx={{paddingLeft:'5px','& span':{fontSize:'17px'}}} primary={`Hi, ${userName}`} />
+                <ListItemButton className={classes.itemBtn}>
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      display: "flex",
+                      alignItems: "center",
+                      color: "#000",
+                    }}
+                    to="/profile"
+                  >
+                    <AccountCircleIcon />
+                    <ListItemText
+                      sx={{
+                        paddingLeft: "5px",
+                        "& span": { fontSize: "17px" },
+                      }}
+                      primary={`Hi, ${userName}`}
+                    />
                   </Link>
                 </ListItemButton>
-              </ListItem>
+              </ListItem>}
               {data.map((item, index: number) => {
                 return (
                   <ListItem
@@ -607,7 +631,7 @@ const MobileMenu = (props: Props) => {
               Become a Nike Member for the best products, inspiration and
               stories in sport. Learn more
             </p>
-            {token === null && (
+            {!isLogin && (
               <div className={classes.listBtn}>
                 <Link to="/signup" className={classes.btnCustom}>
                   <Button variant="contained">Join Us</Button>
@@ -615,6 +639,13 @@ const MobileMenu = (props: Props) => {
                 <Link to="/login" className={classes.btnCustom}>
                   <Button variant="contained">Sign In</Button>
                 </Link>
+              </div>
+            )}
+            {isLogin && (
+              <div className={classes.listBtn}>
+                <Button onClick={handleLogout} variant="contained" className={classes.btnCustom} sx={{backgroundColor:'#000',color:'#fff',marginTop:'10px'}}>
+                  Logout
+                </Button>
               </div>
             )}
             <div className={classes.listToolBox}>

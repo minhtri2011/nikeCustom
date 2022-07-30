@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   toolBox: {
+    zIndex:3,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",

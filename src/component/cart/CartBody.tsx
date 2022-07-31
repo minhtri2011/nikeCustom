@@ -114,7 +114,7 @@ const CartBody = (props: Props) => {
   const handleDelete = (product: cartCreate) => {
     dispatch(CartActions.deleteProduct(product));
   };
-  const isLogin=useAppSelector(selectIsLoggedIn)
+  const isLogin = useAppSelector(selectIsLoggedIn);
   const handleChange = (
     e: ChangeEvent<HTMLSelectElement>,
     value: cartCreate
@@ -252,11 +252,12 @@ const CartBody = (props: Props) => {
             <span>{total.toLocaleString()}₫</span>
           </div>
           <Divider />
+          <p>{total > 0 && isLogin && total} </p>
           <Box pt={"30px"} className={classes.paypal}>
             <Paypal
               onsuccess={buyProduct}
-              amount={total / 23000}
-              disable={!isLogin ? true : false}
+              amount={(total / 23000).toFixed(2)}
+              disable={total > 0 && isLogin ? false : true}
             />
           </Box>
         </Grid>

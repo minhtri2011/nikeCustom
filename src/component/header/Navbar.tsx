@@ -11,6 +11,8 @@ import MobileMenu from "./MobileMenu";
 import SearchBoxResult from "./SearchBoxResult";
 import { useScrollDirection } from "react-use-scroll-direction";
 import useCheckMaxBreakpoints from "hooks/useCheckMaxBreakpoints";
+import { useAppSelector } from "app/hooks";
+import { selectCartLength } from "pages/Cart/module/cartSlice";
 interface Props {
   data: navbar[];
   animate: number;
@@ -276,6 +278,7 @@ const Navbar = (props: Props) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [search, setSearch] = useState("");
 
+  const cartLength = useAppSelector(selectCartLength);
   const searchBar = useRef(null);
   const nav = useRef(null);
 
@@ -381,11 +384,24 @@ const Navbar = (props: Props) => {
             </svg>
           </Button>
           <Link to="/cart">
-            <Button className={classes.btnTool}>
+            <Button className={classes.btnTool} sx={{ position: "relative" }}>
               <svg width="24px" height="24px" fill="#111" viewBox="0 0 24 24">
                 <path d="M16 7a1 1 0 0 1-1-1V3H9v3a1 1 0 0 1-2 0V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1z"></path>
                 <path d="M20 5H4a2 2 0 0 0-2 2v13a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a2 2 0 0 0-2-2zm0 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7h16z"></path>
               </svg>
+              {cartLength > 0 && (
+                <p
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%,-40%)",
+                    fontSize: "12px",
+                  }}
+                >
+                  {cartLength}
+                </p>
+              )}
             </Button>
           </Link>
           <Button className={classes.btnTool} onClick={handleCancleSearchBar}>

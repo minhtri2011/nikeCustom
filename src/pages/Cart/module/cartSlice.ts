@@ -57,6 +57,7 @@ export const CartActions = cartSlice.actions;
 
 //selector
 export const selectDataCart = (state: any) => state.CartReducer.product;
+export const selectCartLength = (state: any) => state.CartReducer.product.length;
 export const selectTotalCart = (state: any) =>
   state.CartReducer.product.reduce((pre: number, curr: cartCreate) => {
     return pre = pre + curr.price * curr.quantity;

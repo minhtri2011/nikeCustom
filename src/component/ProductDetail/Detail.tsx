@@ -21,6 +21,7 @@ import { v4 as uuid } from "uuid";
 import userApi from "api/userApi";
 import { getToken } from "ultis/getToken";
 import { favoriteProduct, favoriteProducts } from "models/user";
+import Swal from "sweetalert2";
 
 interface Props {
   data: Product;
@@ -262,6 +263,13 @@ const Detail = (props: Props) => {
       typeProduct: data.typeProduct || "",
       gender: data.gender || "",
     };
+    Swal.fire({
+      title: "Thank you!",
+        text: "Successful add to cart",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+    });
     dispatch(CartActions.addToCart(dataUpload));
     setSize("");
   };
